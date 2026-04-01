@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TalentBridge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --b:#1B4FD8;--b2:#2563EB;--b3:#3B82F6;--blight:#EFF6FF;--bxlight:#F0F4FF;
+  --dark:#0F172A;--mid:#334155;--gray:#64748B;--light:#F8FAFC;
+  --w:#fff;--red:#EF4444;--brd:#E2E8F0;
+  --green:#10B981;--amber:#F59E0B;--purple:#7C3AED;
+  --shadow:0 4px 24px rgba(27,79,216,.13);
+}
+html{height:100%}
+body{min-height:100%;background:linear-gradient(135deg,#0F172A 0%,#1e3a8a 100%);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;}
+#app{width:100%;max-width:390px;height:100vh;max-height:820px;background:var(--light);border-radius:36px;box-shadow:0 40px 100px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;position:relative;}
+
+.scr{display:none;flex-direction:column;flex:1;overflow:hidden}
+.scr.on{display:flex}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 10px;background:var(--w);flex-shrink:0;border-bottom:1px solid var(--brd)}
+.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--b);letter-spacing:-0.5px}
+.logo span{color:var(--b3)}
+.modetabs{display:flex;background:var(--bxlight);border-radius:20px;padding:3px;gap:2px}
+.mtab{font-size:11px;font-weight:600;padding:5px 12px;border-radius:16px;cursor:pointer;color:var(--gray);transition:all .2s}
+.mtab.on{background:var(--b);color:var(--w);box-shadow:0 2px 8px rgba(27,79,216,.3)}
+.ibtn{width:34px;height:34px;border-radius:50%;background:var(--bxlight);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;position:relative}
+.ndot{position:absolute;top:0;right:0;width:9px;height:9px;background:var(--red);border-radius:50%;border:2px solid var(--w);display:none}
+.ndot.on{display:block}
+
+/* ── CARD AREA ── */
+.card-area{flex:1;display:flex;align-items:center;justify-content:center;position:relative;padding:12px 18px;overflow:hidden;background:var(--bxlight)}
+.card-bg{position:absolute;width:calc(100% - 36px);background:var(--w);border-radius:24px;height:90%;transform:scale(.95) translateY(12px);box-shadow:0 4px 20px rgba(27,79,216,.08);opacity:.6}
+.card{width:100%;background:var(--w);border-radius:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;padding:20px 20px 14px;position:relative;touch-action:none;user-select:none;cursor:grab;overflow-y:auto;max-height:98%}
+.card:active{cursor:grabbing}
+
+/* AVATAR / PHOTO */
+.cav{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:var(--w);margin-bottom:10px;box-shadow:0 6px 24px rgba(0,0,0,.15);font-family:'Syne',sans-serif;flex-shrink:0;overflow:hidden;position:relative}
+.cav img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.cav-upload{position:absolute;bottom:0;right:0;width:24px;height:24px;background:var(--b);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;color:var(--w);border:2px solid var(--w)}
+input.photo-in{display:none}
+
+/* company mode card */
+.company-badge{background:var(--blight);color:var(--b);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.cname{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--dark)}
+.cloc{font-size:12px;color:var(--gray);margin-top:2px}
+.crole{font-size:13px;font-weight:600;color:var(--b);margin-top:6px}
+.skills{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:10px}
+.sk{background:var(--blight);color:var(--b);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:600}
+.csal{font-size:12px;color:var(--mid);margin-top:8px;font-weight:500}
+.cabout{font-size:12px;color:var(--gray);margin-top:8px;line-height:1.55;text-align:center}
+
+/* match score pill */
+.score-pill{display:flex;align-items:center;gap:6px;background:var(--blight);border-radius:20px;padding:4px 12px;margin-top:10px}
+.score-bar-bg{width:80px;height:5px;background:var(--brd);border-radius:10px;overflow:hidden}
+.score-bar-fill{height:100%;background:linear-gradient(90deg,var(--b),var(--b3));border-radius:10px}
+.score-num{font-size:12px;font-weight:700;color:var(--b)}
+
+.dbtn{margin-top:10px;background:none;border:1.5px solid var(--brd);border-radius:20px;padding:5px 14px;font-size:11px;color:var(--gray);cursor:pointer;font-family:'Inter',sans-serif}
+.extra{display:none;width:100%;margin-top:12px;border-top:1px solid var(--brd);padding-top:12px}
+.extra.on{display:block}
+.erow{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.elbl{font-size:11px;color:var(--gray);font-weight:500}
+.eval{font-size:12px;color:var(--dark);font-weight:600}
+
+.stamp{position:absolute;top:16px;font-size:15px;font-weight:800;border:3px solid;border-radius:8px;padding:4px 10px;opacity:0;pointer-events:none}
+.sl{left:12px;color:var(--b);border-color:var(--b);transform:rotate(-15deg)}
+.sp{right:12px;color:var(--red);border-color:var(--red);transform:rotate(15deg)}
+
+/* ── ACTIONS ── */
+.actions{display:flex;justify-content:center;align-items:center;gap:40px;padding:8px 0 12px;flex-shrink:0;background:var(--w);border-top:1px solid var(--brd)}
+.bpass{width:58px;height:58px;border-radius:50%;background:var(--w);border:2px solid var(--brd);font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.blike{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--b),var(--b3));font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:none;box-shadow:0 6px 20px rgba(27,79,216,.4)}
+
+/* ── BOTTOM NAV ── */
+.bnav{display:flex;justify-content:space-around;background:var(--w);padding:10px 0 18px;border-top:1px solid var(--brd);flex-shrink:0}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.4;position:relative;font-size:20px}
+.ni.on{opacity:1}
+.ni-lbl{font-size:9px;font-weight:600;color:var(--b);display:none}
+.ni.on .ni-lbl{display:block}
+.nbadge{position:absolute;top:-4px;right:-2px;background:var(--red);color:#fff;font-size:9px;font-weight:700;border-radius:10px;padding:1px 4px;display:none}
+.nbadge.on{display:block}
+
+/* ── MUTUAL INTEREST SCREEN ── */
+#match-scr{align-items:center;justify-content:center;gap:14px;background:linear-gradient(160deg,#0F172A,#1B4FD8);padding:30px}
+.moji{font-size:48px}
+.mtitle{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--w);letter-spacing:-1px}
+.mbadge2{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.9);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.msub{font-size:13px;color:rgba(255,255,255,.7);text-align:center;line-height:1.5}
+.mavs{display:flex;align-items:center;gap:14px}
+.mav{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--w);box-shadow:0 0 0 4px var(--w);font-family:'Syne',sans-serif;overflow:hidden}
+.mav img{width:100%;height:100%;object-fit:cover}
+.bprimary{background:linear-gradient(135deg,var(--b),var(--b3));color:var(--w);border:none;border-radius:28px;padding:14px 0;font-size:14px;font-weight:600;cursor:pointer;width:100%;max-width:280px;font-family:'Inter',sans-serif}
+.bghost{background:transparent;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.3);border-radius:28px;padding:12px 0;font-size:13px;cursor:pointer;width:100%;max-width:280px;font-family:'Inter',sans-serif}
+.bschedule{background:rgba(255,255,255,.1);color:var(--w);border:1px solid rgba(255,255,255,.4);border-radius:28px;padding:12px 0;font-size:13px;cursor:pointer;width:100%;max-width:280px;font-family:'Inter',sans-serif}
+
+/* ── CHAT ── */
+.chatheader{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--w);border-bottom:1px solid var(--brd);flex-shrink:0}
+.backbtn{background:none;border:none;font-size:20px;color:var(--b);cursor:pointer;padding:4px}
+.chav{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--w);font-family:'Syne',sans-serif;flex-shrink:0;overflow:hidden}
+.chav img{width:100%;height:100%;object-fit:cover}
+.chname{font-size:14px;font-weight:700;color:var(--dark)}
+.chrole{font-size:10px;color:var(--gray)}
+.online{margin-left:auto;display:flex;align-items:center;gap:4px;font-size:10px;color:var(--green);font-weight:600}
+.odot{width:6px;height:6px;background:var(--green);border-radius:50%}
+.chatbody{flex:1;display:flex;flex-direction:column;gap:10px;padding:12px 14px;overflow-y:auto}
+.bw{display:flex;flex-direction:column}
+.bw.me{align-items:flex-end}
+.bw.them{align-items:flex-start}
+.bub{max-width:76%;border-radius:16px;padding:8px 12px;font-size:13px;line-height:1.45}
+.bub.them{background:#f0f4ff;color:var(--dark)}
+.bub.me{background:var(--b);color:var(--w)}
+.bt{font-size:10px;color:#bbb;margin-top:3px}
+.typing{display:flex;gap:4px;align-items:center;padding:9px 12px;background:#f0f4ff;border-radius:16px;width:fit-content}
+.td{width:6px;height:6px;background:#93c5fd;border-radius:50%;animation:ta 1.2s infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes ta{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.chatinrow{display:flex;gap:8px;padding:8px 12px 16px;background:var(--w);border-top:1px solid var(--brd);flex-shrink:0}
+.chatin{flex:1;border:1.5px solid var(--brd);border-radius:20px;padding:9px 14px;font-size:13px;outline:none;background:var(--light);font-family:'Inter',sans-serif}
+.chatin:focus{border-color:var(--b)}
+.bsend{width:40px;height:40px;border-radius:50%;background:var(--b);color:var(--w);border:none;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* ── PIPELINE (KANBAN) ── */
+#pipeline-scr .scrhead{padding:16px 18px 10px;background:var(--w);border-bottom:1px solid var(--brd);flex-shrink:0}
+.kanban-wrap{flex:1;display:flex;gap:0;overflow-x:auto;padding:12px 8px;background:var(--bxlight)}
+.kanban-col{min-width:140px;flex:1;display:flex;flex-direction:column;gap:8px;padding:0 6px}
+.kcol-header{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:6px 10px;border-radius:10px;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
+.kcol-header.nuevo{background:#DBEAFE;color:#1D4ED8}
+.kcol-header.entrevista{background:#FEF3C7;color:#92400E}
+.kcol-header.oferta{background:#D1FAE5;color:#065F46}
+.kcol-header.contratado{background:#EDE9FE;color:#5B21B6}
+.kcard{background:var(--w);border-radius:14px;padding:10px 12px;box-shadow:0 2px 10px rgba(0,0,0,.06);cursor:pointer;border-left:3px solid var(--b)}
+.kcard.entrevista{border-left-color:var(--amber)}
+.kcard.oferta{border-left-color:var(--green)}
+.kcard.contratado{border-left-color:var(--purple)}
+.kav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--w);font-family:'Syne',sans-serif;margin-bottom:6px;overflow:hidden}
+.kav img{width:100%;height:100%;object-fit:cover}
+.kname{font-size:12px;font-weight:700;color:var(--dark)}
+.krole{font-size:10px;color:var(--gray);margin-top:1px}
+.kmove{display:flex;gap:4px;margin-top:8px}
+.kmove-btn{flex:1;border:none;border-radius:6px;padding:4px;font-size:9px;font-weight:600;cursor:pointer;background:var(--bxlight);color:var(--b)}
+
+/* ── SCHEDULE SCREEN ── */
+#schedule-scr{background:var(--w)}
+.schhead{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--brd);flex-shrink:0}
+.schtitle{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--dark);flex:1}
+.schbody{flex:1;overflow-y:auto;padding:16px}
+.form-label{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
+.form-group{margin-bottom:14px}
+.form-input{width:100%;border:1.5px solid var(--brd);border-radius:12px;padding:10px 14px;font-size:13px;outline:none;font-family:'Inter',sans-serif;color:var(--dark);background:var(--w)}
+.form-input:focus{border-color:var(--b)}
+.form-row{display:flex;gap:10px}
+.form-row .form-group{flex:1}
+.candidate-select{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.csel-chip{padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--brd);color:var(--gray);background:var(--w)}
+.csel-chip.on{background:var(--blight);border-color:var(--b);color:var(--b)}
+.interview-type{display:flex;gap:8px}
+.itype{flex:1;padding:10px;border-radius:12px;border:1.5px solid var(--brd);text-align:center;cursor:pointer;font-size:20px}
+.itype .itype-lbl{font-size:10px;font-weight:600;color:var(--gray);margin-top:2px}
+.itype.on{border-color:var(--b);background:var(--blight)}
+.itype.on .itype-lbl{color:var(--b)}
+.schfoot{padding:12px 16px 18px;flex-shrink:0;border-top:1px solid var(--brd)}
+
+/* scheduled interviews list */
+.sch-list{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.sch-item{background:var(--bxlight);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;border-left:3px solid var(--b)}
+.sch-icon{font-size:22px}
+.sch-info{flex:1}
+.sch-name{font-size:13px;font-weight:700;color:var(--dark)}
+.sch-detail{font-size:11px;color:var(--gray);margin-top:2px}
+.sch-badge{font-size:10px;font-weight:600;background:var(--blight);color:var(--b);border-radius:6px;padding:2px 8px}
+
+/* ── MATCHES LIST ── */
+.scrhead{padding:16px 18px 10px;background:var(--w);border-bottom:1px solid var(--brd);flex-shrink:0}
+.scrtitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--dark)}
+.scrsub{font-size:12px;color:var(--gray);margin-top:2px}
+.mlist{flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
+.mitem{display:flex;align-items:center;gap:10px;background:var(--w);border-radius:14px;padding:10px 12px;box-shadow:0 2px 10px rgba(0,0,0,.05);cursor:pointer}
+.miav{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--w);font-family:'Syne',sans-serif;flex-shrink:0;overflow:hidden}
+.miav img{width:100%;height:100%;object-fit:cover}
+.miinfo{flex:1;min-width:0}
+.miname{font-size:13px;font-weight:700;color:var(--dark)}
+.mirole{font-size:11px;color:var(--gray);margin-top:1px}
+.milast{font-size:10px;color:#bbb;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.miright{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.mitime{font-size:10px;color:#bbb}
+.miunread{background:var(--b);color:#fff;font-size:10px;font-weight:700;border-radius:8px;padding:2px 6px}
+.nomatch{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gray);font-size:14px;padding:30px;text-align:center}
+
+/* ── FILTERS ── */
+.fhead{display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--w);border-bottom:1px solid var(--brd);flex-shrink:0}
+.ftitle{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--dark);flex:1}
+.fbody{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.fsec{background:var(--w);border-radius:14px;padding:12px 14px}
+.fstitle{font-size:10px;font-weight:700;color:#aaa;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--brd);color:var(--gray);background:var(--w)}
+.chip.on{background:var(--blight);border-color:var(--b);color:var(--b)}
+.rrow{display:flex;justify-content:space-between;margin-bottom:6px}
+.rlbl{font-size:12px;color:var(--dark);font-weight:500}
+.rval{font-size:12px;color:var(--b);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--b)}
+.ffoot{padding:10px 14px 18px;background:var(--w);border-top:1px solid var(--brd);flex-shrink:0}
+
+/* ── PROFILE ── */
+.phero{padding:20px 20px 14px;background:linear-gradient(135deg,var(--b),var(--b3));display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0}
+.pav{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.25);border:3px solid rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--w);font-family:'Syne',sans-serif}
+.pname{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--w)}
+.prole2{font-size:11px;color:rgba(255,255,255,.8)}
+.pbody{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.psec{background:var(--w);border-radius:14px;padding:12px 14px}
+.pstitle{font-size:10px;font-weight:700;color:#bbb;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.statrow{display:flex;justify-content:space-around}
+.stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+.statnum{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--b)}
+.statlbl{font-size:10px;color:var(--gray)}
+
+/* ── EMPTY ── */
+#empty-scr{align-items:center;justify-content:center;gap:14px;padding:30px;background:var(--bxlight)}
+.eemoji{font-size:48px}
+.etitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--dark)}
+.esub{font-size:13px;color:var(--gray);text-align:center;line-height:1.55}
+.boutline{background:transparent;color:var(--b);border:1.5px solid var(--b);border-radius:28px;padding:12px 0;font-size:13px;cursor:pointer;width:100%;font-family:'Inter',sans-serif}
+
+/* ── NOTIF PANEL ── */
+#npanel{position:absolute;inset:0;background:var(--w);z-index:200;border-radius:36px;overflow:hidden;display:none;flex-direction:column}
+#npanel.on{display:flex}
+.nhead{display:flex;align-items:center;padding:18px 18px 12px;border-bottom:1px solid var(--brd);flex-shrink:0}
+.ntitle{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--dark);flex:1}
+.nclear{font-size:11px;color:var(--b);cursor:pointer;font-weight:600}
+.nlist{flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
+.nitem{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--light);border-radius:12px;cursor:pointer;position:relative}
+.nitem.unread{background:var(--bxlight)}
+.nicon{font-size:18px;flex-shrink:0}
+.ntext{font-size:12px;color:var(--dark);line-height:1.4}
+.ntext strong{color:var(--b)}
+.ntime{font-size:10px;color:#bbb;margin-top:2px}
+.nudot{width:7px;height:7px;background:var(--b);border-radius:50%;position:absolute;top:12px;right:12px}
+.nempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gray);font-size:14px}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SWIPE -->
+<div id="swipe-scr" class="scr on">
+  <div class="topbar">
+    <div class="logo">Talent<span>Bridge</span></div>
+    <div class="modetabs">
+      <div class="mtab on" onclick="setMode('candidates')">👤 Candidatos</div>
+      <div class="mtab" onclick="setMode('companies')">🏢 Empresas</div>
+    </div>
+    <div class="ibtn" onclick="openNotifs()">🔔<div class="ndot" id="ndot"></div></div>
+  </div>
+  <div class="card-area">
+    <div class="card-bg" id="card-bg"></div>
+    <div class="card" id="card">
+      <div class="stamp sl" id="sl">LIKE 💙</div>
+      <div class="stamp sp" id="sp">PASS ✖</div>
+      <div class="company-badge" id="cbadge" style="display:none">Empresa</div>
+      <div class="cav" id="cav">
+        <img id="cav-img" src="" style="display:none" alt="">
+        <span id="cav-initials"></span>
+        <label class="cav-upload" title="Subir foto" id="upload-label">📷
+          <input type="file" accept="image/*" class="photo-in" id="photo-in" onchange="handlePhoto(event)">
+        </label>
+      </div>
+      <div style="text-align:center;width:100%">
+        <div class="cname" id="cname"></div>
+        <div class="cloc" id="cloc"></div>
+        <div class="crole" id="crole"></div>
+        <div class="skills" id="cskills"></div>
+        <div class="csal" id="csal"></div>
+        <div class="cabout" id="cabout"></div>
+      </div>
+      <div class="score-pill">
+        <div class="score-bar-bg"><div class="score-bar-fill" id="cbar" style="width:0%"></div></div>
+        <div class="score-num" id="cpct">0%</div>
+      </div>
+      <button class="dbtn" id="dbtn" onclick="toggleExtra(event)">Ver perfil completo ▾</button>
+      <div class="extra" id="extra">
+        <div class="erow"><span class="elbl">Disponibilidad</span><span class="eval" id="cavail"></span></div>
+        <div class="erow"><span class="elbl">Experiencia</span><span class="eval" id="cexp"></span></div>
+        <div class="erow"><span class="elbl">Idiomas</span><span class="eval" id="clang"></span></div>
+        <div class="erow" id="company-extra-row" style="display:none"><span class="elbl">Empleados</span><span class="eval" id="csize"></span></div>
+        <div class="erow" id="company-extra-row2" style="display:none"><span class="elbl">Industria</span><span class="eval" id="cindustry"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="bpass" onclick="swipe('left')">✖</button>
+    <button class="blike" onclick="swipe('right')">💙</button>
+  </div>
+  <div class="bnav">
+    <div class="ni on" onclick="go('swipe-scr')"><div>🃏</div><div class="ni-lbl">Explorar</div></div>
+    <div class="ni" onclick="go('matches-scr');buildList()"><div>💬</div><div class="ni-lbl">Matches</div><div class="nbadge" id="nbadge"></div></div>
+    <div class="ni" onclick="go('pipeline-scr');buildKanban()"><div>📋</div><div class="ni-lbl">Pipeline</div></div>
+    <div class="ni" onclick="go('schedule-scr');buildSchedule()"><div>📅</div><div class="ni-lbl">Agenda</div></div>
+    <div class="ni" onclick="go('profile-scr');buildProfile()"><div>👤</div><div class="ni-lbl">Perfil</div></div>
+  </div>
+</div>
+
+<!-- MUTUAL INTEREST -->
+<div id="match-scr" class="scr">
+  <div class="moji">🎉</div>
+  <div class="mtitle">Mutual Interest</div>
+  <div class="mbadge2">New Connection</div>
+  <div class="msub" id="msub"></div>
+  <div class="mavs">
+    <div class="mav" style="background:#1B4FD8" id="my-mav">TB</div>
+    <div style="font-size:26px">💙</div>
+    <div class="mav" id="mav2"></div>
+  </div>
+  <button class="bprimary" onclick="doOpenChat()">💬 Iniciar Chat</button>
+  <button class="bschedule" onclick="doScheduleFromMatch()">📅 Agendar Entrevista</button>
+  <button class="bghost" onclick="doContinue()">Seguir viendo</button>
+</div>
+
+<!-- CHAT -->
+<div id="chat-scr" class="scr">
+  <div class="chatheader">
+    <button class="backbtn" onclick="go(chatPrev)">←</button>
+    <div class="chav" id="chav"><img id="chav-img" src="" style="display:none" alt=""><span id="chav-init"></span></div>
+    <div><div class="chname" id="chname"></div><div class="chrole" id="chrole"></div></div>
+    <div class="online"><div class="odot"></div>Online</div>
+  </div>
+  <div class="chatbody" id="chatbody"></div>
+  <div class="chatinrow">
+    <input class="chatin" id="chatin" placeholder="Escribí un mensaje..." onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="bsend" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+<!-- PIPELINE KANBAN -->
+<div id="pipeline-scr" class="scr">
+  <div class="scrhead">
+    <div class="scrtitle">Pipeline</div>
+    <div class="scrsub" id="pipeline-sub">Gestión de candidatos</div>
+  </div>
+  <div class="kanban-wrap" id="kanban-wrap">
+    <div class="kanban-col">
+      <div class="kcol-header nuevo"><span>Nuevo</span><span id="k-count-0">0</span></div>
+      <div id="k-col-0"></div>
+    </div>
+    <div class="kanban-col">
+      <div class="kcol-header entrevista"><span>Entrevista</span><span id="k-count-1">0</span></div>
+      <div id="k-col-1"></div>
+    </div>
+    <div class="kanban-col">
+      <div class="kcol-header oferta"><span>Oferta</span><span id="k-count-2">0</span></div>
+      <div id="k-col-2"></div>
+    </div>
+    <div class="kanban-col">
+      <div class="kcol-header contratado"><span>Contratado</span><span id="k-count-3">0</span></div>
+      <div id="k-col-3"></div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="go('swipe-scr')"><div>🃏</div></div>
+    <div class="ni" onclick="go('matches-scr');buildList()"><div>💬</div></div>
+    <div class="ni on"><div>📋</div></div>
+    <div class="ni" onclick="go('schedule-scr');buildSchedule()"><div>📅</div></div>
+    <div class="ni" onclick="go('profile-scr');buildProfile()"><div>👤</div></div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="schedule-scr" class="scr">
+  <div class="schhead">
+    <button class="backbtn" onclick="go(schedulePrev)">←</button>
+    <div class="schtitle">📅 Agendar Entrevista</div>
+  </div>
+  <div class="schbody">
+    <div class="form-group">
+      <label class="form-label">Candidato</label>
+      <div class="candidate-select" id="cand-select"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tipo de entrevista</label>
+      <div class="interview-type">
+        <div class="itype on" onclick="selectType(this)" data-type="Video">💻<div class="itype-lbl">Video</div></div>
+        <div class="itype" onclick="selectType(this)" data-type="Presencial">🏢<div class="itype-lbl">Presencial</div></div>
+        <div class="itype" onclick="selectType(this)" data-type="Teléfono">📞<div class="itype-lbl">Teléfono</div></div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Fecha</label>
+        <input type="date" class="form-input" id="sch-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hora</label>
+        <input type="time" class="form-input" id="sch-time" value="10:00">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Duración</label>
+      <select class="form-input" id="sch-duration">
+        <option>30 minutos</option>
+        <option selected>45 minutos</option>
+        <option>60 minutos</option>
+        <option>90 minutos</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notas (opcional)</label>
+      <input type="text" class="form-input" id="sch-notes" placeholder="Ej: Traer portfolio...">
+    </div>
+    <div class="sch-list" id="sch-list"></div>
+  </div>
+  <div class="schfoot">
+    <button class="bprimary" style="max-width:100%" onclick="saveInterview()">✓ Confirmar entrevista</button>
+  </div>
+</div>
+
+<!-- MATCHES LIST -->
+<div id="matches-scr" class="scr">
+  <div class="scrhead">
+    <div class="scrtitle">Mis Matches</div>
+    <div class="scrsub" id="msub2">0 conexiones activas</div>
+  </div>
+  <div class="mlist" id="mlist"></div>
+  <div class="bnav">
+    <div class="ni" onclick="go('swipe-scr')"><div>🃏</div></div>
+    <div class="ni on"><div>💬</div></div>
+    <div class="ni" onclick="go('pipeline-scr');buildKanban()"><div>📋</div></div>
+    <div class="ni" onclick="go('schedule-scr');buildSchedule()"><div>📅</div></div>
+    <div class="ni" onclick="go('profile-scr');buildProfile()"><div>👤</div></div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div id="filter-scr" class="scr">
+  <div class="fhead">
+    <button class="backbtn" onclick="go('swipe-scr')">←</button>
+    <div class="ftitle">Filtros</div>
+  </div>
+  <div class="fbody" id="filter-body"></div>
+  <div class="ffoot"><button class="bprimary" style="max-width:100%" onclick="applyFilters()">Aplicar filtros ✓</button></div>
+</div>
+
+<!-- PROFILE -->
+<div id="profile-scr" class="scr">
+  <div class="phero">
+    <div class="pav">TB</div>
+    <div class="pname">TalentBridge</div>
+    <div class="prole2">Head of Talent · IT Recruiting</div>
+  </div>
+  <div class="pbody">
+    <div class="psec"><div class="pstitle">Actividad</div>
+      <div class="statrow">
+        <div class="stat"><div class="statnum" id="sseen">0</div><div class="statlbl">Vistos</div></div>
+        <div class="stat"><div class="statnum" id="slikes">0</div><div class="statlbl">Likes</div></div>
+        <div class="stat"><div class="statnum" id="smatches">0</div><div class="statlbl">Matches</div></div>
+        <div class="stat"><div class="statnum" id="sinterviews">0</div><div class="statlbl">Entrevistas</div></div>
+      </div>
+    </div>
+    <div class="psec"><div class="pstitle">Pipeline</div>
+      <div class="statrow">
+        <div class="stat"><div class="statnum" id="pk0">0</div><div class="statlbl">Nuevo</div></div>
+        <div class="stat"><div class="statnum" id="pk1">0</div><div class="statlbl">Entrevista</div></div>
+        <div class="stat"><div class="statnum" id="pk2">0</div><div class="statlbl">Oferta</div></div>
+        <div class="stat"><div class="statnum" id="pk3">0</div><div class="statlbl">Contratado</div></div>
+      </div>
+    </div>
+    <div class="psec"><div class="pstitle">Filtros activos</div>
+      <div id="pfilters" style="font-size:12px;color:var(--gray);line-height:1.7">Remoto · Semi-Sr, Sr · Hasta $6.000/mes</div>
+    </div>
+    <button class="bprimary" style="max-width:100%;background:linear-gradient(135deg,#0F172A,#1B4FD8)" onclick="go('swipe-scr')">← Explorar</button>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="go('swipe-scr')"><div>🃏</div></div>
+    <div class="ni" onclick="go('matches-scr');buildList()"><div>💬</div></div>
+    <div class="ni" onclick="go('pipeline-scr');buildKanban()"><div>📋</div></div>
+    <div class="ni" onclick="go('schedule-scr');buildSchedule()"><div>📅</div></div>
+    <div class="ni on"><div>👤</div></div>
+  </div>
+</div>
+
+<!-- EMPTY -->
+<div id="empty-scr" class="scr">
+  <div class="eemoji">✨</div>
+  <div class="etitle">Viste todos los perfiles</div>
+  <div class="esub">Pronto habrá más. Mientras tanto, revisá tus matches.</div>
+  <button class="bprimary" style="max-width:100%;margin-top:8px" onclick="restart()">Volver a empezar</button>
+  <button class="boutline" style="max-width:100%;margin-top:8px" onclick="go('matches-scr');buildList()">Ver Matches 💙</button>
+</div>
+
+<!-- NOTIF PANEL -->
+<div id="npanel">
+  <div class="nhead">
+    <button class="backbtn" onclick="closeNotifs()">←</button>
+    <div class="ntitle">Notificaciones</div>
+    <div class="nclear" onclick="clearNotifs()">Limpiar todo</div>
+  </div>
+  <div class="nlist" id="nlist"></div>
+</div>
+
+</div><!-- #app -->
+<script>
+var CANDIDATES=[
+  {type:'candidate',name:"Matías G.",    loc:"Buenos Aires, AR",role:"Full Stack Dev",   skills:["React","Node.js","PostgreSQL"],sal:"$4.500/mes · 🌐 Remoto",about:"5 años en startups. Apasionado por productos con impacto real.",              av:"MG",color:"#1B4FD8",avail:"Inmediata", exp:"5 años",langs:"Español, Inglés B2",score:92,photo:null},
+  {type:'candidate',name:"Valentina R.",loc:"Córdoba, AR",      role:"Data Engineer",   skills:["Python","Spark","dbt"],       sal:"$5.000/mes · 🌐 Remoto",about:"Ex-Mercado Libre. Especialista en pipelines de datos a escala.",             av:"VR",color:"#7C3AED",avail:"2 semanas",exp:"7 años",langs:"Español, Inglés C1",score:87,photo:null},
+  {type:'candidate',name:"Lucas P.",    loc:"Rosario, AR",      role:"DevOps Engineer", skills:["AWS","Kubernetes","Terraform"],sal:"$5.500/mes · 🌐 Remoto",about:"Certificado AWS. Construcción de infraestructura cloud desde cero.",        av:"LP",color:"#059669",avail:"Inmediata", exp:"6 años",langs:"Español, Inglés B2",score:78,photo:null},
+  {type:'candidate',name:"Camila S.",   loc:"Mendoza, AR",      role:"Product Designer",skills:["Figma","UX Research","Proto"],sal:"$3.800/mes · 🌐 Remoto",about:"Diseño centrado en el usuario. Portfolio con productos lanzados en LATAM.", av:"CS",color:"#DC2626",avail:"1 mes",    exp:"4 años",langs:"Español, Inglés B1",score:84,photo:null},
+  {type:'candidate',name:"Andrés M.",   loc:"CABA, AR",         role:"Mobile Developer",skills:["Flutter","Swift","Firebase"],  sal:"$4.200/mes · 🌐 Remoto",about:"Apps con +100k descargas. Enfocado en rendimiento y UX móvil.",           av:"AM",color:"#D97706",avail:"2 semanas",exp:"5 años",langs:"Español, Inglés C1",score:95,photo:null},
+];
+var COMPANIES=[
+  {type:'company',name:"Mercado Libre",loc:"CABA / Remoto",    role:"Busca: Full Stack Sr",skills:["React","Java","AWS"],      sal:"$6.000–$9.000/mes",about:"Líder en e-commerce LATAM. Cultura de alto desempeño e innovación constante.", av:"ML",color:"#F59E0B",avail:"Inmediata", exp:"5+ años",langs:"Español + Inglés B2",score:90,size:"5.000+",industry:"E-commerce",photo:null},
+  {type:'company',name:"Globant",      loc:"Buenos Aires, AR", role:"Busca: Data Engineer",skills:["Python","Spark","GCP"],    sal:"$5.500–$8.000/mes",about:"Empresa global de IT con proyectos en USA, Europa y LATAM.",                    av:"GL",color:"#10B981",avail:"2 semanas",exp:"4+ años",langs:"Inglés C1",          score:82,size:"25.000+",industry:"Consulting IT",photo:null},
+  {type:'company',name:"Despegar",     loc:"CABA, AR",          role:"Busca: DevOps Lead",  skills:["Kubernetes","Azure","CI/CD"],sal:"$7.000–$10.000/mes",about:"Plataforma de viajes líder en LATAM. Cultura ágil y remoto-first.",          av:"DS",color:"#2563EB",avail:"Inmediata", exp:"6+ años",langs:"Español + Inglés B1",score:75,size:"2.000+",industry:"Travel Tech",photo:null},
+  {type:'company',name:"Auth0/Okta",   loc:"100% Remoto",       role:"Busca: Security Eng.",skills:["OAuth","Node","Go"],       sal:"$9.000–$14.000/mes",about:"Líder global en identity & access management. Equipo 100% remoto.",            av:"AO",color:"#EC4899",avail:"1 mes",    exp:"5+ años",langs:"Inglés C1",          score:88,size:"1.000+",industry:"Ciberseguridad",photo:null},
+];
+
+var mode='candidates';
+var dataSet=CANDIDATES;
+var idx=0,matches=[],chats={},curMatch=null,curChat=null,chatPrev='swipe-scr',schedulePrev='swipe-scr';
+var stats={seen:0,likes:0,mc:0,interviews:0};
+var pipeline={};// name -> stage index 0-3
+var interviews=[];
+var selectedInterview=null;
+var notifs=[
+  {icon:"💙",text:"<strong>Andrés M.</strong> tiene 95% de match",time:"hace 2 min",unread:true},
+  {icon:"🎉",text:"Nueva empresa: <strong>Auth0/Okta</strong> — 88% match",time:"hace 20 min",unread:true},
+  {icon:"🔔",text:"Tus filtros encontraron <strong>5 perfiles</strong> nuevos",time:"hace 1h",unread:false},
+];
+var tx=0,dragging=false,dx=0,mdown=false,mx2=0;
+
+function G(id){return document.getElementById(id);}
+function go(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on');});G(id).classList.add('on');}
+
+function setMode(m){
+  mode=m;
+  document.querySelectorAll('.mtab').forEach(function(t,i){t.classList.toggle('on',i===(m==='candidates'?0:1));});
+  dataSet=m==='candidates'?CANDIDATES:COMPANIES;
+  idx=0; render();
+  go('swipe-scr');
+}
+
+function render(){
+  if(idx>=dataSet.length){go('empty-scr');return;}
+  var c=dataSet[idx]; stats.seen++;
+  // avatar
+  var img=G('cav-img'),init=G('cav-initials'),av=G('cav');
+  av.style.background=c.color;
+  if(c.photo){img.src=c.photo;img.style.display='block';init.style.display='none';}
+  else{img.style.display='none';init.style.display='block';init.textContent=c.av;}
+  G('cname').textContent=c.name;
+  G('cloc').textContent='📍 '+c.loc;
+  G('crole').textContent=c.role;
+  G('cabout').textContent=c.about;
+  G('csal').textContent=c.sal;
+  G('cskills').innerHTML=c.skills.map(function(s){return'<span class="sk">'+s+'</span>';}).join('');
+  G('cbar').style.width=c.score+'%'; G('cpct').textContent=c.score+'%';
+  G('cavail').textContent=c.avail; G('cexp').textContent=c.exp; G('clang').textContent=c.langs;
+  // company extras
+  var isComp=c.type==='company';
+  G('cbadge').style.display=isComp?'block':'none';
+  G('company-extra-row').style.display=isComp?'flex':'none';
+  G('company-extra-row2').style.display=isComp?'flex':'none';
+  if(isComp){G('csize').textContent=c.size;G('cindustry').textContent=c.industry;}
+  var card=G('card'); card.removeAttribute('style');
+  G('extra').classList.remove('on');
+  G('dbtn').textContent='Ver perfil completo ▾';
+  G('sl').style.opacity='0'; G('sp').style.opacity='0';
+  G('card-bg').style.display=idx+1<dataSet.length?'block':'none';
+}
+
+function handlePhoto(e){
+  var file=e.target.files[0]; if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    var c=dataSet[idx]; c.photo=ev.target.result;
+    var img=G('cav-img'),init=G('cav-initials');
+    img.src=ev.target.result;img.style.display='block';init.style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function toggleExtra(e){
+  e.stopPropagation();
+  G('extra').classList.toggle('on');
+  G('dbtn').textContent=G('extra').classList.contains('on')?'Ocultar ▴':'Ver perfil completo ▾';
+}
+
+function swipe(dir){
+  var card=G('card');
+  card.style.transition='transform .4s,opacity .4s';
+  card.style.transform='translateX('+(dir==='right'?'500px':'-500px')+') rotate('+(dir==='right'?'18deg':'-18deg')+')';
+  card.style.opacity='0';
+  setTimeout(function(){
+    if(dir==='right'){stats.likes++;curMatch=dataSet[idx];showMI();}
+    else{idx++;render();}
+  },400);
+}
+
+var card=G('card');
+card.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;dragging=true;dx=0;card.style.transition='none';},{passive:true});
+card.addEventListener('touchmove',function(e){
+  if(!dragging)return;dx=e.touches[0].clientX-tx;
+  card.style.transform='translateX('+dx+'px) rotate('+(dx*.04)+'deg)';
+  G('sl').style.opacity=Math.min(Math.max(dx/90,0),1);G('sp').style.opacity=Math.min(Math.max(-dx/90,0),1);
+},{passive:true});
+card.addEventListener('touchend',function(){
+  dragging=false;if(Math.abs(dx)>80){swipe(dx>0?'right':'left');}
+  else{card.style.transition='transform .3s';card.style.transform='';G('sl').style.opacity='0';G('sp').style.opacity='0';}
+});
+card.addEventListener('mousedown',function(e){
+  if(e.target.closest('.cav-upload')||e.target.closest('input'))return;
+  mdown=true;mx2=e.clientX;card.style.transition='none';
+});
+document.addEventListener('mousemove',function(e){
+  if(!mdown)return;dx=e.clientX-mx2;
+  card.style.transform='translateX('+dx+'px) rotate('+(dx*.04)+'deg)';
+  G('sl').style.opacity=Math.min(Math.max(dx/90,0),1);G('sp').style.opacity=Math.min(Math.max(-dx/90,0),1);
+});
+document.addEventListener('mouseup',function(){
+  if(!mdown)return;mdown=false;
+  if(Math.abs(dx)>80){swipe(dx>0?'right':'left');}
+  else{card.style.transition='transform .3s';card.style.transform='';G('sl').style.opacity='0';G('sp').style.opacity='0';}
+});
+
+function showMI(){
+  var c=curMatch;
+  G('msub').innerHTML='Vos y <strong>'+c.name+'</strong> tienen Mutual Interest';
+  var mav=G('mav2'); mav.style.background=c.color;
+  if(c.photo){mav.innerHTML='<img src="'+c.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';}
+  else{mav.textContent=c.av;}
+  go('match-scr');
+}
+function doContinue(){
+  addMatch(curMatch,false);idx++;chatPrev='swipe-scr';go('swipe-scr');render();
+  addNotif('🎉','Mutual Interest con <strong>'+curMatch.name+'</strong>','ahora');
+}
+function doOpenChat(){
+  addMatch(curMatch,true);idx++;chatPrev='swipe-scr';openChat(curMatch);
+  addNotif('💬','<strong>'+curMatch.name+'</strong> te envió un mensaje','ahora');
+}
+function doScheduleFromMatch(){
+  addMatch(curMatch,false);idx++;schedulePrev='match-scr';
+  selectedInterview=curMatch.name;
+  go('schedule-scr');buildSchedule();
+}
+function addMatch(c,msg){
+  if(!matches.find(function(m){return m.name===c.name;})){
+    var o={}; for(var k in c)o[k]=c[k];
+    o.lastMsg=msg?'¡Hola! Me interesa tu perfil. ¿Cuándo podemos hablar?':'';
+    o.unread=msg;o.time='ahora';
+    matches.push(o);stats.mc++;
+    if(!pipeline[c.name])pipeline[c.name]=0;
+    updateBadge();
+  }
+}
+
+// CHAT
+function openChat(person){
+  curChat=person;
+  if(!chats[person.name]){chats[person.name]=[{from:'them',text:'¡Hola! Me interesa tu perfil. ¿Cuándo podemos hablar?',time:now()}];}
+  var m=matches.find(function(x){return x.name===person.name;});
+  if(m){m.unread=false;updateBadge();}
+  var chav=G('chav'),chimg=G('chav-img'),chinit=G('chav-init');
+  chav.style.background=person.color;
+  if(person.photo){chimg.src=person.photo;chimg.style.display='block';chinit.style.display='none';}
+  else{chimg.style.display='none';chinit.style.display='block';chinit.textContent=person.av;}
+  G('chname').textContent=person.name; G('chrole').textContent=person.role+' · Mutual Interest';
+  renderChat(); go('chat-scr');
+}
+function renderChat(){
+  if(!curChat)return;
+  var h=chats[curChat.name]||[];
+  var body=G('chatbody');
+  body.innerHTML=h.map(function(m){return'<div class="bw '+m.from+'"><div class="bub '+m.from+'">'+m.text+'</div><div class="bt">'+(m.time||'')+'</div></div>';}).join('');
+  body.scrollTop=body.scrollHeight;
+}
+function sendMsg(){
+  var inp=G('chatin');if(!inp.value.trim()||!curChat)return;
+  chats[curChat.name].push({from:'me',text:inp.value,time:now()});
+  inp.value='';renderChat();
+  var body=G('chatbody');
+  var t=document.createElement('div');t.className='bw them';
+  t.innerHTML='<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  body.appendChild(t);body.scrollTop=body.scrollHeight;
+  setTimeout(function(){
+    t.remove();
+    var rs=['¡Perfecto! Te mando info 🙌','Genial, ¿el jueves a las 15hs?','Excelente. Coordinamos por acá 👍','¿Podés contarme más sobre el rol?','¿Cuáles son los próximos pasos?'];
+    var r=rs[Math.floor(Math.random()*rs.length)];
+    chats[curChat.name].push({from:'them',text:r,time:now()});
+    renderChat();
+    var mx3=matches.find(function(x){return x.name===curChat.name;});
+    if(mx3){mx3.lastMsg=r;mx3.time='ahora';}
+  },900);
+}
+
+// PIPELINE KANBAN
+var STAGES=['nuevo','entrevista','oferta','contratado'];
+function buildKanban(){
+  var cols=[[],[],[],[]];
+  matches.forEach(function(m){var s=pipeline[m.name]||0;cols[s].push(m);});
+  for(var i=0;i<4;i++){
+    G('k-count-'+i).textContent=cols[i].length;
+    G('k-col-'+i).innerHTML=cols[i].map(function(m){
+      var stageClass=STAGES[pipeline[m.name]||0];
+      var avhtml=m.photo?'<img src="'+m.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">':m.av;
+      var prevBtn=pipeline[m.name]>0?'<button class="kmove-btn" onclick="movePipeline(\''+m.name+'\',-1)">◀ Atrás</button>':'';
+      var nextBtn=pipeline[m.name]<3?'<button class="kmove-btn" onclick="movePipeline(\''+m.name+'\',1)">Adelante ▶</button>':'';
+      return'<div class="kcard '+stageClass+'">'
+        +'<div class="kav" style="background:'+m.color+'">'+avhtml+'</div>'
+        +'<div class="kname">'+m.name+'</div>'
+        +'<div class="krole">'+m.role+'</div>'
+        +'<div class="kmove">'+prevBtn+nextBtn+'</div>'
+        +'</div>';
+    }).join('');
+  }
+  G('pipeline-sub').textContent=matches.length+' candidatos en pipeline';
+}
+function movePipeline(name,dir){
+  if(pipeline[name]===undefined)pipeline[name]=0;
+  pipeline[name]=Math.max(0,Math.min(3,pipeline[name]+dir));
+  buildKanban();
+  addNotif('📋','<strong>'+name+'</strong> movido a '+['Nuevo','Entrevista','Oferta','Contratado'][pipeline[name]],'ahora');
+}
+
+// SCHEDULE
+function buildSchedule(){
+  // populate candidate chips
+  var sel=G('cand-select');
+  if(!matches.length){sel.innerHTML='<span style="font-size:12px;color:var(--gray)">Aún no tenés matches. Hacé swipe primero.</span>';return;}
+  sel.innerHTML=matches.map(function(m){
+    var isSelected=selectedInterview===m.name;
+    return'<div class="csel-chip'+(isSelected?' on':'')+'" onclick="selCand(this,\''+m.name+'\')">'+m.av+' '+m.name+'</div>';
+  }).join('');
+  // list existing
+  var list=G('sch-list');
+  if(!interviews.length){list.innerHTML='';return;}
+  list.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Entrevistas agendadas</div>'
+    +interviews.map(function(iv){
+      var icon=iv.type==='Video'?'💻':iv.type==='Presencial'?'🏢':'📞';
+      return'<div class="sch-item">'
+        +'<div class="sch-icon">'+icon+'</div>'
+        +'<div class="sch-info"><div class="sch-name">'+iv.name+'</div>'
+        +'<div class="sch-detail">'+iv.date+' · '+iv.time+' · '+iv.duration+'</div>'
+        +(iv.notes?'<div class="sch-detail" style="color:var(--b)">📝 '+iv.notes+'</div>':'')
+        +'</div><div class="sch-badge">'+iv.type+'</div></div>';
+    }).join('');
+}
+function selCand(el,name){
+  document.querySelectorAll('.csel-chip').forEach(function(c){c.classList.remove('on');});
+  el.classList.add('on'); selectedInterview=name;
+}
+function selectType(el){
+  document.querySelectorAll('.itype').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on');
+}
+function saveInterview(){
+  if(!selectedInterview){alert('Seleccioná un candidato primero.');return;}
+  var date=G('sch-date').value,time=G('sch-time').value;
+  if(!date||!time){alert('Completá fecha y hora.');return;}
+  var type=document.querySelector('.itype.on').dataset.type;
+  var duration=G('sch-duration').value;
+  var notes=G('sch-notes').value;
+  interviews.push({name:selectedInterview,date:date,time:time,type:type,duration:duration,notes:notes});
+  stats.interviews++;
+  // move to entrevista in pipeline
+  if(pipeline[selectedInterview]===0)pipeline[selectedInterview]=1;
+  addNotif('📅','Entrevista agendada con <strong>'+selectedInterview+'</strong> — '+date+' '+time,'ahora');
+  G('sch-date').value='';G('sch-notes').value='';selectedInterview=null;
+  buildSchedule();
+}
+
+// MATCHES LIST
+function buildList(){
+  G('msub2').textContent=matches.length+' conexiones activas';
+  var list=G('mlist');
+  if(!matches.length){
+    list.innerHTML='<div class="nomatch"><div style="font-size:40px">💙</div><div>Aún no tenés matches</div><div style="font-size:11px;margin-top:4px">Explorá candidatos y empresas</div></div>';
+    return;
+  }
+  list.innerHTML=matches.map(function(m,i){
+    var avhtml=m.photo
+      ?'<img src="'+m.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
+      :m.av;
+    return'<div class="mitem" onclick="chatPrev=\'matches-scr\';openChat(matches['+i+'])">'
+      +'<div class="miav" style="background:'+m.color+'">'+avhtml+'</div>'
+      +'<div class="miinfo"><div class="miname">'+m.name+'</div>'
+      +'<div class="mirole">'+m.role+(m.type==='company'?' · Empresa':'')+'</div>'
+      +'<div class="milast">'+(m.lastMsg||'Mutual Interest · Iniciá la conversación')+'</div></div>'
+      +'<div class="miright"><div class="mitime">'+(m.time||'')+'</div>'+(m.unread?'<div class="miunread">Nuevo</div>':'')+'</div>'
+      +'</div>';
+  }).join('');
+}
+function updateBadge(){
+  var n=matches.filter(function(m){return m.unread;}).length;
+  G('nbadge').textContent=n;G('nbadge').classList.toggle('on',n>0);
+}
+
+// FILTERS (dynamic by mode)
+var CAND_FILTERS=[
+  {title:'Modalidad',chips:['Remoto','Híbrido','Presencial'],on:[0]},
+  {title:'Seniority',chips:['Jr','Semi-Sr','Sr','Lead'],on:[1,2]},
+  {title:'Stack',chips:['Frontend','Backend','Full Stack','Data','DevOps','Mobile','Design'],on:[0,1]},
+  {title:'Disponibilidad',chips:['Inmediata','2 semanas','1 mes'],on:[0,1]},
+];
+var COMP_FILTERS=[
+  {title:'Modalidad',chips:['Remoto','Híbrido','Presencial'],on:[0]},
+  {title:'Industria',chips:['E-commerce','Fintech','Healthtech','Consulting IT','SaaS','Travel Tech','Ciberseguridad'],on:[]},
+  {title:'Tamaño empresa',chips:['Startup <50','Scale-up 50–500','Corporación 500+'],on:[]},
+  {title:'Rango salarial',chips:['$2k–$5k','$5k–$9k','$9k–$15k'],on:[0,1]},
+];
+function openFilters(){
+  var fs=mode==='candidates'?CAND_FILTERS:COMP_FILTERS;
+  var html=fs.map(function(f){
+    return'<div class="fsec"><div class="fstitle">'+f.title+'</div><div class="chips">'
+      +f.chips.map(function(c,i){return'<div class="chip'+(f.on.indexOf(i)>=0?' on':'')+'" onclick="this.classList.toggle(\'on\')">'+c+'</div>';}).join('')
+      +'</div></div>';
+  }).join('');
+  G('filter-body').innerHTML=html;
+  go('filter-scr');
+}
+function applyFilters(){
+  var chips=[].slice.call(document.querySelectorAll('#filter-body .chip.on')).map(function(c){return c.textContent;});
+  G('pfilters').innerHTML=chips.join(' · ')||'Sin filtros activos';
+  addNotif('🔍','Filtros actualizados.','ahora');go('swipe-scr');
+}
+
+// PROFILE
+function buildProfile(){
+  G('sseen').textContent=stats.seen; G('slikes').textContent=stats.likes;
+  G('smatches').textContent=stats.mc; G('sinterviews').textContent=stats.interviews;
+  var cols=[0,0,0,0];
+  for(var k in pipeline){var s=pipeline[k];if(s>=0&&s<=3)cols[s]++;}
+  for(var i=0;i<4;i++)G('pk'+i).textContent=cols[i];
+}
+
+// NOTIFS
+function openNotifs(){renderNotifs();G('npanel').classList.add('on');}
+function closeNotifs(){G('npanel').classList.remove('on');}
+function renderNotifs(){
+  var list=G('nlist');
+  if(!notifs.length){list.innerHTML='<div class="nempty"><div style="font-size:36px">🔔</div><div>Sin notificaciones</div></div>';updateNdot();return;}
+  list.innerHTML=notifs.map(function(n,i){
+    return'<div class="nitem '+(n.unread?'unread':'')+'" onclick="markRead('+i+')">'
+      +'<div class="nicon">'+n.icon+'</div>'
+      +'<div style="flex:1"><div class="ntext">'+n.text+'</div><div class="ntime">'+n.time+'</div></div>'
+      +(n.unread?'<div class="nudot"></div>':'')+'</div>';
+  }).join('');
+  updateNdot();
+}
+function markRead(i){notifs[i].unread=false;renderNotifs();}
+function clearNotifs(){notifs=[];renderNotifs();}
+function addNotif(icon,text,time){notifs.unshift({icon:icon,text:text,time:time,unread:true});updateNdot();}
+function updateNdot(){G('ndot').classList.toggle('on',notifs.some(function(n){return n.unread;}));}
+
+function now(){var d=new Date();return(d.getHours()<10?'0':'')+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();}
+function restart(){idx=0;matches=[];chats={};curMatch=null;pipeline={};interviews=[];stats={seen:0,likes:0,mc:0,interviews:0};updateBadge();go('swipe-scr');render();}
+
+// INIT
+updateNdot();
+render();
+</script>
+</body>
+</html>

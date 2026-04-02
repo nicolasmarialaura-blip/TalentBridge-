@@ -468,19 +468,19 @@ input[type=range]{width:100%;accent-color:var(--b)}
   </div>
   <div class="kanban-wrap" id="kanban-wrap">
     <div class="kanban-col">
-      <div class="kcol-header nuevo"><span>Nuevo</span><span id="k-count-0">0</span></div>
+      <div class="kcol-header nuevo"><span id="k-stage-0">Nuevo</span><span id="k-count-0">0</span></div>
       <div id="k-col-0"></div>
     </div>
     <div class="kanban-col">
-      <div class="kcol-header entrevista"><span>Entrevista</span><span id="k-count-1">0</span></div>
+      <div class="kcol-header entrevista"><span id="k-stage-1">Entrevista</span><span id="k-count-1">0</span></div>
       <div id="k-col-1"></div>
     </div>
     <div class="kanban-col">
-      <div class="kcol-header oferta"><span>Oferta</span><span id="k-count-2">0</span></div>
+      <div class="kcol-header oferta"><span id="k-stage-2">Oferta</span><span id="k-count-2">0</span></div>
       <div id="k-col-2"></div>
     </div>
     <div class="kanban-col">
-      <div class="kcol-header contratado"><span>Contratado</span><span id="k-count-3">0</span></div>
+      <div class="kcol-header contratado"><span id="k-stage-3">Contratado</span><span id="k-count-3">0</span></div>
       <div id="k-col-3"></div>
     </div>
   </div>
@@ -501,11 +501,11 @@ input[type=range]{width:100%;accent-color:var(--b)}
   </div>
   <div class="schbody">
     <div class="form-group">
-      <label class="form-label">Candidato</label>
+      <label class="form-label" id="lbl-candidate">Candidato</label>
       <div class="candidate-select" id="cand-select"></div>
     </div>
     <div class="form-group">
-      <label class="form-label">Tipo de entrevista</label>
+      <label class="form-label" id="lbl-inttype">Tipo de entrevista</label>
       <div class="interview-type">
         <div class="itype on" onclick="selectType(this)" data-type="Video">💻<div class="itype-lbl">Video</div></div>
         <div class="itype" onclick="selectType(this)" data-type="Presencial">🏢<div class="itype-lbl">Presencial</div></div>
@@ -514,16 +514,16 @@ input[type=range]{width:100%;accent-color:var(--b)}
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Fecha</label>
+        <label class="form-label" id="lbl-date">Fecha</label>
         <input type="date" class="form-input" id="sch-date">
       </div>
       <div class="form-group">
-        <label class="form-label">Hora</label>
+        <label class="form-label" id="lbl-time">Hora</label>
         <input type="time" class="form-input" id="sch-time" value="10:00">
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">Duración</label>
+      <label class="form-label" id="lbl-dur">Duración</label>
       <select class="form-input" id="sch-duration">
         <option>30 minutos</option>
         <option selected>45 minutos</option>
@@ -532,7 +532,7 @@ input[type=range]{width:100%;accent-color:var(--b)}
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label">Notas (opcional)</label>
+      <label class="form-label" id="lbl-notes">Notas (opcional)</label>
       <input type="text" class="form-input" id="sch-notes" placeholder="Ej: Traer portfolio...">
     </div>
     <div class="sch-list" id="sch-list"></div>
@@ -576,39 +576,39 @@ input[type=range]{width:100%;accent-color:var(--b)}
     <div class="prole2">Talent · Technology · Connection</div>
   </div>
   <div class="pbody">
-    <div class="psec"><div class="pstitle">Actividad</div>
+    <div class="psec"><div class="pstitle" id="lbl-activity">Actividad</div>
       <div class="statrow">
-        <div class="stat"><div class="statnum" id="sseen">0</div><div class="statlbl">Vistos</div></div>
-        <div class="stat"><div class="statnum" id="slikes">0</div><div class="statlbl">Likes</div></div>
-        <div class="stat"><div class="statnum" id="smatches">0</div><div class="statlbl">Matches</div></div>
-        <div class="stat"><div class="statnum" id="sinterviews">0</div><div class="statlbl">Entrevistas</div></div>
+        <div class="stat"><div class="statnum" id="sseen">0</div><div class="statlbl" id="lbl-seen">Vistos</div></div>
+        <div class="stat"><div class="statnum" id="slikes">0</div><div class="statlbl" id="lbl-likes">Likes</div></div>
+        <div class="stat"><div class="statnum" id="smatches">0</div><div class="statlbl" id="lbl-matches">Matches</div></div>
+        <div class="stat"><div class="statnum" id="sinterviews">0</div><div class="statlbl" id="lbl-interviews">Entrevistas</div></div>
       </div>
     </div>
-    <div class="psec"><div class="pstitle">Pipeline</div>
+    <div class="psec"><div class="pstitle" id="lbl-pipeline">Pipeline</div>
       <div class="statrow">
-        <div class="stat"><div class="statnum" id="pk0">0</div><div class="statlbl">Nuevo</div></div>
-        <div class="stat"><div class="statnum" id="pk1">0</div><div class="statlbl">Entrevista</div></div>
-        <div class="stat"><div class="statnum" id="pk2">0</div><div class="statlbl">Oferta</div></div>
-        <div class="stat"><div class="statnum" id="pk3">0</div><div class="statlbl">Contratado</div></div>
+        <div class="stat"><div class="statnum" id="pk0">0</div><div class="statlbl" id="lbl-p0">Nuevo</div></div>
+        <div class="stat"><div class="statnum" id="pk1">0</div><div class="statlbl" id="lbl-p1">Entrevista</div></div>
+        <div class="stat"><div class="statnum" id="pk2">0</div><div class="statlbl" id="lbl-p2">Oferta</div></div>
+        <div class="stat"><div class="statnum" id="pk3">0</div><div class="statlbl" id="lbl-p3">Contratado</div></div>
       </div>
     </div>
-    <div class="psec"><div class="pstitle">Filtros activos</div>
+    <div class="psec"><div class="pstitle" id="lbl-activefilters">Filtros activos</div>
       <div id="pfilters" style="font-size:12px;color:var(--gray);line-height:1.7">Remoto · Semi-Sr, Sr · Hasta $6.000/mes</div>
     </div>
     <div class="jd-section">
-      <div class="pstitle">🎯 Ranking por JD</div>
+      <div class="pstitle" id="lbl-ranking">🎯 Ranking por JD</div>
       <textarea class="jd-textarea" id="jd-text" placeholder="Pegá el Job Description acá para generar el ranking automático..." oninput="calcRanking()"></textarea>
       <div class="jd-presets">
-        <div class="jd-preset" onclick="loadPreset(this,'full-stack')">Full Stack</div>
-        <div class="jd-preset" onclick="loadPreset(this,'data')">Data Engineer</div>
-        <div class="jd-preset" onclick="loadPreset(this,'devops')">DevOps</div>
-        <div class="jd-preset" onclick="loadPreset(this,'mobile')">Mobile Dev</div>
-        <div class="jd-preset" onclick="loadPreset(this,'design')">Designer</div>
+        <div class="jd-preset" id="pre-fs" onclick="loadPreset(this,'full-stack')">Full Stack</div>
+        <div class="jd-preset" id="pre-de" onclick="loadPreset(this,'data')">Data Engineer</div>
+        <div class="jd-preset" id="pre-do" onclick="loadPreset(this,'devops')">DevOps</div>
+        <div class="jd-preset" id="pre-mb" onclick="loadPreset(this,'mobile')">Mobile Dev</div>
+        <div class="jd-preset" id="pre-ds" onclick="loadPreset(this,'design')">Designer</div>
       </div>
       <div class="rank-list" id="rank-list"><div class="rank-empty">Ingresá un JD para ver el ranking</div></div>
     </div>
-    <button class="bprimary" style="max-width:100%;background:linear-gradient(135deg,#0F172A,#1B4FD8)" onclick="go('swipe-scr')">← Explorar</button>
-    <button onclick="changeLang()" style="background:none;border:1.5px solid var(--brd);border-radius:28px;padding:11px 0;font-size:12px;font-weight:600;color:var(--gray);cursor:pointer;width:100%;font-family:'Inter',sans-serif;margin-top:4px">🌐 Cambiar idioma · Change language</button>
+    <button class="bprimary" style="max-width:100%;background:linear-gradient(135deg,#0F172A,#1B4FD8)" onclick="go('swipe-scr')" id="lbl-explore">← Explorar</button>
+    <button onclick="changeLang()" class="change-lang-btn" style="background:none;border:1.5px solid var(--brd);border-radius:28px;padding:11px 0;font-size:12px;font-weight:600;color:var(--gray);cursor:pointer;width:100%;font-family:'Inter',sans-serif;margin-top:4px">🌐 Cambiar idioma · Change language</button>
   </div>
   <div class="bnav">
     <div class="ni" onclick="go('swipe-scr')"><div>🃏</div></div>
@@ -622,8 +622,8 @@ input[type=range]{width:100%;accent-color:var(--b)}
 <!-- EMPTY -->
 <div id="empty-scr" class="scr">
   <div class="eemoji">✨</div>
-  <div class="etitle">Viste todos los perfiles</div>
-  <div class="esub">Pronto habrá más. Mientras tanto, revisá tus matches.</div>
+  <div class="etitle" id="lbl-emptytitle">Viste todos los perfiles</div>
+  <div class="esub" id="lbl-emptysub">Pronto habrá más. Mientras tanto, revisá tus matches.</div>
   <button class="bprimary" style="max-width:100%;margin-top:8px" onclick="restart()">Volver a empezar</button>
   <button class="boutline" style="max-width:100%;margin-top:8px" onclick="go('matches-scr');buildList()">Ver Matches 💙</button>
 </div>
@@ -838,8 +838,38 @@ function swipe(dir){
 // ── i18n ──
 var LANG='es';
 var L={
-  es:{tab0:'Candidatos',tab1:'Empresas',lbtn:'Continuar →',msub:'tienen Mutual Interest',conn:' conexiones activas',noMatch:'Aún no tenés matches',noMatchSub:'Explorá candidatos y empresas',newBadge:'Nuevo'},
-  en:{tab0:'Candidates',tab1:'Companies',lbtn:'Continue →',msub:'have a Mutual Interest',conn:' active connections',noMatch:'No matches yet',noMatchSub:'Explore candidates and companies',newBadge:'New'}
+  es:{
+    tab0:'Candidatos',tab1:'Empresas',lbtn:'Continuar →',
+    msub:'tienen Mutual Interest',conn:' conexiones activas',
+    noMatch:'Aún no tenés matches',noMatchSub:'Explorá candidatos y empresas',newBadge:'Nuevo',
+    stages:['Nuevo','Entrevista','Oferta','Contratado'],
+    activity:'Actividad',pipeline:'Pipeline',activefilters:'Filtros activos',ranking:'🎯 Ranking por JD',
+    seen:'Vistos',likes:'Likes',matches:'Matches',interviews:'Entrevistas',
+    explore:'← Explorar',
+    candidate:'Candidato',inttype:'Tipo de entrevista',date:'Fecha',time:'Hora',dur:'Duración',notes:'Notas (opcional)',
+    emptytitle:'Viste todos los perfiles',emptysub:'Pronto habrá más. Revisá tus matches.',
+    rankplaceholder:'Pegá el Job Description acá para generar el ranking...',
+    rankempty:'Ingresá un JD para ver el ranking',
+    preFS:'Full Stack',preDE:'Data Engineer',preDO:'DevOps',preMB:'Mobile Dev',preDS:'Designer',
+    myMatches:'Mis Matches',pipelineTitle:'Pipeline',filtersTitle:'Filtros',scheduleTitle:'📅 Agendar Entrevista',
+    confirmInt:'✓ Confirmar entrevista',changeLang:'🌐 Cambiar idioma · Change language',
+  },
+  en:{
+    tab0:'Candidates',tab1:'Companies',lbtn:'Continue →',
+    msub:'have a Mutual Interest',conn:' active connections',
+    noMatch:'No matches yet',noMatchSub:'Explore candidates and companies',newBadge:'New',
+    stages:['New','Interview','Offer','Hired'],
+    activity:'Activity',pipeline:'Pipeline',activefilters:'Active filters',ranking:'🎯 JD Ranking',
+    seen:'Viewed',likes:'Likes',matches:'Matches',interviews:'Interviews',
+    explore:'← Explore',
+    candidate:'Candidate',inttype:'Interview type',date:'Date',time:'Time',dur:'Duration',notes:'Notes (optional)',
+    emptytitle:"You've seen all profiles",emptysub:'More coming soon. Check your matches.',
+    rankplaceholder:'Paste the Job Description here to generate the ranking...',
+    rankempty:'Enter a JD to see the ranking',
+    preFS:'Full Stack',preDE:'Data Engineer',preDO:'DevOps',preMB:'Mobile Dev',preDS:'Designer',
+    myMatches:'My Matches',pipelineTitle:'Pipeline',filtersTitle:'Filters',scheduleTitle:'📅 Schedule Interview',
+    confirmInt:'✓ Confirm interview',changeLang:'🌐 Cambiar idioma · Change language',
+  }
 };
 function TL(k){return(L[LANG]||L.es)[k]||k;}
 
@@ -854,10 +884,57 @@ function pickLang(lang){
 }
 
 function startApp(){
-  // Apply basic translations
-  var tabs=document.querySelectorAll('.mtab');
-  if(tabs[0]) tabs[0].innerHTML='👤 '+TL('tab0');
-  if(tabs[1]) tabs[1].innerHTML='🏢 '+TL('tab1');
+  // ── Apply ALL translations ──
+  function s(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+  function q(sel,v){var e=document.querySelector(sel);if(e)e.textContent=v;}
+  function qi(sel,v){var e=document.querySelector(sel);if(e)e.innerHTML=v;}
+  var st=TL('stages')||['Nuevo','Entrevista','Oferta','Contratado'];
+  // Mode tabs
+  qi('.mtab:first-child','👤 '+TL('tab0'));
+  qi('.mtab:last-child','🏢 '+TL('tab1'));
+  // Pipeline column headers
+  s('k-stage-0',st[0]);s('k-stage-1',st[1]);s('k-stage-2',st[2]);s('k-stage-3',st[3]);
+  // Profile stat labels
+  s('lbl-seen',TL('seen'));s('lbl-likes',TL('likes'));
+  s('lbl-matches',TL('matches'));s('lbl-interviews',TL('interviews'));
+  // Pipeline stat labels in profile
+  s('lbl-p0',st[0]);s('lbl-p1',st[1]);s('lbl-p2',st[2]);s('lbl-p3',st[3]);
+  // Section titles
+  s('lbl-activity',TL('activity'));s('lbl-pipeline',TL('pipeline'));
+  s('lbl-activefilters',TL('activefilters'));s('lbl-ranking',TL('ranking'));
+  // Explore button
+  s('lbl-explore',TL('explore'));
+  // JD presets
+  s('pre-fs',TL('preFS'));s('pre-de',TL('preDE'));
+  s('pre-do',TL('preDO'));s('pre-mb',TL('preMB'));s('pre-ds',TL('preDS'));
+  // JD placeholder
+  var jd=document.getElementById('jd-text');
+  if(jd)jd.placeholder=TL('rankplaceholder');
+  // Rank empty
+  var re2=document.querySelector('.rank-empty');
+  if(re2)re2.textContent=TL('rankempty');
+  // Empty screen
+  s('lbl-emptytitle',TL('emptytitle'));s('lbl-emptysub',TL('emptysub'));
+  // Schedule labels
+  s('lbl-candidate',TL('candidate'));s('lbl-inttype',TL('inttype'));
+  s('lbl-date',TL('date'));s('lbl-time',TL('time'));
+  s('lbl-dur',TL('dur'));s('lbl-notes',TL('notes'));
+  // Screens titles
+  q('#matches-scr .scrtitle',TL('myMatches'));
+  q('#pipeline-scr .scrtitle',TL('pipelineTitle'));
+  q('.ftitle',TL('filtersTitle'));
+  q('.schtitle',TL('scheduleTitle'));
+  q('.schfoot .bprimary',TL('confirmInt'));
+  // Notifs panel
+  q('.ntitle',TL('notifs'));q('.nclear',TL('clearAll'));
+  // Match screen
+  q('.mtitle','Mutual Interest');q('.mbadge2','New Connection');
+  q('#match-scr .bprimary',TL('startChat'));
+  q('.bschedule',TL('scheduleInt'));q('.bghost',TL('keepLooking'));
+  // Filters apply btn
+  q('#filter-scr .ffoot .bprimary',TL('applyFilters'));
+  // Change lang btn
+  q('.change-lang-btn',TL('changeLang'));
   // Navigate and render
   go('swipe-scr');
   render();

@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TalentBridge</title>
+<title>tNic</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  if(typeof pdfjsLib!=="undefined"){
+    pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  }
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -61,6 +67,15 @@ input.photo-in{display:none}
 .score-num{font-size:12px;font-weight:700;color:var(--b)}
 
 .dbtn{margin-top:10px;background:none;border:1.5px solid var(--brd);border-radius:20px;padding:5px 14px;font-size:11px;color:var(--gray);cursor:pointer;font-family:'Inter',sans-serif}
+.cv-section{margin-top:12px;border-top:1px solid var(--brd);padding-top:12px}
+.cv-label{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.cv-upload-btn{display:flex;align-items:center;gap:8px;background:var(--blight);border:1.5px dashed var(--b3);border-radius:12px;padding:10px 14px;cursor:pointer;width:100%}
+.cv-upload-btn span{font-size:12px;color:var(--b);font-weight:600}
+.cv-file-info{display:flex;align-items:center;gap:8px;background:var(--bxlight);border:1.5px solid var(--b);border-radius:12px;padding:10px 14px;width:100%}
+.cv-file-name{font-size:12px;color:var(--dark);font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cv-view-btn{background:var(--b);color:var(--w);border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0}
+.cv-remove-btn{background:none;border:none;color:var(--red);font-size:14px;cursor:pointer;flex-shrink:0}
+input.cv-in{display:none}
 .extra{display:none;width:100%;margin-top:12px;border-top:1px solid var(--brd);padding-top:12px}
 .extra.on{display:block}
 .erow{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -241,15 +256,108 @@ input[type=range]{width:100%;accent-color:var(--b)}
 .ntime{font-size:10px;color:#bbb;margin-top:2px}
 .nudot{width:7px;height:7px;background:var(--b);border-radius:50%;position:absolute;top:12px;right:12px}
 .nempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gray);font-size:14px}
+/* ── CANDIDATE/COMPANY FULL PROFILE ── */
+#detail-scr{background:var(--light)}
+.detail-hero{background:linear-gradient(135deg,#0F172A,#1B4FD8);padding:20px 20px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;position:relative}
+.detail-back{position:absolute;top:16px;left:14px;background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.detail-av{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;border:3px solid rgba(255,255,255,.6);font-family:'Syne',sans-serif;overflow:hidden;flex-shrink:0}
+.detail-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.detail-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;text-align:center}
+.detail-role{font-size:13px;color:rgba(255,255,255,.8);text-align:center}
+.detail-loc{font-size:12px;color:rgba(255,255,255,.6);text-align:center}
+.detail-actions{display:flex;gap:8px;margin-top:6px}
+.detail-btn-like{background:linear-gradient(135deg,#1B4FD8,#3B82F6);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.detail-btn-chat{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.detail-body{flex:1;overflow-y:auto;padding:14px 14px 20px;display:flex;flex-direction:column;gap:10px}
+.detail-section{background:#fff;border-radius:14px;padding:14px 16px}
+.detail-section-title{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px}
+.detail-lbl{font-size:11px;color:var(--gray);font-weight:500;flex-shrink:0}
+.detail-val{font-size:12px;color:var(--dark);font-weight:600;text-align:right}
+.detail-about{font-size:13px;color:var(--mid);line-height:1.6}
+.detail-skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.detail-score-row{display:flex;align-items:center;gap:10px}
+.detail-score-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--b)}
+.detail-score-bar{flex:1;height:8px;background:var(--brd);border-radius:10px;overflow:hidden}
+.detail-score-fill{height:100%;background:linear-gradient(90deg,var(--b),var(--b3));border-radius:10px}
+
+/* ── CV VIEWER ── */
+#cv-viewer-scr{background:#1a1a2a}
+.cv-viewer-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#0F172A;flex-shrink:0}
+.cv-viewer-title{font-size:14px;font-weight:600;color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cv-viewer-body{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:0}
+.cv-tab-bar{display:flex;background:#0F172A;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0}
+.cv-tab{flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border-bottom:2px solid transparent}
+.cv-tab.on{color:#3B82F6;border-bottom-color:#3B82F6}
+.cv-pdf-frame{flex:1;border:none;width:100%;background:#fff}
+.cv-text-body{flex:1;overflow-y:auto;padding:16px;color:#e2e8f0;font-size:13px;line-height:1.8;font-family:'Inter',sans-serif;white-space:pre-wrap;word-break:break-word}
+.cv-text-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,.4);font-size:13px;text-align:center;padding:30px}
+
+/* ── JD RANKING ── */
+.jd-section{background:var(--w);border-radius:14px;padding:14px 16px;margin-top:0}
+.jd-textarea{width:100%;border:1.5px solid var(--brd);border-radius:10px;padding:10px 12px;font-size:12px;font-family:'Inter',sans-serif;color:var(--dark);resize:none;outline:none;background:var(--light);min-height:80px}
+.jd-textarea:focus{border-color:var(--b)}
+.jd-presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.jd-preset{padding:5px 11px;border-radius:14px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--brd);color:var(--gray);background:var(--w)}
+.jd-preset.on{background:var(--blight);border-color:var(--b);color:var(--b)}
+.rank-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.rank-item{display:flex;align-items:center;gap:10px;background:var(--bxlight);border-radius:12px;padding:10px 12px}
+.rank-pos{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--b);min-width:24px;text-align:center}
+.rank-pos.gold{color:#F59E0B}
+.rank-pos.silver{color:#94A3B8}
+.rank-pos.bronze{color:#B45309}
+.rank-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--w);font-family:'Syne',sans-serif;flex-shrink:0;overflow:hidden}
+.rank-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.rank-info{flex:1;min-width:0}
+.rank-name{font-size:13px;font-weight:700;color:var(--dark)}
+.rank-role{font-size:10px;color:var(--gray);margin-top:1px}
+.rank-keywords{font-size:10px;color:var(--b);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.rank-pct{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--b)}
+.rank-bar-bg{width:60px;height:5px;background:var(--brd);border-radius:10px;overflow:hidden}
+.rank-bar-fill{height:100%;background:linear-gradient(90deg,var(--b),var(--b3));border-radius:10px}
+.rank-empty{font-size:12px;color:var(--gray);text-align:center;padding:16px 0}
+
+/* LANG SCREEN */
+#lang-scr{background:linear-gradient(160deg,#0F172A,#1B4FD8);align-items:center;justify-content:center;gap:18px;padding:36px 28px;text-align:center}
+.lopt{display:flex;align-items:center;gap:14px;border:2px solid rgba(255,255,255,.25);border-radius:16px;padding:14px 18px;cursor:pointer;width:100%;max-width:280px;background:rgba(255,255,255,.08);transition:all .15s}
+.lopt.sel{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.7)}
+.lopt-flag{font-size:26px}
+.lopt-name{font-size:15px;font-weight:700;color:#fff;font-family:'Syne',sans-serif;text-align:left}
+.lopt-native{font-size:11px;color:rgba(255,255,255,.55);text-align:left;margin-top:1px}
+.lopt-check{margin-left:auto;font-size:16px;color:#fff;opacity:0}
+.lopt.sel .lopt-check{opacity:1}
+.lbtn{background:#fff;color:#1B4FD8;border:none;border-radius:28px;padding:14px 0;font-size:15px;font-weight:700;cursor:pointer;width:100%;max-width:280px;font-family:'Syne',sans-serif}
+
 </style>
 </head>
 <body>
 <div id="app">
 
 <!-- SWIPE -->
-<div id="swipe-scr" class="scr on">
+
+<div id="lang-scr" class="scr on">
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 70' style='height:56px;width:auto'><text x='10' y='54' font-family='Arial Black,sans-serif' font-weight='900' font-size='54' fill='#3B82F6'>t</text><text x='44' y='54' font-family='Arial Black,sans-serif' font-weight='900' font-size='54' fill='white'>Nic</text><circle cx='4' cy='18' r='3' fill='#3B82F6'/><circle cx='4' cy='28' r='3' fill='#3B82F6'/><circle cx='4' cy='38' r='3' fill='#3B82F6'/><line x1='4' y1='18' x2='14' y2='24' stroke='#3B82F6' stroke-width='1.5'/><line x1='4' y1='28' x2='14' y2='28' stroke='#3B82F6' stroke-width='1.5'/><line x1='4' y1='38' x2='14' y2='24' stroke='#3B82F6' stroke-width='1.5'/></svg>
+  <div style="font-size:11px;color:rgba(255,255,255,.45);letter-spacing:2px;text-transform:uppercase">Talent · Technology · Connection</div>
+  <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:1px">Elegí tu idioma · Choose your language</div>
+  <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:280px">
+    <div class="lopt sel" id="lopt-es" onclick="pickLang('es')">
+      <span class="lopt-flag">🇦🇷</span>
+      <div><div class="lopt-name">Español</div><div class="lopt-native">Español latinoamericano</div></div>
+      <span class="lopt-check">✓</span>
+    </div>
+    <div class="lopt" id="lopt-en" onclick="pickLang('en')">
+      <span class="lopt-flag">🇺🇸</span>
+      <div><div class="lopt-name">English</div><div class="lopt-native">American English</div></div>
+      <span class="lopt-check">✓</span>
+    </div>
+  </div>
+  <button class="lbtn" id="lbtn" onclick="startApp()">Continuar →</button>
+</div>
+
+<div id="swipe-scr" class="scr">
   <div class="topbar">
-    <div class="logo">Talent<span>Bridge</span></div>
+    <div style="background:#0F172A;border-radius:6px;padding:3px 7px;height:30px;display:flex;align-items:center"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 50' style='height:24px;width:auto'><text x='4' y='38' font-family='Arial Black,sans-serif' font-weight='900' font-size='44' fill='#1B4FD8'>t</text><text x='30' y='38' font-family='Arial Black,sans-serif' font-weight='900' font-size='44' fill='white'>Nic</text></svg></div>
     <div class="modetabs">
       <div class="mtab on" onclick="setMode('candidates')">👤 Candidatos</div>
       <div class="mtab" onclick="setMode('companies')">🏢 Empresas</div>
@@ -281,13 +389,30 @@ input[type=range]{width:100%;accent-color:var(--b)}
         <div class="score-bar-bg"><div class="score-bar-fill" id="cbar" style="width:0%"></div></div>
         <div class="score-num" id="cpct">0%</div>
       </div>
-      <button class="dbtn" id="dbtn" onclick="toggleExtra(event)">Ver perfil completo ▾</button>
+      <div style="display:flex;gap:8px;margin-top:10px;width:100%"><button class="dbtn" style="flex:1" id="dbtn" onclick="toggleExtra(event)">Más info ▾</button><button class="dbtn" style="flex:1;color:var(--b);border-color:var(--b)" onclick="openDetail(event)">Ver tarjeta completa</button></div>
       <div class="extra" id="extra">
         <div class="erow"><span class="elbl">Disponibilidad</span><span class="eval" id="cavail"></span></div>
         <div class="erow"><span class="elbl">Experiencia</span><span class="eval" id="cexp"></span></div>
         <div class="erow"><span class="elbl">Idiomas</span><span class="eval" id="clang"></span></div>
         <div class="erow" id="company-extra-row" style="display:none"><span class="elbl">Empleados</span><span class="eval" id="csize"></span></div>
         <div class="erow" id="company-extra-row2" style="display:none"><span class="elbl">Industria</span><span class="eval" id="cindustry"></span></div>
+        <div class="cv-section" id="cv-section">
+          <div class="cv-label">CV / Currículum</div>
+          <div id="cv-empty">
+            <label class="cv-upload-btn" for="cv-in">
+              <span>📎 Subir CV (PDF)</span>
+              <input type="file" accept="application/pdf" class="cv-in" id="cv-in" onchange="handleCV(event)">
+            </label>
+          </div>
+          <div id="cv-loaded" style="display:none">
+            <div class="cv-file-info">
+              <span style="font-size:18px">📄</span>
+              <div class="cv-file-name" id="cv-filename"></div>
+              <button class="cv-view-btn" onclick="viewCV(event)">Ver</button>
+              <button class="cv-remove-btn" onclick="removeCV(event)">✕</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -311,7 +436,7 @@ input[type=range]{width:100%;accent-color:var(--b)}
   <div class="mbadge2">New Connection</div>
   <div class="msub" id="msub"></div>
   <div class="mavs">
-    <div class="mav" style="background:#1B4FD8" id="my-mav">TB</div>
+    <div class="mav" style="background:#0F172A;font-family:Arial Black,sans-serif;font-weight:900;font-size:18px;letter-spacing:-1px" id="my-mav"><span style="color:#3B82F6">t</span><span style="color:#fff">N</span></div>
     <div style="font-size:26px">💙</div>
     <div class="mav" id="mav2"></div>
   </div>
@@ -446,9 +571,9 @@ input[type=range]{width:100%;accent-color:var(--b)}
 <!-- PROFILE -->
 <div id="profile-scr" class="scr">
   <div class="phero">
-    <div class="pav">TB</div>
-    <div class="pname">TalentBridge</div>
-    <div class="prole2">Head of Talent · IT Recruiting</div>
+    <div class="pav" style="background:#0F172A;overflow:hidden;display:flex;align-items:center;justify-content:center"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 60' style='width:90%;height:auto'><text x='4' y='48' font-family='Arial Black,sans-serif' font-weight='900' font-size='48' fill='#3B82F6'>t</text><text x='36' y='48' font-family='Arial Black,sans-serif' font-weight='900' font-size='48' fill='white'>Nic</text></svg></div>
+    <div class="pname">tNic</div>
+    <div class="prole2">Talent · Technology · Connection</div>
   </div>
   <div class="pbody">
     <div class="psec"><div class="pstitle">Actividad</div>
@@ -470,7 +595,20 @@ input[type=range]{width:100%;accent-color:var(--b)}
     <div class="psec"><div class="pstitle">Filtros activos</div>
       <div id="pfilters" style="font-size:12px;color:var(--gray);line-height:1.7">Remoto · Semi-Sr, Sr · Hasta $6.000/mes</div>
     </div>
+    <div class="jd-section">
+      <div class="pstitle">🎯 Ranking por JD</div>
+      <textarea class="jd-textarea" id="jd-text" placeholder="Pegá el Job Description acá para generar el ranking automático..." oninput="calcRanking()"></textarea>
+      <div class="jd-presets">
+        <div class="jd-preset" onclick="loadPreset(this,'full-stack')">Full Stack</div>
+        <div class="jd-preset" onclick="loadPreset(this,'data')">Data Engineer</div>
+        <div class="jd-preset" onclick="loadPreset(this,'devops')">DevOps</div>
+        <div class="jd-preset" onclick="loadPreset(this,'mobile')">Mobile Dev</div>
+        <div class="jd-preset" onclick="loadPreset(this,'design')">Designer</div>
+      </div>
+      <div class="rank-list" id="rank-list"><div class="rank-empty">Ingresá un JD para ver el ranking</div></div>
+    </div>
     <button class="bprimary" style="max-width:100%;background:linear-gradient(135deg,#0F172A,#1B4FD8)" onclick="go('swipe-scr')">← Explorar</button>
+    <button onclick="changeLang()" style="background:none;border:1.5px solid var(--brd);border-radius:28px;padding:11px 0;font-size:12px;font-weight:600;color:var(--gray);cursor:pointer;width:100%;font-family:'Inter',sans-serif;margin-top:4px">🌐 Cambiar idioma · Change language</button>
   </div>
   <div class="bnav">
     <div class="ni" onclick="go('swipe-scr')"><div>🃏</div></div>
@@ -500,20 +638,77 @@ input[type=range]{width:100%;accent-color:var(--b)}
   <div class="nlist" id="nlist"></div>
 </div>
 
+
+<!-- FULL DETAIL SCREEN -->
+<div id="detail-scr" class="scr">
+  <div class="detail-hero" id="detail-hero">
+    <button class="detail-back" onclick="go(detailPrev)">←</button>
+    <div class="detail-av" id="detail-av"></div>
+    <div class="detail-name" id="detail-name"></div>
+    <div class="detail-role" id="detail-role2"></div>
+    <div class="detail-loc" id="detail-loc2"></div>
+    <div class="detail-actions">
+      <button class="detail-btn-like" id="detail-like-btn" onclick="detailSwipeRight()">💙 Like</button>
+      <button class="detail-btn-chat" id="detail-chat-btn" onclick="detailOpenChat()" style="display:none">💬 Chat</button>
+    </div>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
+</div>
+
+<!-- CV VIEWER SCREEN -->
+<div id="cv-viewer-scr" class="scr">
+  <div class="cv-viewer-header">
+    <button class="backbtn" style="color:#fff" onclick="go(cvViewerPrev)">←</button>
+    <div class="cv-viewer-title" id="cv-viewer-title">CV</div>
+  </div>
+  <div class="cv-tab-bar">
+    <div class="cv-tab on" id="cv-tab-pdf" onclick="switchCvTab('pdf')">📄 PDF</div>
+    <div class="cv-tab" id="cv-tab-text" onclick="switchCvTab('text')">📝 Texto extraído</div>
+  </div>
+  <div class="cv-viewer-body" id="cv-viewer-body">
+    <iframe class="cv-pdf-frame" id="cv-pdf-frame" src=""></iframe>
+  </div>
+</div>
+
 </div><!-- #app -->
 <script>
 var CANDIDATES=[
-  {type:'candidate',name:"Matías G.",    loc:"Buenos Aires, AR",role:"Full Stack Dev",   skills:["React","Node.js","PostgreSQL"],sal:"$4.500/mes · 🌐 Remoto",about:"5 años en startups. Apasionado por productos con impacto real.",              av:"MG",color:"#1B4FD8",avail:"Inmediata", exp:"5 años",langs:"Español, Inglés B2",score:92,photo:null},
-  {type:'candidate',name:"Valentina R.",loc:"Córdoba, AR",      role:"Data Engineer",   skills:["Python","Spark","dbt"],       sal:"$5.000/mes · 🌐 Remoto",about:"Ex-Mercado Libre. Especialista en pipelines de datos a escala.",             av:"VR",color:"#7C3AED",avail:"2 semanas",exp:"7 años",langs:"Español, Inglés C1",score:87,photo:null},
-  {type:'candidate',name:"Lucas P.",    loc:"Rosario, AR",      role:"DevOps Engineer", skills:["AWS","Kubernetes","Terraform"],sal:"$5.500/mes · 🌐 Remoto",about:"Certificado AWS. Construcción de infraestructura cloud desde cero.",        av:"LP",color:"#059669",avail:"Inmediata", exp:"6 años",langs:"Español, Inglés B2",score:78,photo:null},
-  {type:'candidate',name:"Camila S.",   loc:"Mendoza, AR",      role:"Product Designer",skills:["Figma","UX Research","Proto"],sal:"$3.800/mes · 🌐 Remoto",about:"Diseño centrado en el usuario. Portfolio con productos lanzados en LATAM.", av:"CS",color:"#DC2626",avail:"1 mes",    exp:"4 años",langs:"Español, Inglés B1",score:84,photo:null},
-  {type:'candidate',name:"Andrés M.",   loc:"CABA, AR",         role:"Mobile Developer",skills:["Flutter","Swift","Firebase"],  sal:"$4.200/mes · 🌐 Remoto",about:"Apps con +100k descargas. Enfocado en rendimiento y UX móvil.",           av:"AM",color:"#D97706",avail:"2 semanas",exp:"5 años",langs:"Español, Inglés C1",score:95,photo:null},
+  {type:'candidate',name:"Matías G.",    loc:"Buenos Aires, AR",role:"Full Stack Dev",   skills:["React","Node.js","PostgreSQL"],sal:"$4.500/mes · 🌐 Remoto",about:"5 años en startups. Apasionado por productos con impacto real.",              av:"MG",color:"#1B4FD8",avail:"Inmediata", exp:"5 años",langs:"Español, Inglés B2",score:92,photo:null,cvData:null,cvName:null},
+  {type:'candidate',name:"Valentina R.",loc:"Córdoba, AR",      role:"Data Engineer",   skills:["Python","Spark","dbt"],       sal:"$5.000/mes · 🌐 Remoto",about:"Ex-Mercado Libre. Especialista en pipelines de datos a escala.",             av:"VR",color:"#7C3AED",avail:"2 semanas",exp:"7 años",langs:"Español, Inglés C1",score:87,photo:null,cvData:null,cvName:null},
+  {type:'candidate',name:"Lucas P.",    loc:"Rosario, AR",      role:"DevOps Engineer", skills:["AWS","Kubernetes","Terraform"],sal:"$5.500/mes · 🌐 Remoto",about:"Certificado AWS. Construcción de infraestructura cloud desde cero.",        av:"LP",color:"#059669",avail:"Inmediata", exp:"6 años",langs:"Español, Inglés B2",score:78,photo:null,cvData:null,cvName:null},
+  {type:'candidate',name:"Camila S.",   loc:"Mendoza, AR",      role:"Product Designer",skills:["Figma","UX Research","Proto"],sal:"$3.800/mes · 🌐 Remoto",about:"Diseño centrado en el usuario. Portfolio con productos lanzados en LATAM.", av:"CS",color:"#DC2626",avail:"1 mes",    exp:"4 años",langs:"Español, Inglés B1",score:84,photo:null,cvData:null,cvName:null},
+  {type:'candidate',name:"Andrés M.",   loc:"CABA, AR",         role:"Mobile Developer",skills:["Flutter","Swift","Firebase"],  sal:"$4.200/mes · 🌐 Remoto",about:"Apps con +100k descargas. Enfocado en rendimiento y UX móvil.",           av:"AM",color:"#D97706",avail:"2 semanas",exp:"5 años",langs:"Español, Inglés C1",score:95,photo:null,cvData:null,cvName:null},
 ];
 var COMPANIES=[
-  {type:'company',name:"Mercado Libre",loc:"CABA / Remoto",    role:"Busca: Full Stack Sr",skills:["React","Java","AWS"],      sal:"$6.000–$9.000/mes",about:"Líder en e-commerce LATAM. Cultura de alto desempeño e innovación constante.", av:"ML",color:"#F59E0B",avail:"Inmediata", exp:"5+ años",langs:"Español + Inglés B2",score:90,size:"5.000+",industry:"E-commerce",photo:null},
-  {type:'company',name:"Globant",      loc:"Buenos Aires, AR", role:"Busca: Data Engineer",skills:["Python","Spark","GCP"],    sal:"$5.500–$8.000/mes",about:"Empresa global de IT con proyectos en USA, Europa y LATAM.",                    av:"GL",color:"#10B981",avail:"2 semanas",exp:"4+ años",langs:"Inglés C1",          score:82,size:"25.000+",industry:"Consulting IT",photo:null},
-  {type:'company',name:"Despegar",     loc:"CABA, AR",          role:"Busca: DevOps Lead",  skills:["Kubernetes","Azure","CI/CD"],sal:"$7.000–$10.000/mes",about:"Plataforma de viajes líder en LATAM. Cultura ágil y remoto-first.",          av:"DS",color:"#2563EB",avail:"Inmediata", exp:"6+ años",langs:"Español + Inglés B1",score:75,size:"2.000+",industry:"Travel Tech",photo:null},
-  {type:'company',name:"Auth0/Okta",   loc:"100% Remoto",       role:"Busca: Security Eng.",skills:["OAuth","Node","Go"],       sal:"$9.000–$14.000/mes",about:"Líder global en identity & access management. Equipo 100% remoto.",            av:"AO",color:"#EC4899",avail:"1 mes",    exp:"5+ años",langs:"Inglés C1",          score:88,size:"1.000+",industry:"Ciberseguridad",photo:null},
+  {type:'company',name:"Mercado Libre",loc:"CABA / Remoto",role:"Busca: Full Stack Sr",skills:["React","Java","AWS","Microservices"],sal:"$6.000–$9.000/mes",about:"Líder en e-commerce LATAM con presencia en 18 países. Cultura de alto desempeño, innovación constante y crecimiento acelerado. Trabajamos en squads ágiles con impacto real en millones de usuarios.",av:"ML",color:"#F59E0B",avail:"Inmediata",exp:"5+ años",langs:"Español + Inglés B2",score:90,size:"5.000+",industry:"E-commerce",photo:null,
+    activeJobs:[
+      {title:"Full Stack Sr",sal:"$7.000–$9.000/mes",type:"Remoto",urgent:true},
+      {title:"Tech Lead Frontend",sal:"$9.000–$12.000/mes",type:"Híbrido",urgent:false},
+      {title:"Backend Engineer Java",sal:"$6.000–$8.000/mes",type:"Remoto",urgent:true},
+      {title:"Data Engineer",sal:"$6.500–$8.500/mes",type:"Remoto",urgent:false},
+    ],
+    jd:"We are looking for a Senior Full Stack Developer to join our growing engineering team. You will work on high-impact features used by millions of users across LATAM. Requirements: 5+ years experience with React and Node.js, strong knowledge of PostgreSQL and AWS, experience with microservices architecture, CI/CD pipelines, and agile methodologies. English B2 or above required. Remote-friendly culture with competitive salary and stock options."},
+  {type:'company',name:"Globant",loc:"Buenos Aires, AR",role:"Busca: Data Engineer",skills:["Python","Spark","GCP","dbt"],sal:"$5.500–$8.000/mes",about:"Empresa global de tecnología con más de 25.000 empleados y proyectos en USA, Europa y LATAM. Trabajamos con clientes Fortune 500 en transformación digital, datos e inteligencia artificial.",av:"GL",color:"#10B981",avail:"2 semanas",exp:"4+ años",langs:"Inglés C1",score:82,size:"25.000+",industry:"Consulting IT",photo:null,
+    activeJobs:[
+      {title:"Data Engineer Sr",sal:"$5.500–$7.500/mes",type:"Remoto",urgent:true},
+      {title:"ML Engineer",sal:"$7.000–$9.000/mes",type:"Remoto",urgent:false},
+      {title:"Analytics Engineer",sal:"$5.000–$6.500/mes",type:"Remoto",urgent:false},
+    ],
+    jd:"Globant is hiring a Senior Data Engineer to work on large-scale data platforms for our US and European clients. You will design and implement ETL pipelines, data warehouses, and analytics solutions. Required: 4+ years with Python, Spark, dbt, and GCP or AWS. Experience with Airflow, BigQuery, or Redshift. Strong English communication skills (C1). Agile environment, remote-first, excellent growth opportunities."},
+  {type:'company',name:"Despegar",loc:"CABA, AR",role:"Busca: DevOps Lead",skills:["Kubernetes","Azure","CI/CD","Terraform"],sal:"$7.000–$10.000/mes",about:"Plataforma de viajes líder en LATAM con más de 2.000 empleados. Cultura ágil, equipos cross-funcionales y foco en la experiencia del usuario. Remoto-first con oficinas en CABA.",av:"DS",color:"#2563EB",avail:"Inmediata",exp:"6+ años",langs:"Español + Inglés B1",score:75,size:"2.000+",industry:"Travel Tech",photo:null,
+    activeJobs:[
+      {title:"DevOps Lead",sal:"$8.000–$10.000/mes",type:"Híbrido",urgent:true},
+      {title:"SRE Engineer",sal:"$7.000–$9.000/mes",type:"Remoto",urgent:true},
+      {title:"Cloud Architect",sal:"$10.000–$13.000/mes",type:"Híbrido",urgent:false},
+    ],
+    jd:"We are seeking an experienced DevOps Lead to manage our cloud infrastructure on Azure. You will lead a team of 4 engineers, implement IaC with Terraform, maintain Kubernetes clusters, and build robust CI/CD pipelines. Requirements: 6+ years in DevOps/SRE roles, strong Azure and Kubernetes experience, leadership skills, security best practices. Spanish required, English B1+."},
+  {type:'company',name:"Auth0/Okta",loc:"100% Remoto",role:"Busca: Security Engineer",skills:["OAuth","Node","Go","Zero Trust"],sal:"$9.000–$14.000/mes",about:"Líder global en identity & access management con más de 1.000 empleados distribuidos en todo el mundo. Equipo 100% remoto con cultura de autonomía, documentación y excelencia técnica.",av:"AO",color:"#EC4899",avail:"1 mes",exp:"5+ años",langs:"Inglés C1",score:88,size:"1.000+",industry:"Ciberseguridad",photo:null,
+    activeJobs:[
+      {title:"Security Engineer Sr",sal:"$10.000–$14.000/mes",type:"Remoto",urgent:false},
+      {title:"Backend Engineer (Go)",sal:"$9.000–$12.000/mes",type:"Remoto",urgent:true},
+      {title:"Identity Platform Engineer",sal:"$9.500–$13.000/mes",type:"Remoto",urgent:false},
+    ],
+    jd:"Auth0 by Okta is looking for a Senior Security Engineer to join our identity platform team. You will design and implement OAuth 2.0 and OpenID Connect flows, work on Zero Trust architecture, and contribute to our open-source SDKs. Requirements: 5+ years in security engineering, deep knowledge of OAuth, OIDC, SAML. Experience with Node.js and Go. Excellent English communication required. Fully remote, async-first culture."},
 ];
 
 var mode='candidates';
@@ -563,9 +758,11 @@ function render(){
   G('company-extra-row').style.display=isComp?'flex':'none';
   G('company-extra-row2').style.display=isComp?'flex':'none';
   if(isComp){G('csize').textContent=c.size;G('cindustry').textContent=c.industry;}
+  G('cv-section').style.display=isComp?'none':'block';
   var card=G('card'); card.removeAttribute('style');
   G('extra').classList.remove('on');
   G('dbtn').textContent='Ver perfil completo ▾';
+  updateCVUI();
   G('sl').style.opacity='0'; G('sp').style.opacity='0';
   G('card-bg').style.display=idx+1<dataSet.length?'block':'none';
 }
@@ -581,6 +778,46 @@ function handlePhoto(e){
   reader.readAsDataURL(file);
 }
 
+function handleCV(e){
+  var file=e.target.files[0]; if(!file)return;
+  var c=dataSet[idx];
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    c.cvData=ev.target.result;
+    c.cvName=file.name;
+    G('cv-filename').textContent=file.name;
+    G('cv-empty').style.display='none';
+    G('cv-loaded').style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+function viewCV(e){
+  e.stopPropagation();
+  var c=dataSet[idx];
+  if(!c.cvData){return;}
+  var win=window.open();
+  win.document.write('<iframe src="'+c.cvData+'" style="width:100%;height:100%;border:none"></iframe>');
+}
+function removeCV(e){
+  e.stopPropagation();
+  var c=dataSet[idx];
+  c.cvData=null; c.cvName=null;
+  G('cv-empty').style.display='block';
+  G('cv-loaded').style.display='none';
+  G('cv-in').value='';
+}
+function updateCVUI(){
+  var c=dataSet[idx];
+  if(c.cvData){
+    G('cv-filename').textContent=c.cvName||'CV.pdf';
+    G('cv-empty').style.display='none';
+    G('cv-loaded').style.display='block';
+  } else {
+    G('cv-empty').style.display='block';
+    G('cv-loaded').style.display='none';
+    G('cv-in').value='';
+  }
+}
 function toggleExtra(e){
   e.stopPropagation();
   G('extra').classList.toggle('on');
@@ -597,6 +834,37 @@ function swipe(dir){
     else{idx++;render();}
   },400);
 }
+
+// ── i18n ──
+var LANG='es';
+var L={
+  es:{tab0:'Candidatos',tab1:'Empresas',lbtn:'Continuar →',msub:'tienen Mutual Interest',conn:' conexiones activas',noMatch:'Aún no tenés matches',noMatchSub:'Explorá candidatos y empresas',newBadge:'Nuevo'},
+  en:{tab0:'Candidates',tab1:'Companies',lbtn:'Continue →',msub:'have a Mutual Interest',conn:' active connections',noMatch:'No matches yet',noMatchSub:'Explore candidates and companies',newBadge:'New'}
+};
+function TL(k){return(L[LANG]||L.es)[k]||k;}
+
+function pickLang(lang){
+  LANG=lang;
+  ['es','en'].forEach(function(l){
+    var o=document.getElementById('lopt-'+l);
+    if(o) o.classList.toggle('sel',l===lang);
+  });
+  var b=document.getElementById('lbtn');
+  if(b) b.textContent=lang==='en'?'Continue →':'Continuar →';
+}
+
+function startApp(){
+  // Apply basic translations
+  var tabs=document.querySelectorAll('.mtab');
+  if(tabs[0]) tabs[0].innerHTML='👤 '+TL('tab0');
+  if(tabs[1]) tabs[1].innerHTML='🏢 '+TL('tab1');
+  // Navigate and render
+  go('swipe-scr');
+  render();
+}
+
+// Change language button in profile
+function changeLang(){ go('lang-scr'); }
 
 var card=G('card');
 card.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;dragging=true;dx=0;card.style.transition='none';},{passive:true});
@@ -626,7 +894,7 @@ document.addEventListener('mouseup',function(){
 
 function showMI(){
   var c=curMatch;
-  G('msub').innerHTML='Vos y <strong>'+c.name+'</strong> tienen Mutual Interest';
+  G('msub').innerHTML='<strong>'+c.name+'</strong> '+TL('msub');
   var mav=G('mav2'); mav.style.background=c.color;
   if(c.photo){mav.innerHTML='<img src="'+c.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';}
   else{mav.textContent=c.av;}
@@ -773,10 +1041,10 @@ function saveInterview(){
 
 // MATCHES LIST
 function buildList(){
-  G('msub2').textContent=matches.length+' conexiones activas';
+  G('msub2').textContent=matches.length+TL('conn');
   var list=G('mlist');
   if(!matches.length){
-    list.innerHTML='<div class="nomatch"><div style="font-size:40px">💙</div><div>Aún no tenés matches</div><div style="font-size:11px;margin-top:4px">Explorá candidatos y empresas</div></div>';
+    list.innerHTML='<div class="nomatch"><div style="font-size:40px">💙</div><div>'+TL('noMatch')+'</div><div style="font-size:11px;margin-top:4px">'+TL('noMatchSub')+'</div></div>';
     return;
   }
   list.innerHTML=matches.map(function(m,i){
@@ -857,9 +1125,478 @@ function updateNdot(){G('ndot').classList.toggle('on',notifs.some(function(n){re
 function now(){var d=new Date();return(d.getHours()<10?'0':'')+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();}
 function restart(){idx=0;matches=[];chats={};curMatch=null;pipeline={};interviews=[];stats={seen:0,likes:0,mc:0,interviews:0};updateBadge();go('swipe-scr');render();}
 
-// INIT
+
+// ── DETAIL SCREEN ──
+var detailPrev = 'swipe-scr';
+var cvViewerPrev = 'detail-scr';
+var currentDetail = null;
+var cvTabMode = 'pdf';
+
+function openDetail(e){
+  if(e) e.stopPropagation();
+  var c = dataSet[idx];
+  currentDetail = c;
+  detailPrev = 'swipe-scr';
+  buildDetailScreen(c);
+  go('detail-scr');
+}
+
+function openDetailFromMatch(c){
+  currentDetail = c;
+  detailPrev = 'matches-scr';
+  buildDetailScreen(c);
+  go('detail-scr');
+}
+
+function buildDetailScreen(c){
+  // Hero
+  var av = G('detail-av');
+  av.style.background = c.color;
+  if(c.photo){ av.innerHTML = '<img src="'+c.photo+'">'; }
+  else { av.innerHTML = c.av; }
+  G('detail-name').textContent = c.name;
+  G('detail-role2').textContent = c.role;
+  G('detail-loc2').textContent = '📍 ' + c.loc;
+
+  // Like vs Chat button
+  var isMatch = !!matches.find(function(m){return m.name===c.name;});
+  G('detail-like-btn').style.display = isMatch ? 'none' : 'block';
+  G('detail-chat-btn').style.display = isMatch ? 'block' : 'none';
+
+  // Body
+  var isComp = c.type === 'company';
+  var scoreHtml = '<div class="detail-score-row">'
+    +'<div class="detail-score-num">'+c.score+'%</div>'
+    +'<div class="detail-score-bar"><div class="detail-score-fill" style="width:'+c.score+'%"></div></div>'
+    +'</div>';
+
+  var skillsHtml = (c.skills||[]).map(function(s){
+    return '<span class="sk">'+s+'</span>';
+  }).join('');
+
+  var bodyHtml = '';
+
+  // Match score
+  bodyHtml += '<div class="detail-section">'
+    +'<div class="detail-section-title">Match Score</div>'
+    + scoreHtml
+    +'</div>';
+
+  // About
+  bodyHtml += '<div class="detail-section">'
+    +'<div class="detail-section-title">'+(isComp?'Sobre la empresa':'Sobre el candidato')+'</div>'
+    +'<div class="detail-about">'+c.about+'</div>'
+    +'</div>';
+
+  // Skills
+  bodyHtml += '<div class="detail-section">'
+    +'<div class="detail-section-title">'+(isComp?'Stack buscado':'Skills')+'</div>'
+    +'<div class="detail-skills">'+skillsHtml+'</div>'
+    +'</div>';
+
+  // Info
+  var infoRows = [
+    {l:'Salario', v: c.sal},
+    {l:'Disponibilidad', v: c.avail},
+    {l:'Experiencia', v: c.exp},
+    {l:'Idiomas', v: c.langs},
+  ];
+  if(isComp){
+    infoRows.push({l:'Industria', v: c.industry});
+    infoRows.push({l:'Empleados', v: c.size});
+  }
+  var infoHtml = infoRows.filter(function(r){return r.v;}).map(function(r){
+    return '<div class="detail-row"><span class="detail-lbl">'+r.l+'</span><span class="detail-val">'+r.v+'</span></div>';
+  }).join('');
+
+  bodyHtml += '<div class="detail-section">'
+    +'<div class="detail-section-title">Información</div>'
+    + infoHtml
+    +'</div>';
+
+  // Company JD + Active Jobs section
+  if(isComp && c.activeJobs){
+    var jobsHtml = c.activeJobs.map(function(j){
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--brd)">'
+        +'<div style="flex:1">'
+        +'<div style="font-size:13px;font-weight:700;color:var(--dark)">'+j.title+'</div>'
+        +'<div style="font-size:11px;color:var(--gray);margin-top:2px">'+j.sal+' · '+j.type+'</div>'
+        +'</div>'
+        +(j.urgent?'<div style="background:#FEF3C7;color:#92400E;font-size:10px;font-weight:700;border-radius:6px;padding:3px 8px">Urgente</div>':'')
+        +'</div>';
+    }).join('');
+    bodyHtml += '<div class="detail-section">'
+      +'<div class="detail-section-title">💼 Puestos activos ('+c.activeJobs.length+')</div>'
+      + jobsHtml
+      +'</div>';
+  }
+
+  // Company JD section
+  if(isComp && c.jd){
+    bodyHtml += '<div class="detail-section">'
+      +'<div class="detail-section-title">📋 Job Description</div>'
+      +'<div style="font-size:12px;color:var(--mid);line-height:1.7;max-height:160px;overflow-y:auto;padding-right:4px">'+c.jd+'</div>'
+      +'<button onclick="loadJDtoRanking()" style="margin-top:10px;background:var(--blight);border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--b);cursor:pointer;width:100%">🎯 Usar este JD para el Ranking</button>'
+      +'</div>';
+  }
+
+  // CV section (candidates only)
+  if(!isComp){
+    var cvHtml = '';
+    if(c.cvData){
+      // PDF viewer row
+      cvHtml += '<div style="display:flex;align-items:center;gap:10px;background:var(--bxlight);border-radius:12px;padding:12px 14px;border-left:3px solid var(--b);margin-bottom:10px">'
+        +'<span style="font-size:22px">📄</span>'
+        +'<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--dark)">'+(c.cvName||'CV.pdf')+'</div>'
+        +'<div style="font-size:11px;color:var(--gray);margin-top:1px">PDF adjunto</div></div>'
+        +'<button class="cv-view-btn" onclick="openCVViewer()">Ver PDF</button>'
+        +'</div>';
+      // Extracted text section
+      cvHtml += '<div style="margin-top:4px">'
+        +'<div style="font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Texto extraído del CV</div>'
+        +'<div id="cv-inline-text" style="font-size:12px;color:var(--mid);line-height:1.75;background:var(--light);border-radius:10px;padding:12px;max-height:220px;overflow-y:auto;border:1px solid var(--brd)">'
+        +(c.cvText
+          ? c.cvText
+          : '<div style="color:var(--gray);text-align:center;padding:10px 0">Extrayendo texto... <span id="cv-inline-spinner">⏳</span></div>'
+        )
+        +'</div>'
+        +'</div>';
+      // If no text yet, trigger extraction
+      if(!c.cvText){
+        cvHtml += '<script>setTimeout(function(){extractCVTextInline(currentDetail);},200);<\/script>';
+      }
+    } else {
+      cvHtml = '<label style="display:flex;align-items:center;gap:8px;background:var(--bxlight);border:1.5px dashed var(--b3);border-radius:12px;padding:12px 14px;cursor:pointer">'
+        +'<span style="font-size:20px">📎</span>'
+        +'<span style="font-size:12px;font-weight:600;color:var(--b)">Subir CV del candidato (PDF)</span>'
+        +'<input type="file" accept="application/pdf" style="display:none" onchange="handleCVFromDetail(event)">'
+        +'</label>';
+    }
+    bodyHtml += '<div class="detail-section">'
+      +'<div class="detail-section-title">📄 Currículum Vitae</div>'
+      + cvHtml
+      +'</div>';
+  }
+
+  // Pipeline stage (if in matches)
+  var pStage = pipeline[c.name];
+  if(pStage !== undefined){
+    var stages = ['Nuevo','Entrevista','Oferta','Contratado'];
+    var stageColors = [var_b,'#F59E0B','#10B981','#7C3AED'];
+    bodyHtml += '<div class="detail-section">'
+      +'<div class="detail-section-title">Pipeline</div>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap">'
+      + stages.map(function(s,i){
+          var active = i===pStage;
+          return '<div style="padding:5px 12px;border-radius:14px;font-size:11px;font-weight:600;'
+            +(active?'background:var(--b);color:#fff':'background:var(--bxlight);color:var(--gray)')
+            +'">'+s+'</div>';
+        }).join('')
+      +'</div>'
+      +'<div style="display:flex;gap:6px;margin-top:10px">'
+      +(pStage>0?'<button class="kmove-btn" style="padding:6px 0;font-size:11px" onclick="movePipelineFromDetail(-1)">◀ Atrás</button>':'')
+      +(pStage<3?'<button class="kmove-btn" style="padding:6px 0;font-size:11px;background:var(--b);color:#fff" onclick="movePipelineFromDetail(1)">Adelante ▶</button>':'')
+      +'</div>'
+      +'</div>';
+  }
+
+  G('detail-body').innerHTML = bodyHtml;
+}
+
+function detailSwipeRight(){
+  if(!currentDetail) return;
+  addMatch(currentDetail, false);
+  G('detail-like-btn').style.display = 'none';
+  G('detail-chat-btn').style.display = 'block';
+  addNotif('💙','Liked a <strong>'+currentDetail.name+'</strong>','ahora');
+  buildDetailScreen(currentDetail);
+}
+
+function detailOpenChat(){
+  if(!currentDetail) return;
+  chatPrev = 'detail-scr';
+  openChat(currentDetail);
+}
+
+function movePipelineFromDetail(dir){
+  if(!currentDetail) return;
+  movePipeline(currentDetail.name, dir);
+  buildDetailScreen(currentDetail);
+}
+
+// ── CV VIEWER ──
+function openCVViewer(){
+  if(!currentDetail || !currentDetail.cvData) return;
+  cvViewerPrev = 'detail-scr';
+  G('cv-viewer-title').textContent = currentDetail.cvName || 'CV.pdf';
+  switchCvTab('pdf');
+  go('cv-viewer-scr');
+}
+
+function switchCvTab(tab){
+  cvTabMode = tab;
+  G('cv-tab-pdf').classList.toggle('on', tab==='pdf');
+  G('cv-tab-text').classList.toggle('on', tab==='text');
+  var body = G('cv-viewer-body');
+  if(tab === 'pdf'){
+    // Convert base64 to blob for mobile compatibility
+    try {
+      var b64 = currentDetail.cvData.split(',')[1];
+      var binary = atob(b64);
+      var bytes = new Uint8Array(binary.length);
+      for(var i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
+      var blob = new Blob([bytes],{type:'application/pdf'});
+      var url = URL.createObjectURL(blob);
+      body.innerHTML = '<object class="cv-pdf-frame" data="'+url+'" type="application/pdf">'
+        +'<div class="cv-text-placeholder">'
+        +'<div style="font-size:36px">📄</div>'
+        +'<div style="font-weight:700;color:#fff">Tu navegador no puede mostrar el PDF inline</div>'
+        +'<div style="margin-top:8px"><a href="'+url+'" target="_blank" style="color:#3B82F6;font-size:13px;font-weight:600">📥 Abrir PDF en nueva pestaña</a></div>'
+        +'</div>'
+        +'</object>';
+    } catch(e){
+      body.innerHTML = '<div class="cv-text-placeholder"><div style="font-size:36px">⚠️</div><div>No se pudo cargar el PDF</div></div>';
+    }
+  } else {
+    // Extract text using PDF.js-lite approach via textarea trick
+    if(currentDetail.cvText){
+      body.innerHTML = '<div class="cv-text-body">'+currentDetail.cvText+'</div>';
+    } else {
+      // Try to extract with FileReader + basic parsing
+      body.innerHTML = '<div class="cv-text-placeholder">'
+        +'<div style="font-size:36px">📝</div>'
+        +'<div>Extrayendo texto del PDF...</div>'
+        +'<div style="font-size:11px;margin-top:4px">Esto puede tardar unos segundos</div>'
+        +'</div>';
+      extractCVText();
+    }
+  }
+}
+
+function extractCVText(){
+  if(!currentDetail || !currentDetail.cvData) return;
+  if(currentDetail.cvText){
+    G('cv-viewer-body').innerHTML='<div class="cv-text-body">'+currentDetail.cvText+'</div>';
+    return;
+  }
+  G('cv-viewer-body').innerHTML='<div class="cv-text-placeholder"><div style="font-size:36px">⏳</div><div>Extrayendo texto con PDF.js...</div></div>';
+  try{
+    var b64=currentDetail.cvData.split(',')[1];
+    var binary=atob(b64);
+    var bytes=new Uint8Array(binary.length);
+    for(var i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
+    pdfjsLib.getDocument({data:bytes}).promise.then(function(pdf){
+      var pages=[];
+      for(var p=1;p<=pdf.numPages;p++) pages.push(p);
+      return Promise.all(pages.map(function(p){
+        return pdf.getPage(p).then(function(pg){
+          return pg.getTextContent().then(function(tc){
+            return tc.items.map(function(i){return i.str;}).join(' ');
+          });
+        });
+      }));
+    }).then(function(texts){
+      var text=texts.join('
+
+').replace(/\s+/g,' ').trim();
+      if(!text||text.length<20) text='No se pudo extraer texto de este PDF.';
+      currentDetail.cvText=text;
+      G('cv-viewer-body').innerHTML='<div class="cv-text-body">'+text+'</div>';
+      var jdEl=document.getElementById('jd-text');
+      if(jdEl&&jdEl.value) calcRanking();
+    }).catch(function(e){
+      G('cv-viewer-body').innerHTML='<div class="cv-text-placeholder"><div style="font-size:36px">⚠️</div><div>Error: '+e.message+'</div></div>';
+    });
+  }catch(e){
+    G('cv-viewer-body').innerHTML='<div class="cv-text-placeholder"><div style="font-size:36px">⚠️</div><div>Error al procesar el PDF.</div></div>';
+  }
+}
+
+var var_b = '#1B4FD8';
+
+function extractCVTextInline(c){
+  if(!c || !c.cvData) return;
+  var el = document.getElementById('cv-inline-text');
+  // Already extracted — just display
+  if(c.cvText){
+    if(el){el.style.whiteSpace='pre-wrap';el.textContent=c.cvText;}
+    return;
+  }
+  if(el) el.innerHTML='<div style="color:var(--gray);text-align:center;padding:10px">⏳ Extrayendo texto...</div>';
+
+  // Convert base64 data URL to Uint8Array
+  try{
+    var b64 = c.cvData.split(',')[1];
+    var binary = atob(b64);
+    var bytes = new Uint8Array(binary.length);
+    for(var i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
+
+    if(typeof pdfjsLib === 'undefined'){
+      if(el) el.innerHTML='<div style="color:var(--gray);text-align:center;padding:10px">PDF.js no disponible. Usá el botón "Ver PDF".</div>';
+      return;
+    }
+
+    var loadingTask = pdfjsLib.getDocument({data: bytes});
+    loadingTask.promise.then(function(pdf){
+      var totalPages = pdf.numPages;
+      var pagePromises = [];
+      for(var p=1; p<=totalPages; p++){
+        pagePromises.push(pdf.getPage(p).then(function(page){
+          return page.getTextContent().then(function(tc){
+            return tc.items.map(function(item){return item.str;}).join(' ');
+          });
+        }));
+      }
+      return Promise.all(pagePromises);
+    }).then(function(pages){
+      var fullText = pages.join('\n\n').replace(/ {2,}/g,' ').replace(/\n{3,}/g,'\n\n').trim();
+      if(!fullText || fullText.length < 20){
+        fullText = 'No se pudo extraer texto de este PDF.\nUsá el botón "Ver PDF" para verlo.';
+      }
+      c.cvText = fullText;
+      if(el){el.style.whiteSpace='pre-wrap';el.textContent=fullText;}
+      // Recalculate ranking if JD loaded
+      var jdEl=document.getElementById('jd-text');
+      if(jdEl && jdEl.value) calcRanking();
+    }).catch(function(err){
+      if(el) el.innerHTML='<div style="color:var(--gray);text-align:center;padding:10px">No se pudo leer el PDF: '+err.message+'</div>';
+    });
+  } catch(e){
+    if(el) el.innerHTML='<div style="color:var(--gray);text-align:center;padding:10px">Error al procesar el PDF.</div>';
+  }
+}
+
+function handleCVFromDetail(e){
+  var file = e.target.files[0]; if(!file) return;
+  var c = currentDetail; if(!c) return;
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    c.cvData = ev.target.result;
+    c.cvName = file.name;
+    c.cvText = null; // reset so it re-extracts
+    // Also update in dataSet
+    var orig = dataSet.find(function(x){return x.name===c.name;});
+    if(orig){ orig.cvData=ev.target.result; orig.cvName=file.name; orig.cvText=null; }
+    // Rebuild detail screen
+    buildDetailScreen(c);
+    // Trigger extraction after render
+    setTimeout(function(){ extractCVTextInline(c); }, 300);
+  };
+  reader.readAsDataURL(file);
+}
+
+function loadJDtoRanking(){
+  if(!currentDetail || !currentDetail.jd) return;
+  // Store JD for ranking
+  window._pendingJD = currentDetail.jd;
+  addNotif('🎯','JD de <strong>'+currentDetail.name+'</strong> cargado al ranking','ahora');
+  // Go to profile with ranking
+  go('profile-scr');
+  buildProfile();
+  // Set JD text after render
+  setTimeout(function(){
+    var ta = G('jd-text');
+    if(ta){ ta.value = currentDetail.jd; calcRanking(); }
+  }, 100);
+}
+
+// JD RANKING
+var JD_PRESETS = {
+  'full-stack': 'React Node.js JavaScript TypeScript PostgreSQL REST API Git Docker AWS agile scrum frontend backend full stack developer senior 5 years experience team lead microservices CI/CD testing deployment cloud',
+  'data': 'Python SQL data pipeline ETL Spark dbt Airflow BigQuery PostgreSQL data engineering analytics machine learning pandas numpy data warehouse AWS GCP cloud infrastructure senior engineer',
+  'devops': 'AWS Kubernetes Docker Terraform CI/CD Jenkins Linux bash scripting cloud infrastructure DevOps SRE monitoring Prometheus Grafana security automation deployment pipeline IaC',
+  'mobile': 'iOS Android Flutter React Native Swift Kotlin mobile developer app store Firebase push notifications UI UX performance optimization testing agile senior developer',
+  'design': 'Figma UX UI design user research prototyping wireframes design system Sketch Adobe XD accessibility responsive web mobile product designer portfolio LATAM'
+};
+
+function tokenize(text){
+  if(!text)return [];
+  return text.toLowerCase()
+    .replace(/[^a-záéíóúüñ0-9\s\.]/gi,' ')
+    .split(/\s+/)
+    .filter(function(w){return w.length>2;});
+}
+
+function scoreCandidate(c, jdTokens){
+  if(!jdTokens.length)return {score:0, matched:[]};
+  // Build candidate text from profile + CV text
+  var profileText = [
+    c.name, c.role, c.about,
+    c.skills ? c.skills.join(' ') : '',
+    c.avail||'', c.exp||'', c.langs||'',
+    c.cvText||''  // extracted CV text if available
+  ].join(' ');
+  var candTokens = tokenize(profileText);
+  var jdSet = {};
+  jdTokens.forEach(function(t){jdSet[t]=(jdSet[t]||0)+1;});
+  var matched = [];
+  var hits = 0;
+  var seen = {};
+  candTokens.forEach(function(t){
+    if(jdSet[t] && !seen[t]){
+      hits++;
+      seen[t]=true;
+      matched.push(t);
+    }
+  });
+  var uniqueJD = Object.keys(jdSet).length;
+  var score = uniqueJD > 0 ? Math.round((hits/uniqueJD)*100) : 0;
+  // Bonus if CV uploaded
+  if(c.cvData) score = Math.min(100, score + 8);
+  return {score: Math.min(100,score), matched: matched.slice(0,5)};
+}
+
+function calcRanking(){
+  var jdText = G('jd-text').value;
+  var jdTokens = tokenize(jdText);
+  var list = G('rank-list');
+  if(!jdTokens.length){
+    list.innerHTML='<div class="rank-empty">Ingresá un JD para ver el ranking</div>';
+    return;
+  }
+  // Score all candidates
+  var scored = CANDIDATES.map(function(c){
+    var r = scoreCandidate(c, jdTokens);
+    return {c:c, score:r.score, matched:r.matched};
+  });
+  // Sort descending
+  scored.sort(function(a,b){return b.score-a.score;});
+  // Top 5
+  var top = scored.slice(0,5);
+  var medals = ['gold','silver','bronze','',''];
+  var labels = ['🥇','🥈','🥉','4°','5°'];
+  list.innerHTML = top.map(function(item,i){
+    var avhtml = item.c.photo
+      ? '<img src="'+item.c.photo+'">'
+      : item.c.av;
+    var barW = item.score+'%';
+    var kw = item.matched.length ? item.matched.join(', ') : 'Sin keywords coincidentes';
+    return '<div class="rank-item">'
+      +'<div class="rank-pos '+medals[i]+'">'+labels[i]+'</div>'
+      +'<div class="rank-av" style="background:'+item.c.color+'">'+avhtml+'</div>'
+      +'<div class="rank-info">'
+        +'<div class="rank-name">'+item.c.name+'</div>'
+        +'<div class="rank-role">'+item.c.role+'</div>'
+        +'<div class="rank-keywords">🔑 '+kw+'</div>'
+      +'</div>'
+      +'<div class="rank-right">'
+        +'<div class="rank-pct">'+item.score+'%</div>'
+        +'<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:'+barW+'"></div></div>'
+        +(item.c.cvData?'<div style="font-size:9px;color:var(--green);font-weight:600">📄 CV</div>':'')
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function loadPreset(el, key){
+  document.querySelectorAll('.jd-preset').forEach(function(p){p.classList.remove('on');});
+  el.classList.add('on');
+  G('jd-text').value = JD_PRESETS[key] || '';
+  calcRanking();
+}
+
+// INIT - render() called by startApp() after language selection
 updateNdot();
-render();
 </script>
 </body>
 </html>

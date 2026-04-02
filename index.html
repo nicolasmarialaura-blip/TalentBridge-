@@ -861,36 +861,44 @@ function startApp(){
   // Navigate and render
   go('swipe-scr');
   render();
+  // Bind card events NOW (after render, card has content)
+  initCardEvents();
+}
+
+function initCardEvents(){
+  var card=G('card');
+  if(!card||card._eventsbound) return;
+  card._eventsbound=true;
+  card.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;dragging=true;dx=0;card.style.transition='none';},{passive:true});
+  card.addEventListener('touchmove',function(e){
+    if(!dragging)return;dx=e.touches[0].clientX-tx;
+    card.style.transform='translateX('+dx+'px) rotate('+(dx*.04)+'deg)';
+    G('sl').style.opacity=Math.min(Math.max(dx/90,0),1);G('sp').style.opacity=Math.min(Math.max(-dx/90,0),1);
+  },{passive:true});
+  card.addEventListener('touchend',function(){
+    dragging=false;if(Math.abs(dx)>80){swipe(dx>0?'right':'left');}
+    else{card.style.transition='transform .3s';card.style.transform='';G('sl').style.opacity='0';G('sp').style.opacity='0';}
+  });
+  card.addEventListener('mousedown',function(e){
+    if(e.target.closest('.cav-upload')||e.target.closest('input'))return;
+    mdown=true;mx2=e.clientX;card.style.transition='none';
+  });
+  document.addEventListener('mousemove',function(e){
+    if(!mdown)return;dx=e.clientX-mx2;
+    card.style.transform='translateX('+dx+'px) rotate('+(dx*.04)+'deg)';
+    G('sl').style.opacity=Math.min(Math.max(dx/90,0),1);G('sp').style.opacity=Math.min(Math.max(-dx/90,0),1);
+  });
+  document.addEventListener('mouseup',function(){
+    if(!mdown)return;mdown=false;
+    if(Math.abs(dx)>80){swipe(dx>0?'right':'left');}
+    else{card.style.transition='transform .3s';card.style.transform='';G('sl').style.opacity='0';G('sp').style.opacity='0';}
+  });
 }
 
 // Change language button in profile
 function changeLang(){ go('lang-scr'); }
 
-var card=G('card');
-card.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;dragging=true;dx=0;card.style.transition='none';},{passive:true});
-card.addEventListener('touchmove',function(e){
-  if(!dragging)return;dx=e.touches[0].clientX-tx;
-  card.style.transform='translateX('+dx+'px) rotate('+(dx*.04)+'deg)';
-  G('sl').style.opacity=Math.min(Math.max(dx/90,0),1);G('sp').style.opacity=Math.min(Math.max(-dx/90,0),1);
-},{passive:true});
-card.addEventListener('touchend',function(){
-  dragging=false;if(Math.abs(dx)>80){swipe(dx>0?'right':'left');}
-  else{card.style.transition='transform .3s';card.style.transform='';G('sl').style.opacity='0';G('sp').style.opacity='0';}
-});
-card.addEventListener('mousedown',function(e){
-  if(e.target.closest('.cav-upload')||e.target.closest('input'))return;
-  mdown=true;mx2=e.clientX;card.style.transition='none';
-});
-document.addEventListener('mousemove',function(e){
-  if(!mdown)return;dx=e.clientX-mx2;
-  card.style.transform='translateX('+dx+'px) rotate('+(dx*.04)+'deg)';
-  G('sl').style.opacity=Math.min(Math.max(dx/90,0),1);G('sp').style.opacity=Math.min(Math.max(-dx/90,0),1);
-});
-document.addEventListener('mouseup',function(){
-  if(!mdown)return;mdown=false;
-  if(Math.abs(dx)>80){swipe(dx>0?'right':'left');}
-  else{card.style.transition='transform .3s';card.style.transform='';G('sl').style.opacity='0';G('sp').style.opacity='0';}
-});
+// Card events bound in initCardEvents() called from startApp()
 
 function showMI(){
   var c=curMatch;
@@ -1396,9 +1404,7 @@ function extractCVText(){
         });
       }));
     }).then(function(texts){
-      var text=texts.join('
-
-').replace(/\s+/g,' ').trim();
+      var text=texts.join('\n\n').replace(/\s+/g,' ').trim();
       if(!text||text.length<20) text='No se pudo extraer texto de este PDF.';
       currentDetail.cvText=text;
       G('cv-viewer-body').innerHTML='<div class="cv-text-body">'+text+'</div>';

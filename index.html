@@ -447,6 +447,79 @@ input[type=range]{width:100%;accent-color:var(--b)}
 .jm-row .jm-inp,.jm-row .jm-select{flex:1}
 .jm-save{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:28px;padding:13px 0;font-size:14px;font-weight:700;cursor:pointer;width:100%;font-family:'Syne',sans-serif;margin-top:16px}
 
+
+/* ── AGENDA SYSTEM ── */
+#agenda-scr{background:var(--light)}
+.agenda-header{padding:16px 18px 12px;background:#fff;border-bottom:1px solid var(--brd);flex-shrink:0}
+.agenda-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--dark)}
+.agenda-sub{font-size:12px;color:var(--gray);margin-top:2px}
+.agenda-body{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.agenda-tabs{display:flex;background:var(--bxlight);border-radius:20px;padding:3px;gap:2px;margin-bottom:4px}
+.agenda-tab{flex:1;font-size:12px;font-weight:600;padding:7px 0;border-radius:16px;cursor:pointer;color:var(--gray);text-align:center;transition:all .2s}
+.agenda-tab.on{background:var(--b);color:#fff;box-shadow:0 2px 8px rgba(27,79,216,.3)}
+
+/* Interview card */
+.interview-card{background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-left:3px solid var(--b)}
+.interview-card.pending{border-left-color:var(--amber)}
+.interview-card.confirmed{border-left-color:var(--green)}
+.interview-card.proposed{border-left-color:var(--purple)}
+.iv-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.iv-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;font-family:'Syne',sans-serif;flex-shrink:0;overflow:hidden}
+.iv-avatar img{width:100%;height:100%;object-fit:cover}
+.iv-name{font-size:13px;font-weight:700;color:var(--dark)}
+.iv-role{font-size:11px;color:var(--gray)}
+.iv-status{margin-left:auto;font-size:10px;font-weight:700;border-radius:8px;padding:3px 8px}
+.iv-status.pending{background:#FEF3C7;color:#92400E}
+.iv-status.confirmed{background:#D1FAE5;color:#065F46}
+.iv-status.proposed{background:#EDE9FE;color:#5B21B6}
+.iv-details{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.iv-detail-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mid)}
+.iv-detail-icon{font-size:14px;width:18px;text-align:center}
+.iv-actions{display:flex;gap:6px;flex-wrap:wrap}
+.iv-btn{flex:1;border:none;border-radius:10px;padding:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;min-width:70px}
+.iv-btn-primary{background:var(--b);color:#fff}
+.iv-btn-meet{background:#1B7F4F;color:#fff}
+.iv-btn-zoom{background:#2D8CFF;color:#fff}
+.iv-btn-teams{background:#5059C9;color:#fff}
+.iv-btn-ghost{background:var(--bxlight);color:var(--b)}
+.iv-btn-danger{background:#FEE2E2;color:var(--red)}
+.iv-link{font-size:11px;color:var(--b);word-break:break-all;background:var(--bxlight);border-radius:8px;padding:6px 10px;margin-top:6px;display:flex;align-items:center;gap:6px}
+.iv-link a{color:var(--b);text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.iv-copy-btn{background:var(--b);color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;flex-shrink:0}
+
+/* Proposal card */
+.proposal-card{background:#EDE9FE;border-radius:12px;padding:10px 12px;margin-top:6px}
+.proposal-title{font-size:11px;font-weight:700;color:#5B21B6;margin-bottom:6px}
+.proposal-slot{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:#fff;border-radius:8px;margin-bottom:4px}
+.proposal-slot-text{font-size:12px;color:var(--dark)}
+.proposal-accept-btn{background:#7C3AED;color:#fff;border:none;border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:600}
+
+/* Schedule modal */
+#schedule-modal{display:none;position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:flex-end;border-radius:36px}
+#schedule-modal.open{display:flex}
+.sch-modal-inner{background:#fff;border-radius:24px 24px 36px 36px;width:100%;max-height:90%;overflow-y:auto;padding:20px 18px 30px}
+.sch-modal-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--dark);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.platform-selector{display:flex;gap:8px;margin-bottom:14px}
+.platform-opt{flex:1;padding:10px 6px;border-radius:12px;border:1.5px solid var(--brd);text-align:center;cursor:pointer;transition:all .2s}
+.platform-opt.on{border-color:var(--b);background:var(--bxlight)}
+.platform-icon{font-size:22px;display:block;margin-bottom:2px}
+.platform-name{font-size:10px;font-weight:600;color:var(--gray)}
+.platform-opt.on .platform-name{color:var(--b)}
+.sm-label{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;display:block;margin-top:10px}
+.sm-inp{width:100%;border:1.5px solid var(--brd);border-radius:10px;padding:9px 12px;font-size:13px;outline:none;font-family:'Inter',sans-serif;color:var(--dark);background:var(--light)}
+.sm-inp:focus{border-color:var(--b)}
+.sm-row{display:flex;gap:8px}
+.sm-row .sm-inp{flex:1}
+.sm-select{width:100%;border:1.5px solid var(--brd);border-radius:10px;padding:9px 12px;font-size:13px;outline:none;font-family:'Inter',sans-serif;color:var(--dark);background:var(--light)}
+.add-slot-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--bxlight);border:1.5px dashed var(--b3);border-radius:10px;padding:9px;cursor:pointer;font-size:12px;font-weight:600;color:var(--b);width:100%;border-left:none;font-family:'Inter',sans-serif;margin-top:6px}
+.slot-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.slot-row .sm-inp{flex:1;margin-bottom:0}
+.slot-del{background:none;border:none;color:var(--red);font-size:18px;cursor:pointer;flex-shrink:0}
+.sm-save{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:28px;padding:13px 0;font-size:14px;font-weight:700;cursor:pointer;width:100%;font-family:'Syne',sans-serif;margin-top:14px}
+.generated-link{background:var(--bxlight);border-radius:10px;padding:10px 12px;margin-top:10px;display:none}
+.gen-link-label{font-size:11px;font-weight:700;color:var(--b);margin-bottom:4px}
+.gen-link-url{font-size:12px;color:var(--dark);word-break:break-all}
+
 </style>
 
 <meta name="application-name" content="tNic">
@@ -600,7 +673,7 @@ input[type=range]{width:100%;accent-color:var(--b)}
     <div class="ni on" onclick="go('swipe-scr')"><div>🃏</div><div class="ni-lbl">Explorar</div></div>
     <div class="ni" onclick="go('matches-scr');buildList()"><div>💬</div><div class="ni-lbl">Matches</div><div class="nbadge" id="nbadge"></div></div>
     <div class="ni" onclick="go('pipeline-scr');buildKanban()"><div>📋</div><div class="ni-lbl">Pipeline</div></div>
-    <div class="ni" onclick="go('schedule-scr');buildSchedule()"><div>📅</div><div class="ni-lbl">Agenda</div></div>
+    <div class="ni" onclick="go('agenda-scr');buildAgenda()"><div>📅</div><div class="ni-lbl">Agenda</div></div>
     <div class="ni" onclick="go('profile-scr');buildProfile()"><div>👤</div><div class="ni-lbl">Perfil</div></div>
       <div class="ni" id="nav-myprofile" onclick="goMyProfile()"><div>🧑‍💼</div><div class="ni-lbl">Mi perfil</div></div>
   </div>
@@ -629,6 +702,7 @@ input[type=range]{width:100%;accent-color:var(--b)}
     <div class="chav" id="chav"><img id="chav-img" src="" style="display:none" alt=""><span id="chav-init"></span></div>
     <div><div class="chname" id="chname"></div><div class="chrole" id="chrole"></div></div>
     <div class="online"><div class="odot"></div>Online</div>
+    <button onclick="openScheduleModal(curChat?curChat.name:null)" style="background:var(--bxlight);border:none;border-radius:16px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--b);cursor:pointer">📅</button>
   </div>
   <div class="chatbody" id="chatbody"></div>
   <div class="chatinrow">
@@ -1069,6 +1143,104 @@ input[type=range]{width:100%;accent-color:var(--b)}
       </div>
       <button class="jm-save" onclick="saveJob()">✓ Guardar búsqueda</button>
     </div>
+  </div>
+</div>
+
+
+<!-- AGENDA SCREEN -->
+<div id="agenda-scr" class="scr">
+  <div class="agenda-header">
+    <div class="agenda-title">📅 Agenda de entrevistas</div>
+    <div class="agenda-sub" id="agenda-sub">0 entrevistas agendadas</div>
+  </div>
+  <div class="agenda-body">
+    <div class="agenda-tabs">
+      <div class="agenda-tab on" id="ag-tab-all" onclick="switchAgendaTab('all')">Todas</div>
+      <div class="agenda-tab" id="ag-tab-pending" onclick="switchAgendaTab('pending')">Pendientes</div>
+      <div class="agenda-tab" id="ag-tab-confirmed" onclick="switchAgendaTab('confirmed')">Confirmadas</div>
+      <div class="agenda-tab" id="ag-tab-proposed" onclick="switchAgendaTab('proposed')">Propuestas</div>
+    </div>
+    <div id="agenda-list"></div>
+    <button class="add-job-btn" style="margin-top:4px" onclick="openScheduleModal(null)">+ Nueva entrevista</button>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="go('swipe-scr')"><div>🃏</div></div>
+    <div class="ni" onclick="go('matches-scr');buildList()"><div>💬</div></div>
+    <div class="ni" onclick="go('pipeline-scr');buildKanban()"><div>📋</div></div>
+    <div class="ni on"><div>📅</div></div>
+    <div class="ni" onclick="go('profile-scr');buildProfile()"><div>👤</div></div>
+  </div>
+</div>
+
+<!-- SCHEDULE MODAL -->
+<div id="schedule-modal">
+  <div class="sch-modal-inner">
+    <div class="sch-modal-title">
+      <span id="sch-modal-title">Agendar entrevista</span>
+      <button onclick="closeScheduleModal()" style="background:none;border:none;font-size:22px;color:var(--gray);cursor:pointer">×</button>
+    </div>
+
+    <!-- Candidate selector -->
+    <label class="sm-label">Candidato</label>
+    <select class="sm-select" id="sm-candidate" style="width:100%;margin-bottom:10px">
+      <option value="">Seleccioná un candidato...</option>
+    </select>
+
+    <!-- Platform -->
+    <label class="sm-label">Plataforma</label>
+    <div class="platform-selector">
+      <div class="platform-opt on" id="plat-meet" onclick="selectPlatform('meet')">
+        <span class="platform-icon">🎥</span>
+        <div class="platform-name">Meet</div>
+      </div>
+      <div class="platform-opt" id="plat-zoom" onclick="selectPlatform('zoom')">
+        <span class="platform-icon">💻</span>
+        <div class="platform-name">Zoom</div>
+      </div>
+      <div class="platform-opt" id="plat-teams" onclick="selectPlatform('teams')">
+        <span class="platform-icon">💼</span>
+        <div class="platform-name">Teams</div>
+      </div>
+      <div class="platform-opt" id="plat-presencial" onclick="selectPlatform('presencial')">
+        <span class="platform-icon">🏢</span>
+        <div class="platform-name">Presencial</div>
+      </div>
+    </div>
+
+    <!-- Date & time -->
+    <label class="sm-label">Fecha y hora principal</label>
+    <div class="sm-row">
+      <input type="date" class="sm-inp" id="sm-date">
+      <input type="time" class="sm-inp" id="sm-time" value="10:00">
+    </div>
+
+    <!-- Duration -->
+    <label class="sm-label">Duración</label>
+    <select class="sm-select" id="sm-duration" style="width:100%">
+      <option>30 minutos</option>
+      <option selected>45 minutos</option>
+      <option>60 minutos</option>
+      <option>90 minutos</option>
+    </select>
+
+    <!-- Alternative slots (candidate can propose) -->
+    <label class="sm-label" style="margin-top:12px">Horarios alternativos (opcional)
+      <span style="font-size:10px;font-weight:400;color:var(--gray)"> — el candidato puede elegir</span>
+    </label>
+    <div id="alt-slots-list"></div>
+    <button class="add-slot-btn" onclick="addAltSlot()">+ Agregar horario alternativo</button>
+
+    <!-- Notes -->
+    <label class="sm-label">Notas para el candidato</label>
+    <input class="sm-inp" id="sm-notes" placeholder="Ej: Traer portfolio, hablaremos en inglés...">
+
+    <!-- Generated link preview -->
+    <div class="generated-link" id="gen-link-preview">
+      <div class="gen-link-label" id="gen-link-label">🎥 Link de la reunión</div>
+      <div class="gen-link-url" id="gen-link-url"></div>
+    </div>
+
+    <button class="sm-save" onclick="saveScheduledInterview()">✓ Confirmar y generar link</button>
   </div>
 </div>
 
@@ -1610,7 +1782,7 @@ function buildKanban(){
         +'<div class="kav" style="background:'+m.color+'">'+avhtml+'</div>'
         +'<div class="kname">'+m.name+'</div>'
         +'<div class="krole">'+m.role+'</div>'
-        +'<div class="kmove">'+prevBtn+nextBtn+'</div>'
+        +'<div class="kmove">'+prevBtn+nextBtn+'</div>'+'<button onclick="event.stopPropagation();openScheduleModal(\''+m.name+'\')\ style="width:100%;margin-top:6px;background:var(--bxlight);border:none;border-radius:8px;padding:5px;font-size:10px;font-weight:600;color:var(--b);cursor:pointer">📅 Agendar</button>'
         +'</div>';
     }).join('');
   }
@@ -2790,6 +2962,288 @@ function saveCompanyProfile(){
   },200);
 }
 
+
+// ── AGENDA SYSTEM ──
+var agendaInterviews = [];
+var editInterviewIdx = null;
+var selectedPlatform = 'meet';
+var altSlots = [];
+var agendaTab = 'all';
+
+// Generate meeting link
+function generateMeetLink(platform, date, time, candidateName){
+  var room = 'tnic-' + (candidateName||'interview').toLowerCase().replace(/[^a-z0-9]/g,'-')
+    + '-' + Date.now().toString(36);
+  switch(platform){
+    case 'meet':
+      return 'https://meet.google.com/' + room.substring(0,15);
+    case 'zoom':
+      return 'https://zoom.us/j/' + Math.floor(Math.random()*9000000000+1000000000);
+    case 'teams':
+      return 'https://teams.microsoft.com/l/meetup-join/tnic/' + room;
+    case 'presencial':
+      return '';
+    default:
+      return '';
+  }
+}
+
+function getPlatformIcon(platform){
+  var icons={meet:'🎥',zoom:'💻',teams:'💼',presencial:'🏢'};
+  return icons[platform]||'📅';
+}
+function getPlatformName(platform){
+  var names={meet:'Google Meet',zoom:'Zoom',teams:'Microsoft Teams',presencial:'Presencial'};
+  return names[platform]||platform;
+}
+function getPlatformClass(platform){
+  var cls={meet:'iv-btn-meet',zoom:'iv-btn-zoom',teams:'iv-btn-teams'};
+  return cls[platform]||'iv-btn-ghost';
+}
+
+function selectPlatform(p){
+  selectedPlatform=p;
+  ['meet','zoom','teams','presencial'].forEach(function(pl){
+    var el=document.getElementById('plat-'+pl);
+    if(el) el.classList.toggle('on',pl===p);
+  });
+  // Show/hide link preview
+  var preview=document.getElementById('gen-link-preview');
+  if(preview) preview.style.display=p==='presencial'?'none':'block';
+  // Generate preview link
+  updateLinkPreview();
+}
+
+function updateLinkPreview(){
+  var cand=document.getElementById('sm-candidate');
+  var candName=cand&&cand.selectedOptions[0]?cand.selectedOptions[0].text:'';
+  var date=document.getElementById('sm-date')?document.getElementById('sm-date').value:'';
+  var time=document.getElementById('sm-time')?document.getElementById('sm-time').value:'';
+  var link=generateMeetLink(selectedPlatform,date,time,candName);
+  var urlEl=document.getElementById('gen-link-url');
+  var lblEl=document.getElementById('gen-link-label');
+  if(urlEl) urlEl.textContent=link||'Se generará al confirmar';
+  if(lblEl) lblEl.textContent=getPlatformIcon(selectedPlatform)+' Link '+getPlatformName(selectedPlatform);
+}
+
+// Alt slots
+function addAltSlot(){
+  altSlots.push({date:'',time:''});
+  renderAltSlots();
+}
+function removeAltSlot(i){
+  altSlots.splice(i,1);
+  renderAltSlots();
+}
+function renderAltSlots(){
+  var list=document.getElementById('alt-slots-list');
+  if(!list) return;
+  list.innerHTML=altSlots.map(function(s,i){
+    return '<div class="slot-row">'
+      +'<input type="date" class="sm-inp" value="'+s.date+'" onchange="altSlots['+i+'].date=this.value">'
+      +'<input type="time" class="sm-inp" value="'+s.time+'" onchange="altSlots['+i+'].time=this.value">'
+      +'<button class="slot-del" onclick="removeAltSlot('+i+')">×</button>'
+      +'</div>';
+  }).join('');
+}
+
+// Open schedule modal
+function openScheduleModal(candidateName){
+  editInterviewIdx=null;
+  altSlots=[];
+  selectedPlatform='meet';
+  // Reset form
+  ['meet','zoom','teams','presencial'].forEach(function(p){
+    var el=document.getElementById('plat-'+p);
+    if(el) el.classList.toggle('on',p==='meet');
+  });
+  // Populate candidate selector
+  var sel=document.getElementById('sm-candidate');
+  if(sel){
+    sel.innerHTML='<option value="">Seleccioná un candidato...</option>'
+      +matches.map(function(m){
+        return '<option value="'+m.name+'"'+(m.name===candidateName?' selected':'')+'>'+m.name+' — '+m.role+'</option>';
+      }).join('');
+  }
+  document.getElementById('sm-date').value='';
+  document.getElementById('sm-time').value='10:00';
+  document.getElementById('sm-notes').value='';
+  renderAltSlots();
+  document.getElementById('gen-link-preview').style.display='block';
+  updateLinkPreview();
+  document.getElementById('schedule-modal').classList.add('open');
+}
+
+function closeScheduleModal(){
+  document.getElementById('schedule-modal').classList.remove('open');
+  editInterviewIdx=null;
+}
+
+function saveScheduledInterview(){
+  var sel=document.getElementById('sm-candidate');
+  var candName=sel?sel.value:'';
+  var date=document.getElementById('sm-date').value;
+  var time=document.getElementById('sm-time').value;
+  if(!candName){alert('Seleccioná un candidato.');return;}
+  if(!date||!time){alert('Ingresá fecha y hora.');return;}
+  var duration=document.getElementById('sm-duration').value;
+  var notes=document.getElementById('sm-notes').value;
+  var link=generateMeetLink(selectedPlatform,date,time,candName);
+  var interview={
+    candidate:candName,
+    platform:selectedPlatform,
+    date:date,
+    time:time,
+    duration:duration,
+    notes:notes,
+    link:link,
+    status:'confirmed',
+    altSlots:altSlots.filter(function(s){return s.date&&s.time;}),
+    createdAt:new Date().toISOString()
+  };
+  // Find candidate info
+  var match=matches.find(function(m){return m.name===candName;});
+  if(match){
+    interview.color=match.color;
+    interview.av=match.av;
+    interview.photo=match.photo||null;
+    interview.role=match.role;
+  }
+  if(editInterviewIdx!==null){
+    agendaInterviews[editInterviewIdx]=interview;
+  } else {
+    agendaInterviews.push(interview);
+  }
+  // Move to "Entrevista" in pipeline
+  if(pipeline[candName]===0||pipeline[candName]===undefined) pipeline[candName]=1;
+  // Send chat message with link
+  if(chats[candName]){
+    var msg='📅 Entrevista agendada para el '+date+' a las '+time+'.'
+      +(link?' '+getPlatformIcon(selectedPlatform)+' Link: '+link:'')
+      +(notes?' Nota: '+notes:'');
+    chats[candName].push({from:'me',text:msg,time:nowTime()});
+  }
+  addNotif('📅','Entrevista agendada con <strong>'+candName+'</strong> — '+date+' '+time,'ahora');
+  closeScheduleModal();
+  buildAgenda();
+}
+
+// Build agenda list
+function buildAgenda(){
+  var filtered=agendaInterviews.filter(function(iv){
+    if(agendaTab==='all') return true;
+    return iv.status===agendaTab;
+  });
+  document.getElementById('agenda-sub').textContent=agendaInterviews.length+' entrevistas agendadas';
+  var list=document.getElementById('agenda-list');
+  if(!list) return;
+  if(!filtered.length){
+    list.innerHTML='<div style="text-align:center;padding:30px;color:var(--gray);font-size:13px">'
+      +'<div style="font-size:36px;margin-bottom:8px">📅</div>'
+      +'<div>Sin entrevistas '+(agendaTab==='all'?'agendadas':'en este estado')+'</div>'
+      +'</div>';
+    return;
+  }
+  list.innerHTML=filtered.map(function(iv,i){
+    var avHtml=iv.photo
+      ?'<img src="'+iv.photo+'">'
+      :(iv.av||'?');
+    var statusClass=iv.status==='confirmed'?'confirmed':iv.status==='proposed'?'proposed':'pending';
+    var statusLabel={confirmed:'✓ Confirmada',pending:'⏳ Pendiente',proposed:'💬 Propuesta'}[iv.status]||iv.status;
+    var linkHtml=iv.link
+      ?'<div class="iv-link">'
+        +'<span>'+getPlatformIcon(iv.platform)+'</span>'
+        +'<a href="'+iv.link+'" target="_blank">'+iv.link+'</a>'
+        +'<button class="iv-copy-btn" onclick="doCopyLink(this)" data-link="'+encodeURIComponent(iv.link)+'">Copiar</button>'
+        +'</div>'
+      :'';
+    var altHtml=iv.altSlots&&iv.altSlots.length
+      ?'<div class="proposal-card">'
+        +'<div class="proposal-title">🕐 Horarios alternativos</div>'
+        +iv.altSlots.map(function(s,si){
+          return'<div class="proposal-slot">'
+            +'<div class="proposal-slot-text">'+s.date+' · '+s.time+'</div>'
+            +'<button class="proposal-accept-btn" onclick="acceptSlot('+i+','+si+')">Aceptar</button>'
+            +'</div>';
+        }).join('')
+        +'</div>'
+      :'';
+    return'<div class="interview-card '+statusClass+'">'
+      +'<div class="iv-header">'
+        +'<div class="iv-avatar" style="background:'+(iv.color||'var(--b)')+'">'+avHtml+'</div>'
+        +'<div><div class="iv-name">'+iv.candidate+'</div><div class="iv-role">'+(iv.role||'')+'</div></div>'
+        +'<div class="iv-status '+statusClass+'">'+statusLabel+'</div>'
+      +'</div>'
+      +'<div class="iv-details">'
+        +'<div class="iv-detail-row"><span class="iv-detail-icon">📅</span>'+iv.date+' · '+iv.time+'</div>'
+        +'<div class="iv-detail-row"><span class="iv-detail-icon">⏱</span>'+iv.duration+'</div>'
+        +'<div class="iv-detail-row"><span class="iv-detail-icon">'+getPlatformIcon(iv.platform)+'</span>'+getPlatformName(iv.platform)+'</div>'
+        +(iv.notes?'<div class="iv-detail-row"><span class="iv-detail-icon">📝</span>'+iv.notes+'</div>':'')
+      +'</div>'
+      +linkHtml
+      +altHtml
+      +'<div class="iv-actions">'
+        +(iv.link?'<button class="iv-btn '+getPlatformClass(iv.platform)+'" onclick="doOpenLink(this)" data-link="'+encodeURIComponent(iv.link)+'">'+getPlatformIcon(iv.platform)+' Unirse</button>':'')
+        +'<button class="iv-btn iv-btn-ghost" onclick="openScheduleModal(\'' + iv.candidate + '\')">✏️ Editar</button>'
+        +'<button class="iv-btn iv-btn-danger" onclick="deleteInterview('+i+')">🗑</button>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function switchAgendaTab(tab){
+  agendaTab=tab;
+  ['all','pending','confirmed','proposed'].forEach(function(t){
+    var el=document.getElementById('ag-tab-'+t);
+    if(el) el.classList.toggle('on',t===tab);
+  });
+  buildAgenda();
+}
+
+
+function doEditIv(btn){openScheduleModal(btn.getAttribute('data-cand'));}
+function doDelIv(btn){deleteInterview(parseInt(btn.getAttribute('data-idx')));}
+function deleteInterview(i){
+  if(confirm('¿Eliminar esta entrevista?')){
+    agendaInterviews.splice(i,1);
+    buildAgenda();
+  }
+}
+
+function acceptSlot(ivIdx,slotIdx){
+  var iv=agendaInterviews[ivIdx];
+  if(!iv) return;
+  var slot=iv.altSlots[slotIdx];
+  iv.date=slot.date; iv.time=slot.time;
+  iv.status='confirmed';
+  iv.altSlots=[];
+  iv.link=generateMeetLink(iv.platform,iv.date,iv.time,iv.candidate);
+  buildAgenda();
+  addNotif('✅','Horario confirmado con <strong>'+iv.candidate+'</strong> — '+iv.date,'ahora');
+}
+
+function doCopyLink(btn){copyLink(decodeURIComponent(btn.getAttribute('data-link')));}
+function doOpenLink(btn){window.open(decodeURIComponent(btn.getAttribute('data-link')),'_blank');}
+function copyLink(link){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(link).then(function(){
+      addNotif('📋','Link copiado al portapapeles','ahora');
+    });
+  } else {
+    // Fallback
+    var ta=document.createElement('textarea');
+    ta.value=link; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    addNotif('📋','Link copiado','ahora');
+  }
+}
+
+function nowTime(){
+  var d=new Date();
+  return(d.getHours()<10?'0':'')+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();
+}
+
 // INIT - render() called by startApp() after language selection
 updateNdot();
 
@@ -2825,3 +3279,4 @@ if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone){
 </script>
 </body>
 </html>
+

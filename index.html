@@ -976,6 +976,7 @@ input[type=range]{width:100%;accent-color:var(--b)}
     <!-- Info -->
     <div class="cp-section">
       <div class="cp-section-title">Información</div>
+      <input class="cp-input" id="cp-email-inp" type="email" placeholder="📧 Email (para recordatorios de entrevistas)">
       <input class="cp-input" id="cp-loc-inp" placeholder="📍 Ubicación (ej: Buenos Aires, AR)">
       <input class="cp-input" id="cp-sal-inp" placeholder="💰 Expectativa salarial (ej: $4.000/mes)">
       <input class="cp-input" id="cp-avail-inp" placeholder="⏱ Disponibilidad (ej: Inmediata)">
@@ -1059,6 +1060,7 @@ input[type=range]{width:100%;accent-color:var(--b)}
           <option>5000+</option>
         </select>
       </div>
+      <input class="cop-inp" id="cop-email" type="email" placeholder="📧 Email de contacto (para recordatorios de entrevistas)">
       <input class="cop-inp" id="cop-location" placeholder="📍 Ubicación (ej: CABA, Argentina)">
       <input class="cop-inp" id="cop-web" placeholder="🌐 Sitio web (ej: www.empresa.com)">
       <input class="cop-inp" id="cop-founded" placeholder="📅 Año de fundación">
@@ -1298,6 +1300,99 @@ var notifs=[
   {icon:"🔔",text:"Tus filtros encontraron <strong>5 perfiles</strong> nuevos",time:"hace 1h",unread:false},
 ];
 var tx=0,dragging=false,dx=0,mdown=false,mx2=0;
+
+// ════════════════════════════════════════════
+// EMAIL WEBHOOK + PERSISTENCIA (localStorage)
+// ════════════════════════════════════════════
+var EMAIL_WEBHOOK_URL = 'https://tnic-mailer.nicolasmarialaura.workers.dev';
+
+function isValidEmail(e){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(e||'').trim());
+}
+
+function sendInterviewEmails(interview){
+  try{
+    if(!EMAIL_WEBHOOK_URL){ console.warn('EMAIL_WEBHOOK_URL no configurada'); return; }
+    // Construir datetime ISO a partir de date+time (asume zona local)
+    var dt = new Date(interview.date + 'T' + interview.time + ':00');
+    var payload = {
+      type: 'confirmation',
+      interview: {
+        candidateName: interview.candidate,
+        candidateEmail: interview.candidateEmail || '',
+        recruiterEmail: interview.recruiterEmail || '',
+        companyName: interview.companyName || 'tNic',
+        jobTitle: interview.jobTitle || '',
+        date: interview.date,
+        time: interview.time,
+        datetime: dt.toISOString(),
+        duration: interview.duration,
+        platform: getPlatformName(interview.platform),
+        meetingLink: interview.link || '',
+        notes: interview.notes || ''
+      }
+    };
+    fetch(EMAIL_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    }).then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data && data.success){
+          addNotif('📧','Emails de confirmación y recordatorios enviados ('+data.sent+')','ahora');
+        } else {
+          addNotif('⚠️','No se pudieron enviar todos los emails. Revisá la configuración.','ahora');
+          console.warn('Email webhook response:', data);
+        }
+      })
+      .catch(function(err){
+        addNotif('⚠️','Error al enviar emails: '+err.message,'ahora');
+        console.error('Email webhook error:', err);
+      });
+  } catch(e){
+    console.error('sendInterviewEmails error:', e);
+  }
+}
+
+function persistAll(){
+  try{
+    var snapshot = {
+      cpData: cpData,
+      copData: copData,
+      agendaInterviews: agendaInterviews,
+      pipeline: pipeline,
+      matches: matches,
+      chats: chats,
+      notifs: notifs,
+      USER_ROLE: USER_ROLE,
+      LANG: typeof LANG!=='undefined'?LANG:'es'
+    };
+    localStorage.setItem('tnic_state_v1', JSON.stringify(snapshot));
+  } catch(e){
+    console.warn('persistAll failed:', e);
+  }
+}
+
+function loadAll(){
+  try{
+    var raw = localStorage.getItem('tnic_state_v1');
+    if(!raw) return false;
+    var data = JSON.parse(raw);
+    if(data.cpData) cpData = Object.assign(cpData, data.cpData);
+    if(data.copData) copData = Object.assign(copData, data.copData);
+    if(Array.isArray(data.agendaInterviews)) agendaInterviews = data.agendaInterviews;
+    if(data.pipeline) pipeline = data.pipeline;
+    if(Array.isArray(data.matches)) matches = data.matches;
+    if(data.chats) chats = data.chats;
+    if(Array.isArray(data.notifs)) notifs = data.notifs;
+    if(data.USER_ROLE) USER_ROLE = data.USER_ROLE;
+    if(data.LANG) LANG = data.LANG;
+    return true;
+  } catch(e){
+    console.warn('loadAll failed:', e);
+    return false;
+  }
+}
 
 function G(id){return document.getElementById(id);}
 function go(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on');});G(id).classList.add('on');}
@@ -1598,8 +1693,20 @@ function pickLang(lang){
 }
 
 function startApp(){
-  // Go to role selection first
-  go('onboard-scr');
+  // Intentar cargar estado guardado desde localStorage
+  var hasSavedState = loadAll();
+
+  if(hasSavedState && USER_ROLE){
+    // Usuario recurrente con perfil: ir directo a la app
+    applyRoleUI();
+    go('swipe-scr');
+    sortDataSetByMatch();
+    render();
+    setTimeout(function(){ initCardEvents(); updateNdot(); buildAgenda&&buildAgenda(); }, 100);
+  } else {
+    // Primera vez: ir a selección de rol
+    go('onboard-scr');
+  }
   // Apply language translations
 
   // ── Apply ALL translations ──
@@ -2399,7 +2506,7 @@ function loadPreset(el, key){
 
 // ── CANDIDATE PROFILE ──
 var cpData = {
-  name:'', role:'', about:'', loc:'', sal:'', avail:'', exp:'', langs:'',
+  name:'', role:'', about:'', loc:'', sal:'', avail:'', exp:'', langs:'', email:'',
   avatar:null, banner:null, skills:[], gallery:[], galleryIdx:0
 };
 
@@ -2409,6 +2516,7 @@ function initCPScreen(){
   G2('cp-name-inp').value = cpData.name;
   G2('cp-role-inp').value = cpData.role;
   G2('cp-about-inp').value = cpData.about;
+  G2('cp-email-inp').value = cpData.email||'';
   G2('cp-loc-inp').value = cpData.loc;
   G2('cp-sal-inp').value = cpData.sal;
   G2('cp-avail-inp').value = cpData.avail;
@@ -2564,10 +2672,17 @@ function lightboxNav(dir){
 }
 
 function saveCandidateProfile(){
+  // Validar email si está cargado
+  var emailVal = (document.getElementById('cp-email-inp')||{}).value||'';
+  if(emailVal && !isValidEmail(emailVal)){
+    alert('El formato del email no es válido. Revisá antes de guardar.');
+    return;
+  }
   // Save all inputs to cpData
   cpData.name = document.getElementById('cp-name-inp').value;
   cpData.role = document.getElementById('cp-role-inp').value;
   cpData.about = document.getElementById('cp-about-inp').value;
+  cpData.email = emailVal;
   cpData.loc = document.getElementById('cp-loc-inp').value;
   cpData.sal = document.getElementById('cp-sal-inp').value;
   cpData.avail = document.getElementById('cp-avail-inp').value;
@@ -2576,6 +2691,8 @@ function saveCandidateProfile(){
   // Save skills from inputs
   var skillInputs = document.querySelectorAll('#cp-skills-list input');
   cpData.skills = Array.from(skillInputs).map(function(i){return i.value;}).filter(Boolean);
+
+  persistAll();
 
   // Show success notification
   addNotif('✅', '<strong>'+cpData.name+'</strong> — Perfil guardado correctamente', 'ahora');
@@ -2666,6 +2783,7 @@ function saveCompanyProfileSilent(){
   copData.tagline=g('cop-tagline').value;
   copData.industry=g('cop-industry').value;
   copData.size=g('cop-size').value;
+  copData.contactEmail=g('cop-email').value;
   copData.location=g('cop-location').value;
   copData.web=g('cop-web').value;
   copData.founded=g('cop-founded').value;
@@ -2676,6 +2794,7 @@ function saveCompanyProfileSilent(){
   copData.github=g('cop-github').value;
   copData.culture=Array.from(document.querySelectorAll('.culture-chip.on'))
     .map(function(c){return c.textContent.trim();});
+  persistAll();
 }
 
 function saveCandidateProfileSilent(){
@@ -2683,6 +2802,7 @@ function saveCandidateProfileSilent(){
   cpData.name=g('cp-name-inp').value;
   cpData.role=g('cp-role-inp').value;
   cpData.about=g('cp-about-inp').value;
+  cpData.email=g('cp-email-inp').value;
   cpData.loc=g('cp-loc-inp').value;
   cpData.sal=g('cp-sal-inp').value;
   cpData.avail=g('cp-avail-inp').value;
@@ -2690,6 +2810,7 @@ function saveCandidateProfileSilent(){
   cpData.langs=g('cp-langs-inp').value;
   var skillInputs=document.querySelectorAll('#cp-skills-list input');
   cpData.skills=Array.from(skillInputs).map(function(i){return i.value;}).filter(Boolean);
+  persistAll();
 }
 
 function applyRoleUI(){
@@ -2744,7 +2865,7 @@ var _origStartApp = null;
 // ── COMPANY PROFILE DATA ──
 var copData = {
   name:'', tagline:'', industry:'', size:'', location:'', web:'', founded:'',
-  desc:'', logo:null, banner:null,
+  desc:'', logo:null, banner:null, contactEmail:'',
   culture:[], linkedin:'', twitter:'', instagram:'', github:'',
   jobs:[]
 };
@@ -2756,6 +2877,7 @@ function initCompanyProfile(){
   g('cop-tagline').value = copData.tagline;
   g('cop-industry').value = copData.industry;
   g('cop-size').value = copData.size;
+  g('cop-email').value = copData.contactEmail||'';
   g('cop-location').value = copData.location;
   g('cop-web').value = copData.web;
   g('cop-founded').value = copData.founded;
@@ -2933,10 +3055,17 @@ function goMyProfile(){
 
 function saveCompanyProfile(){
   var g=function(id){return document.getElementById(id);};
+  // Validar email si está cargado
+  var emailVal = (g('cop-email')||{}).value||'';
+  if(emailVal && !isValidEmail(emailVal)){
+    alert('El formato del email de contacto no es válido. Revisá antes de guardar.');
+    return;
+  }
   copData.name=g('cop-name').value;
   copData.tagline=g('cop-tagline').value;
   copData.industry=g('cop-industry').value;
   copData.size=g('cop-size').value;
+  copData.contactEmail=emailVal;
   copData.location=g('cop-location').value;
   copData.web=g('cop-web').value;
   copData.founded=g('cop-founded').value;
@@ -2948,6 +3077,7 @@ function saveCompanyProfile(){
   // Save culture chips
   copData.culture=Array.from(document.querySelectorAll('.culture-chip.on'))
     .map(function(c){return c.textContent.trim();});
+  persistAll();
   addNotif('✅','Perfil de <strong>'+copData.name+'</strong> guardado','ahora');
   // Re-sort candidates based on updated JDs
   if(USER_ROLE==='company') sortDataSetByMatch();
@@ -3086,11 +3216,38 @@ function saveScheduledInterview(){
   var time=document.getElementById('sm-time').value;
   if(!candName){alert('Seleccioná un candidato.');return;}
   if(!date||!time){alert('Ingresá fecha y hora.');return;}
+
+  // Verificar que el reclutador tenga email cargado
+  if(!copData.contactEmail){
+    var goProfile = confirm('Para enviar recordatorios automáticos necesitás tener un email de contacto en el perfil de tu empresa. ¿Querés completarlo ahora?');
+    if(goProfile){
+      closeScheduleModal();
+      go('company-profile-scr');
+      initCompanyProfile();
+      setTimeout(function(){
+        var emailInp = document.getElementById('cop-email');
+        if(emailInp){ emailInp.focus(); emailInp.scrollIntoView({behavior:'smooth',block:'center'}); }
+      },300);
+      return;
+    }
+  }
+
   var duration=document.getElementById('sm-duration').value;
   var notes=document.getElementById('sm-notes').value;
   var link=generateMeetLink(selectedPlatform,date,time,candName);
+
+  // Find candidate info to get email (del match o de cpData si soy el candidato logueado)
+  var match=matches.find(function(m){return m.name===candName;});
+  var candidateEmail = (match && match.email) || '';
+  // Si el logueado es el propio candidato y coincide el nombre, usar cpData
+  if(!candidateEmail && cpData.name===candName) candidateEmail = cpData.email||'';
+
   var interview={
     candidate:candName,
+    candidateEmail:candidateEmail,
+    recruiterEmail:copData.contactEmail||'',
+    companyName:copData.name||'tNic',
+    jobTitle:(copData.jobs&&copData.jobs[0]&&copData.jobs[0].title)||'',
     platform:selectedPlatform,
     date:date,
     time:time,
@@ -3101,8 +3258,6 @@ function saveScheduledInterview(){
     altSlots:altSlots.filter(function(s){return s.date&&s.time;}),
     createdAt:new Date().toISOString()
   };
-  // Find candidate info
-  var match=matches.find(function(m){return m.name===candName;});
   if(match){
     interview.color=match.color;
     interview.av=match.av;
@@ -3124,6 +3279,11 @@ function saveScheduledInterview(){
     chats[candName].push({from:'me',text:msg,time:nowTime()});
   }
   addNotif('📅','Entrevista agendada con <strong>'+candName+'</strong> — '+date+' '+time,'ahora');
+
+  // Disparar envío de emails (confirmación + recordatorios 24h y 1h)
+  sendInterviewEmails(interview);
+
+  persistAll();
   closeScheduleModal();
   buildAgenda();
 }
@@ -3279,4 +3439,3 @@ if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone){
 </script>
 </body>
 </html>
-

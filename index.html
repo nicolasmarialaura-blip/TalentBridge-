@@ -1232,17 +1232,18 @@ input[type=range]{width:100%;accent-color:var(--b)}
     <div id="alt-slots-list"></div>
     <button class="add-slot-btn" onclick="addAltSlot()">+ Agregar horario alternativo</button>
 
-    <!-- Notes -->
-    <label class="sm-label">Notas para el candidato</label>
-    <input class="sm-inp" id="sm-notes" placeholder="Ej: Traer portfolio, hablaremos en inglés...">
-
-    <!-- Generated link preview -->
-    <div class="generated-link" id="gen-link-preview">
-      <div class="gen-link-label" id="gen-link-label">🎥 Link de la reunión</div>
-      <div class="gen-link-url" id="gen-link-url"></div>
+    <!-- Meeting link (manual input) -->
+    <label class="sm-label" id="sm-link-label">🔗 Link de la reunión</label>
+    <input class="sm-inp" id="sm-link" style="width:100%" placeholder="Pegá acá tu link de Meet, Zoom o Teams">
+    <div style="font-size:10px;color:var(--gray);margin-top:4px;line-height:1.4" id="sm-link-hint">
+      Creá la reunión en tu calendario o plataforma, copiá el link y pegalo acá. Si lo dejás vacío, podés agregarlo después.
     </div>
 
-    <button class="sm-save" onclick="saveScheduledInterview()">✓ Confirmar y generar link</button>
+    <!-- Notes -->
+    <label class="sm-label" style="margin-top:12px">Notas para el candidato</label>
+    <input class="sm-inp" id="sm-notes" placeholder="Ej: Traer portfolio, hablaremos en inglés...">
+
+    <button class="sm-save" onclick="saveScheduledInterview()">✓ Confirmar entrevista</button>
   </div>
 </div>
 
@@ -3101,21 +3102,11 @@ var altSlots = [];
 var agendaTab = 'all';
 
 // Generate meeting link
+// Nota: ya no generamos links automáticos falsos. El link viene del input manual
+// "sm-link" que el reclutador pega desde su calendario/plataforma. Esta función
+// queda como helper vacío por retrocompatibilidad.
 function generateMeetLink(platform, date, time, candidateName){
-  var room = 'tnic-' + (candidateName||'interview').toLowerCase().replace(/[^a-z0-9]/g,'-')
-    + '-' + Date.now().toString(36);
-  switch(platform){
-    case 'meet':
-      return 'https://meet.google.com/' + room.substring(0,15);
-    case 'zoom':
-      return 'https://zoom.us/j/' + Math.floor(Math.random()*9000000000+1000000000);
-    case 'teams':
-      return 'https://teams.microsoft.com/l/meetup-join/tnic/' + room;
-    case 'presencial':
-      return '';
-    default:
-      return '';
-  }
+  return '';
 }
 
 function getPlatformIcon(platform){
@@ -3137,23 +3128,25 @@ function selectPlatform(p){
     var el=document.getElementById('plat-'+pl);
     if(el) el.classList.toggle('on',pl===p);
   });
-  // Show/hide link preview
-  var preview=document.getElementById('gen-link-preview');
-  if(preview) preview.style.display=p==='presencial'?'none':'block';
-  // Generate preview link
-  updateLinkPreview();
+  // Adaptar label e hint del campo de link/dirección según plataforma
+  var lbl=document.getElementById('sm-link-label');
+  var hint=document.getElementById('sm-link-hint');
+  var inp=document.getElementById('sm-link');
+  if(p==='presencial'){
+    if(lbl) lbl.textContent='📍 Dirección';
+    if(inp) inp.placeholder='Ej: Av. Corrientes 1234, piso 5, CABA';
+    if(hint) hint.textContent='Dirección donde se realizará la entrevista. Incluí piso, oficina o referencias si hace falta.';
+  } else {
+    var platName = getPlatformName(p);
+    var icon = getPlatformIcon(p);
+    if(lbl) lbl.textContent = icon+' Link de '+platName;
+    if(inp) inp.placeholder = 'Pegá acá tu link de '+platName;
+    if(hint) hint.textContent = 'Creá la reunión en '+platName+', copiá el link y pegalo acá. Si lo dejás vacío, podés agregarlo después.';
+  }
 }
 
 function updateLinkPreview(){
-  var cand=document.getElementById('sm-candidate');
-  var candName=cand&&cand.selectedOptions[0]?cand.selectedOptions[0].text:'';
-  var date=document.getElementById('sm-date')?document.getElementById('sm-date').value:'';
-  var time=document.getElementById('sm-time')?document.getElementById('sm-time').value:'';
-  var link=generateMeetLink(selectedPlatform,date,time,candName);
-  var urlEl=document.getElementById('gen-link-url');
-  var lblEl=document.getElementById('gen-link-label');
-  if(urlEl) urlEl.textContent=link||'Se generará al confirmar';
-  if(lblEl) lblEl.textContent=getPlatformIcon(selectedPlatform)+' Link '+getPlatformName(selectedPlatform);
+  // Función legacy, ya no aplica. Dejada vacía por compatibilidad.
 }
 
 // Alt slots
@@ -3198,9 +3191,10 @@ function openScheduleModal(candidateName){
   document.getElementById('sm-date').value='';
   document.getElementById('sm-time').value='10:00';
   document.getElementById('sm-notes').value='';
+  var linkInp=document.getElementById('sm-link'); if(linkInp) linkInp.value='';
   renderAltSlots();
-  document.getElementById('gen-link-preview').style.display='block';
-  updateLinkPreview();
+  // Disparar selectPlatform para setear labels según plataforma actual
+  selectPlatform(selectedPlatform);
   document.getElementById('schedule-modal').classList.add('open');
 }
 
@@ -3234,7 +3228,8 @@ function saveScheduledInterview(){
 
   var duration=document.getElementById('sm-duration').value;
   var notes=document.getElementById('sm-notes').value;
-  var link=generateMeetLink(selectedPlatform,date,time,candName);
+  // Link viene del input manual que el reclutador pegó
+  var link=(document.getElementById('sm-link')||{value:''}).value.trim();
 
   // Find candidate info to get email (del match o de cpData si soy el candidato logueado)
   var match=matches.find(function(m){return m.name===candName;});

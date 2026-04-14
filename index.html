@@ -256,6 +256,28 @@ input[type=range]{width:100%;accent-color:var(--b)}
 .ntime{font-size:10px;color:#bbb;margin-top:2px}
 .nudot{width:7px;height:7px;background:var(--b);border-radius:50%;position:absolute;top:12px;right:12px}
 .nempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gray);font-size:14px}
+/* ── SEARCH PANEL ── */
+#spanel{position:absolute;inset:0;background:var(--w);z-index:200;border-radius:36px;overflow:hidden;display:none;flex-direction:column}
+#spanel.on{display:flex}
+.shead{display:flex;align-items:center;gap:10px;padding:18px 16px 12px;border-bottom:1px solid var(--brd);flex-shrink:0}
+.shead .backbtn{background:none;border:none;font-size:20px;color:var(--gray);cursor:pointer;padding:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#search-inp{flex:1;border:1.5px solid var(--brd);border-radius:20px;padding:9px 14px;font-size:13px;font-family:'Inter',sans-serif;color:var(--dark);outline:none;background:var(--light);transition:border-color .2s}
+#search-inp:focus{border-color:var(--b);background:#fff}
+.sclear{background:var(--gray);color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sstats{padding:8px 18px 0;font-size:11px;color:var(--gray);font-weight:600;min-height:0}
+.slist{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.sempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+.sresult{display:flex;gap:12px;align-items:center;padding:12px;background:var(--light);border-radius:14px;cursor:pointer;border:1.5px solid transparent;transition:all .15s}
+.sresult:hover,.sresult:active{border-color:var(--b);background:#fff;transform:translateY(-1px)}
+.sr-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;font-family:'Syne',sans-serif;overflow:hidden}
+.sr-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.sr-info{flex:1;min-width:0}
+.sr-name{font-size:13px;font-weight:700;color:var(--dark);font-family:'Syne',sans-serif;display:flex;align-items:center;gap:6px}
+.sr-role{font-size:11px;color:var(--gray);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-meta{font-size:10px;color:var(--b);margin-top:3px;font-weight:600}
+.sr-score{background:var(--bxlight);color:var(--b);font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;flex-shrink:0}
+.sr-skills{font-size:9px;color:var(--gray);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-highlight{background:#FEF3C7;color:#92400E;padding:0 2px;border-radius:2px;font-weight:700}
 /* ── CANDIDATE/COMPANY FULL PROFILE ── */
 #detail-scr{background:var(--light)}
 .detail-hero{background:linear-gradient(135deg,#0F172A,#1B4FD8);padding:20px 20px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;position:relative}
@@ -611,6 +633,7 @@ input[type=range]{width:100%;accent-color:var(--b)}
       <div class="mtab on" onclick="setMode('candidates')">👤 Candidatos</div>
       <div class="mtab" onclick="setMode('companies')">🏢 Empresas</div>
     </div>
+    <div class="ibtn" onclick="openSearch()" title="Buscar">🔍</div>
     <div class="ibtn" onclick="openNotifs()">🔔<div class="ndot" id="ndot"></div></div>
   </div>
   <div class="card-area">
@@ -887,6 +910,23 @@ input[type=range]{width:100%;accent-color:var(--b)}
     <div class="nclear" onclick="clearNotifs()">Limpiar todo</div>
   </div>
   <div class="nlist" id="nlist"></div>
+</div>
+
+<!-- SEARCH PANEL -->
+<div id="spanel">
+  <div class="shead">
+    <button class="backbtn" onclick="closeSearch()">←</button>
+    <input type="text" id="search-inp" placeholder="Buscar por nombre, rol, skill, ubicación..." oninput="runSearch()" autocomplete="off">
+    <button class="sclear" id="sclear-btn" onclick="clearSearchInput()" style="display:none">✕</button>
+  </div>
+  <div class="sstats" id="sstats"></div>
+  <div class="slist" id="slist">
+    <div class="sempty" id="sempty">
+      <div style="font-size:42px;margin-bottom:8px">🔍</div>
+      <div style="font-weight:700;color:var(--dark);margin-bottom:4px">Buscá en <span id="sempty-target">candidatos</span></div>
+      <div style="font-size:12px;color:var(--gray);line-height:1.5;max-width:240px;margin:0 auto">Nombre, rol, skills, ubicación, idiomas, años de experiencia, industria, cultura...</div>
+    </div>
+  </div>
 </div>
 
 
@@ -2032,6 +2072,150 @@ function markRead(i){notifs[i].unread=false;renderNotifs();}
 function clearNotifs(){notifs=[];renderNotifs();}
 function addNotif(icon,text,time){notifs.unshift({icon:icon,text:text,time:time,unread:true});updateNdot();}
 function updateNdot(){G('ndot').classList.toggle('on',notifs.some(function(n){return n.unread;}));}
+
+// ── SEARCH ──
+function openSearch(){
+  G('spanel').classList.add('on');
+  var inp=G('search-inp');
+  // Actualizar placeholder según modo actual
+  if(inp){
+    inp.placeholder = mode==='candidates'
+      ? 'Buscar candidatos por nombre, rol, skill...'
+      : 'Buscar empresas por nombre, industria, skill...';
+    inp.value='';
+  }
+  var targ=G('sempty-target');
+  if(targ) targ.textContent = mode==='candidates'?'candidatos':'empresas';
+  // Reset resultados
+  renderSearchEmpty();
+  setTimeout(function(){ if(inp) inp.focus(); }, 100);
+}
+
+function closeSearch(){
+  G('spanel').classList.remove('on');
+}
+
+function clearSearchInput(){
+  var inp=G('search-inp');
+  if(inp){ inp.value=''; inp.focus(); }
+  runSearch();
+}
+
+function renderSearchEmpty(){
+  var list=G('slist');
+  if(!list) return;
+  list.innerHTML = '<div class="sempty">'
+    +'<div style="font-size:42px;margin-bottom:8px">🔍</div>'
+    +'<div style="font-weight:700;color:var(--dark);margin-bottom:4px">Buscá en '+(mode==='candidates'?'candidatos':'empresas')+'</div>'
+    +'<div style="font-size:12px;color:var(--gray);line-height:1.5;max-width:240px;margin:0 auto">Nombre, rol, skills, ubicación, idiomas, años de experiencia, industria, cultura...</div>'
+    +'</div>';
+  var stats=G('sstats'); if(stats) stats.textContent='';
+  var cb=G('sclear-btn'); if(cb) cb.style.display='none';
+}
+
+function searchableText(item){
+  // Construye un "blob" de texto con todos los campos buscables de un item
+  var parts = [
+    item.name||'', item.role||'', item.loc||'', item.sal||'',
+    item.about||'', item.avail||'', item.exp||'', item.langs||'',
+    item.size||'', item.industry||''
+  ];
+  if(Array.isArray(item.skills)) parts.push(item.skills.join(' '));
+  if(Array.isArray(item.activeJobs)){
+    item.activeJobs.forEach(function(j){ parts.push((j.title||'')+' '+(j.type||'')+' '+(j.sal||'')); });
+  }
+  if(item.jd) parts.push(item.jd);
+  return parts.join(' ').toLowerCase();
+}
+
+function runSearch(){
+  var inp=G('search-inp');
+  var q=(inp?inp.value:'').trim().toLowerCase();
+  var cb=G('sclear-btn'); if(cb) cb.style.display = q?'flex':'none';
+
+  if(!q){ renderSearchEmpty(); return; }
+
+  // Tokenizar query: separar palabras, mínimo 2 chars para que "c" no dispare ruido
+  var tokens = q.split(/\s+/).filter(function(t){ return t.length>=2; });
+  if(!tokens.length){ renderSearchEmpty(); return; }
+
+  // Dataset completo según modo
+  var pool = mode==='candidates' ? CANDIDATES : COMPANIES;
+
+  // Scoring: cuántos tokens matchean el blob de cada item
+  var results = pool.map(function(item){
+    var blob = searchableText(item);
+    var matched = 0;
+    tokens.forEach(function(t){ if(blob.indexOf(t)>=0) matched++; });
+    return { item:item, matched:matched, total:tokens.length };
+  }).filter(function(r){ return r.matched>0; })
+    .sort(function(a,b){
+      // 1. Más tokens matcheados primero
+      if(b.matched !== a.matched) return b.matched - a.matched;
+      // 2. Score del perfil (si tiene) como desempate
+      return (b.item.score||0) - (a.item.score||0);
+    });
+
+  var list=G('slist');
+  var stats=G('sstats');
+
+  if(!results.length){
+    list.innerHTML = '<div class="sempty">'
+      +'<div style="font-size:42px;margin-bottom:8px">😕</div>'
+      +'<div style="font-weight:700;color:var(--dark);margin-bottom:4px">Sin resultados</div>'
+      +'<div style="font-size:12px;color:var(--gray);max-width:240px;margin:0 auto">Probá con otra palabra clave o revisá la ortografía.</div>'
+      +'</div>';
+    if(stats) stats.textContent='';
+    return;
+  }
+
+  if(stats){
+    stats.textContent = results.length+' '+(results.length===1?'resultado':'resultados')
+      +' en '+(mode==='candidates'?'candidatos':'empresas');
+  }
+
+  list.innerHTML = results.map(function(r){
+    return buildSearchResultHtml(r.item);
+  }).join('');
+}
+
+function buildSearchResultHtml(item){
+  var av = item.photo
+    ? '<img src="'+item.photo+'" alt="">'
+    : (item.av||(item.name||'?').substring(0,2).toUpperCase());
+  var bg = item.color||'#1B4FD8';
+  var skills = Array.isArray(item.skills) ? item.skills.slice(0,4).join(' · ') : '';
+  var scorePill = item.score ? '<div class="sr-score">'+item.score+'%</div>' : '';
+  var companyBadge = item.type==='company' ? '🏢 ' : '';
+  var meta = item.type==='company'
+    ? (item.industry||'')+(item.size?' · '+item.size:'')
+    : (item.exp||'')+(item.avail?' · '+item.avail:'');
+  // Escape name para usarlo como argumento
+  var safeName = (item.name||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  return '<div class="sresult" onclick="openFromSearch(\''+safeName+'\')">'
+    +'<div class="sr-av" style="background:'+bg+'">'+av+'</div>'
+    +'<div class="sr-info">'
+      +'<div class="sr-name">'+companyBadge+(item.name||'')+'</div>'
+      +'<div class="sr-role">'+(item.role||'')+'</div>'
+      +(meta?'<div class="sr-meta">'+meta+'</div>':'')
+      +(skills?'<div class="sr-skills">'+skills+'</div>':'')
+    +'</div>'
+    +scorePill
+    +'</div>';
+}
+
+function openFromSearch(name){
+  // Buscar en el dataset del modo activo
+  var pool = mode==='candidates' ? CANDIDATES : COMPANIES;
+  var item = pool.find(function(x){ return x.name===name; });
+  if(!item) return;
+  closeSearch();
+  // Usar la pantalla de detalle existente
+  currentDetail = item;
+  detailPrev = 'swipe-scr';
+  buildDetailScreen(item);
+  go('detail-scr');
+}
 
 function now(){var d=new Date();return(d.getHours()<10?'0':'')+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();}
 function restart(){idx=0;matches=[];chats={};curMatch=null;pipeline={};interviews=[];stats={seen:0,likes:0,mc:0,interviews:0};updateBadge();go('swipe-scr');render();}

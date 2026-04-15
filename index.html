@@ -1054,7 +1054,7 @@
   <script>
     // ── GOOGLE SHEETS CONFIG ──
     // Cuando tengas la URL del Apps Script, reemplazá esta línea:
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzWCxzfvUcneE0mJhHLqngJdGMjSnETD9WdHRwEH58uwmhGJxgTpTGTdKoIsdmL1ZPVgA/exec';
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyytXT8r8y7jp_DMW1rzGUGaoE14FNmR7bRTjh6mpHEWyqZMX0HPfySSz2_hEiDocZiLg/exec';
 
     // ── TRANSLATIONS ──
     const i18n = {
@@ -1194,21 +1194,19 @@
       btn.textContent = currentLang === 'es' ? 'Enviando...' : 'Sending...';
 
       try {
-        await fetch(SHEET_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fecha: new Date().toISOString(),
-            tipo: type === 'candidate'
-              ? (currentLang === 'es' ? 'Candidato' : 'Candidate')
-              : (currentLang === 'es' ? 'Empresa' : 'Company'),
-            nombre: name,
-            email: email
-          })
+        const params = new URLSearchParams({
+          fecha: new Date().toISOString(),
+          tipo: type === 'candidate'
+            ? (currentLang === 'es' ? 'Candidato' : 'Candidate')
+            : (currentLang === 'es' ? 'Empresa' : 'Company'),
+          nombre: name,
+          email: email
+        });
+        await fetch(SHEET_URL + '?' + params.toString(), {
+          method: 'GET',
+          mode: 'no-cors'
         });
       } catch(e) {
-        // con no-cors siempre entra acá aunque funcione — igual mostramos éxito
         console.log('Submitted:', type, name, email);
       }
 

@@ -552,23 +552,14 @@ input[type=range]{width:100%;accent-color:var(--b)}
 <meta name="theme-color" content="#1B4FD8">
 <meta name="description" content="tNic — Talent. Technology. Connection. La plataforma de matching IT más inteligente de LATAM.">
 
-<!-- PWA Manifest inline -->
-<link rel="manifest" href="data:application/json,{
-  %22name%22:%22tNic%20-%20Talent.%20Technology.%20Connection.%22,
-  %22short_name%22:%22tNic%22,
-  %22description%22:%22La%20plataforma%20de%20matching%20IT%20m%C3%A1s%20inteligente%20de%20LATAM%22,
-  %22start_url%22:%22.%2F%22,
-  %22display%22:%22standalone%22,
-  %22background_color%22:%22%230F172A%22,
-  %22theme_color%22:%22%231B4FD8%22,
-  %22orientation%22:%22portrait%22,
-  %22icons%22:[
-    {%22src%22:%22data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20512%20512'%3E%3Crect%20width%3D'512'%20height%3D'512'%20fill%3D'%230F172A'%2F%3E%3Ctext%20x%3D'60'%20y%3D'360'%20font-family%3D'Arial%20Black'%20font-weight%3D'900'%20font-size%3D'280'%20fill%3D'%231B4FD8'%3Et%3C%2Ftext%3E%3Ctext%20x%3D'210'%20y%3D'360'%20font-family%3D'Arial%20Black'%20font-weight%3D'900'%20font-size%3D'280'%20fill%3D'white'%3EN%3C%2Ftext%3E%3C%2Fsvg%3E%22,%22sizes%22:%22512x512%22,%22type%22:%22image/svg+xml%22,%22purpose%22:%22any%20maskable%22}
-  ]
-}">
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
 
-<!-- iOS splash/icon -->
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%230F172A' rx='80'/><text x='60' y='360' font-family='Arial Black' font-weight='900' font-size='280' fill='%231B4FD8'>t</text><text x='210' y='360' font-family='Arial Black' font-weight='900' font-size='280' fill='white'>N</text></svg>">
+<!-- iOS icon (180x180 PNG) -->
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- Fallback para Android/Chrome -->
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 
 </head>
 <body>
@@ -3590,14 +3581,11 @@ updateNdot();
 // ── PWA Service Worker ──
 if('serviceWorker' in navigator){
   window.addEventListener('load',function(){
-    var swCode=[
-      "var CACHE='tnic-v1';",
-      "self.addEventListener('install',function(e){self.skipWaiting();});",
-      "self.addEventListener('activate',function(e){self.clients.claim();});",
-      "self.addEventListener('fetch',function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request);}));});"
-    ].join('\n');
-    var blob=new Blob([swCode],{type:'application/javascript'});
-    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+    navigator.serviceWorker.register('sw.js').then(function(reg){
+      console.log('[tNic] Service Worker registrado:', reg.scope);
+    }).catch(function(err){
+      console.warn('[tNic] SW registration failed:', err);
+    });
   });
 }
 var _prompt=null;
@@ -3618,3 +3606,4 @@ if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone){
 </script>
 </body>
 </html>
+

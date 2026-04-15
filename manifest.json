@@ -1,0 +1,33 @@
+{
+  "name": "tNic - Talent. Technology. Connection.",
+  "short_name": "tNic",
+  "description": "La plataforma de matching IT más inteligente de LATAM. Conectá talento y empresas con swipes.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F172A",
+  "theme_color": "#1B4FD8",
+  "lang": "es-AR",
+  "categories": ["business", "productivity", "social"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

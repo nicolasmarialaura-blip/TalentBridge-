@@ -27,7 +27,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,
 .nav-logo-mark{background:#0F172A;border-radius:10px;padding:4px 8px;height:36px;display:flex;align-items:center}
 .nav-logo-mark svg{height:26px;width:auto}
 .nav-tagline{font-size:11px;font-weight:600;color:var(--gray);letter-spacing:.5px}
-@media(max-width:500px){.nav-tagline{display:none}}
+@media(min-width:700px){#nav-cons{display:inline-block !important}}
 .nav-actions{display:flex;align-items:center;gap:8px}
 .btn-lang{background:var(--bxlight);border:1.5px solid var(--brd);border-radius:var(--r);padding:6px 12px;font-size:12px;font-weight:600;color:var(--gray);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
 .btn-lang.on{background:var(--b);border-color:var(--b);color:#fff}
@@ -283,6 +283,57 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
 .footer-links a:hover{color:var(--b)}
 .footer-copy{font-size:11px;color:#bbb;width:100%}
 
+/* ── CONSULTORÍA ── */
+.consulting-section{padding:80px clamp(20px,6vw,80px);background:#fff;border-top:1px solid var(--brd)}
+.consulting-inner{max-width:1100px;margin:0 auto}
+.consulting-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+@media(max-width:768px){.consulting-grid{grid-template-columns:1fr}}
+
+.cons-card{border-radius:var(--rxl);overflow:hidden;box-shadow:0 4px 24px rgba(43,92,230,.08);transition:all .25s}
+.cons-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(43,92,230,.14)}
+.cons-card-hero{padding:32px 28px 28px;position:relative;overflow:hidden}
+.cons-card-hero.company{background:linear-gradient(135deg,#0F172A 0%,#1B4FD8 60%,#2B5CE6 100%)}
+.cons-card-hero.candidate{background:linear-gradient(135deg,#1a0533 0%,#5B21B6 60%,#7C3AED 100%)}
+.cons-deco{position:absolute;right:-20px;top:-20px;font-size:100px;opacity:.07;line-height:1}
+.cons-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
+.cons-card-icon{font-size:36px;margin-bottom:12px;display:block}
+.cons-card-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px;letter-spacing:-.3px}
+.cons-card-sub{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:20px}
+.cons-pills{display:flex;flex-wrap:wrap;gap:6px}
+.cons-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:600}
+
+.cons-card-body{background:#fff;padding:24px 28px}
+.cons-benefit{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.cons-benefit:last-of-type{margin-bottom:20px}
+.cons-benefit-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px}
+.cons-benefit-icon.blue{background:var(--bxlight)}
+.cons-benefit-icon.purple{background:#F3F0FF}
+.cons-benefit-text strong{font-size:13px;color:var(--dark);display:block;margin-bottom:1px}
+.cons-benefit-text span{font-size:12px;color:var(--gray);line-height:1.5}
+
+.cons-form{border-top:1px solid var(--brd);padding-top:16px}
+.cons-form-label{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:block}
+.cons-inp{width:100%;border:1.5px solid var(--brd);border-radius:10px;padding:10px 14px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--dark);background:var(--light);outline:none;transition:border-color .2s;margin-bottom:8px}
+.cons-inp:focus{border-color:var(--b);background:#fff}
+.cons-inp.purple:focus{border-color:var(--purple)}
+.cons-textarea{width:100%;border:1.5px solid var(--brd);border-radius:10px;padding:10px 14px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--dark);background:var(--light);outline:none;resize:none;min-height:70px;transition:border-color .2s;margin-bottom:8px}
+.cons-textarea:focus{border-color:var(--b)}
+.cons-textarea.purple:focus{border-color:var(--purple)}
+.cons-btn{width:100%;border:none;border-radius:12px;padding:12px 0;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.cons-btn.blue{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff}
+.cons-btn.purple{background:linear-gradient(135deg,#7C3AED,#9333EA);color:#fff}
+.cons-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.cons-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.cons-success{display:none;text-align:center;padding:12px;border-radius:10px;font-size:13px;font-weight:600}
+.cons-success.blue{background:var(--bxlight);color:var(--b)}
+.cons-success.purple{background:#F3F0FF;color:var(--purple)}
+
+.consulting-cta{margin-top:32px;background:linear-gradient(135deg,#EEF3FF,#F3F0FF);border:1.5px solid rgba(43,92,230,.1);border-radius:var(--rxl);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.consulting-cta-text h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--dark);margin-bottom:4px}
+.consulting-cta-text p{font-size:13px;color:var(--mid)}
+.consulting-cta a{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:12px;padding:12px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;text-decoration:none;display:inline-block;transition:all .2s;white-space:nowrap}
+.consulting-cta a:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,92,230,.35)}
+
 /* Fade in on scroll */
 .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .fade-in.visible{opacity:1;transform:none}
@@ -304,6 +355,7 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
   <div class="nav-actions">
     <button class="btn-lang on" id="btn-es" onclick="setLang('es')">ES</button>
     <button class="btn-lang" id="btn-en" onclick="setLang('en')">EN</button>
+    <a href="#consultoria" style="font-size:12px;font-weight:600;color:var(--b);text-decoration:none;display:none" id="nav-cons" class="nav-tagline" data-es="Consultoría" data-en="Consulting">Consultoría</a>
     <a class="btn-app" id="btn-app" href="/app">Entrar a la app →</a>
   </div>
 </nav>
@@ -676,6 +728,146 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
   </div>
 </section>
 
+<!-- CONSULTORÍA -->
+<section class="consulting-section" id="consultoria">
+  <div class="consulting-inner">
+    <div class="section-label fade-in" data-es="Servicios de Consultoría" data-en="Consulting Services">Servicios de Consultoría</div>
+    <h2 class="section-title fade-in" data-es="Más allá del matching: te acompañamos a crecer" data-en="Beyond matching: we help you grow">Más allá del matching: te acompañamos a crecer</h2>
+    <p class="section-sub fade-in" data-es="Para empresas que quieren escalar su Talent Acquisition y para candidatos que quieren destacarse en el mercado IT." data-en="For companies that want to scale their Talent Acquisition and for candidates who want to stand out in the IT market.">Para empresas que quieren escalar su Talent Acquisition y para candidatos que quieren destacarse en el mercado IT.</p>
+
+    <div class="consulting-grid">
+
+      <!-- CARD EMPRESAS -->
+      <div class="cons-card fade-in">
+        <div class="cons-card-hero company">
+          <div class="cons-deco">🏢</div>
+          <div class="cons-tag">🏢 <span data-es="Para Empresas" data-en="For Companies">Para Empresas</span></div>
+          <span class="cons-card-icon">🚀</span>
+          <div class="cons-card-title" data-es="Transformá tu Talent Acquisition con IA" data-en="Transform your Talent Acquisition with AI">Transformá tu Talent Acquisition con IA</div>
+          <div class="cons-card-sub" data-es="Escalamos tu proceso de reclutamiento: de flujos manuales y dispersos a pipelines automatizados con inteligencia artificial, métricas reales y equipos más eficientes." data-en="We scale your recruitment process: from manual and dispersed flows to automated pipelines with artificial intelligence, real metrics and more efficient teams.">Escalamos tu proceso de reclutamiento: de flujos manuales y dispersos a pipelines automatizados con inteligencia artificial, métricas reales y equipos más eficientes.</div>
+          <div class="cons-pills">
+            <span class="cons-pill" data-es="Automatización de procesos" data-en="Process automation">Automatización de procesos</span>
+            <span class="cons-pill" data-es="Screening con IA" data-en="AI Screening">Screening con IA</span>
+            <span class="cons-pill" data-es="Métricas de reclutamiento" data-en="Recruitment metrics">Métricas</span>
+            <span class="cons-pill" data-es="Employer Branding" data-en="Employer Branding">Employer Branding</span>
+          </div>
+        </div>
+        <div class="cons-card-body">
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon blue">⚡</div>
+            <div class="cons-benefit-text">
+              <strong data-es="De manual a automatizado" data-en="From manual to automated">De manual a automatizado</strong>
+              <span data-es="Mapeamos tu proceso actual e implementamos herramientas de IA para filtrar, rankear y gestionar candidatos sin fricción." data-en="We map your current process and implement AI tools to filter, rank and manage candidates without friction.">Mapeamos tu proceso actual e implementamos herramientas de IA para filtrar, rankear y gestionar candidatos sin fricción.</span>
+            </div>
+          </div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon blue">📊</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Dashboards y métricas" data-en="Dashboards and metrics">Dashboards y métricas</strong>
+              <span data-es="Time-to-hire, cost-per-hire, quality of hire. Datos reales para tomar mejores decisiones de equipo." data-en="Time-to-hire, cost-per-hire, quality of hire. Real data to make better team decisions.">Time-to-hire, cost-per-hire, quality of hire. Datos reales para tomar mejores decisiones.</span>
+            </div>
+          </div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon blue">🎯</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Estrategia de Employer Branding" data-en="Employer Branding Strategy">Estrategia de Employer Branding</strong>
+              <span data-es="Posicioná tu empresa como empleador de referencia en el mercado IT de LATAM." data-en="Position your company as a reference employer in the LATAM IT market.">Posicioná tu empresa como empleador de referencia en el mercado IT de LATAM.</span>
+            </div>
+          </div>
+          <div class="cons-form">
+            <label class="cons-form-label" data-es="Consultá sin compromiso" data-en="Inquire with no commitment">Consultá sin compromiso</label>
+            <form onsubmit="submitConsulting(event,'company-consulting')">
+              <input class="cons-inp" type="text" id="cons-comp-name" placeholder="Tu nombre" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" required autocomplete="off" name="cons-comp-name-tnic">
+              <input class="cons-inp" type="email" id="cons-comp-email" placeholder="Email corporativo" data-placeholder-es="Email corporativo" data-placeholder-en="Corporate email" required autocomplete="off" name="cons-comp-email-tnic">
+              <input class="cons-inp" type="text" id="cons-comp-company" placeholder="Nombre de tu empresa" data-placeholder-es="Nombre de tu empresa" data-placeholder-en="Company name" autocomplete="off" name="cons-comp-company-tnic">
+              <textarea class="cons-textarea" id="cons-comp-msg" placeholder="¿Cuál es el principal desafío de tu equipo de Talent Acquisition?" data-placeholder-es="¿Cuál es el principal desafío de tu equipo de Talent Acquisition?" data-placeholder-en="What is the main challenge of your Talent Acquisition team?"></textarea>
+              <div class="legal-row" style="margin-bottom:12px">
+                <input type="checkbox" id="cons-comp-legal" required>
+                <label for="cons-comp-legal" style="font-size:11px;color:var(--gray)">
+                  <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and the processing of my contact data.'>Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.</span>
+                </label>
+              </div>
+              <button type="submit" class="cons-btn blue" data-es="Quiero escalar mi equipo →" data-en="I want to scale my team →">Quiero escalar mi equipo →</button>
+              <div class="cons-success blue" id="cons-comp-ok">
+                <span data-es="✅ ¡Genial! Te contactamos en menos de 48hs para coordinar una reunión." data-en="✅ Great! We'll contact you within 48 hours to schedule a meeting.">✅ ¡Genial! Te contactamos en menos de 48hs para coordinar una reunión.</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD CANDIDATOS -->
+      <div class="cons-card fade-in">
+        <div class="cons-card-hero candidate">
+          <div class="cons-deco">🧑‍💼</div>
+          <div class="cons-tag">🧑‍💼 <span data-es="Para Candidatos" data-en="For Candidates">Para Candidatos</span></div>
+          <span class="cons-card-icon">✨</span>
+          <div class="cons-card-title" data-es="Posicioná tu marca personal en el mercado IT" data-en="Position your personal brand in the IT market">Posicioná tu marca personal en el mercado IT</div>
+          <div class="cons-card-sub" data-es="Te ayudamos a diferenciarte: perfil de LinkedIn optimizado, portfolio técnico que impacta, estrategia de visibilidad y preparación para entrevistas de alto nivel." data-en="We help you stand out: optimized LinkedIn profile, impactful technical portfolio, visibility strategy and preparation for high-level interviews.">Te ayudamos a diferenciarte: perfil de LinkedIn optimizado, portfolio técnico que impacta, estrategia de visibilidad y preparación para entrevistas de alto nivel.</div>
+          <div class="cons-pills">
+            <span class="cons-pill" data-es="Personal Branding" data-en="Personal Branding">Personal Branding</span>
+            <span class="cons-pill" data-es="LinkedIn optimization" data-en="LinkedIn optimization">LinkedIn</span>
+            <span class="cons-pill" data-es="Prep entrevistas" data-en="Interview prep">Prep entrevistas</span>
+            <span class="cons-pill" data-es="Portfolio técnico" data-en="Technical portfolio">Portfolio</span>
+          </div>
+        </div>
+        <div class="cons-card-body">
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon purple">🔮</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Marca personal que abre puertas" data-en="Personal brand that opens doors">Marca personal que abre puertas</strong>
+              <span data-es="Revisamos y optimizamos tu perfil de LinkedIn, GitHub y portfolio para que los recruiters te encuentren primero." data-en="We review and optimize your LinkedIn, GitHub and portfolio profile so recruiters find you first.">Revisamos y optimizamos tu perfil de LinkedIn, GitHub y portfolio para que los recruiters te encuentren primero.</span>
+            </div>
+          </div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon purple">🎯</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Estrategia de búsqueda activa" data-en="Active job search strategy">Estrategia de búsqueda activa</strong>
+              <span data-es="Definimos juntos el tipo de empresa, rol y compensación que te conviene buscar según tu perfil y objetivos." data-en="Together we define the type of company, role and compensation you should look for based on your profile and goals.">Definimos juntos el tipo de empresa, rol y compensación que te conviene buscar según tu perfil y objetivos.</span>
+            </div>
+          </div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon purple">💼</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Preparación para entrevistas" data-en="Interview preparation">Preparación para entrevistas</strong>
+              <span data-es="Simulaciones de entrevistas técnicas y de cultura, feedback real y técnicas para negociar mejor tu oferta." data-en="Technical and culture interview simulations, real feedback and techniques to better negotiate your offer.">Simulaciones de entrevistas técnicas y de cultura, feedback real y técnicas para negociar mejor tu oferta.</span>
+            </div>
+          </div>
+          <div class="cons-form">
+            <label class="cons-form-label" data-es="Hablemos de tu carrera" data-en="Let's talk about your career">Hablemos de tu carrera</label>
+            <form onsubmit="submitConsulting(event,'candidate-consulting')">
+              <input class="cons-inp purple" type="text" id="cons-cand-name" placeholder="Tu nombre" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" required autocomplete="off" name="cons-cand-name-tnic">
+              <input class="cons-inp purple" type="email" id="cons-cand-email" placeholder="Tu email" data-placeholder-es="Tu email" data-placeholder-en="Your email" required autocomplete="off" name="cons-cand-email-tnic">
+              <input class="cons-inp purple" type="text" id="cons-cand-role" placeholder="Tu rol actual (ej: Full Stack Developer)" data-placeholder-es="Tu rol actual (ej: Full Stack Developer)" data-placeholder-en="Your current role (e.g. Full Stack Developer)" autocomplete="off" name="cons-cand-role-tnic">
+              <textarea class="cons-textarea purple" id="cons-cand-msg" placeholder="¿Qué querés lograr en tu carrera? ¿Cuál es tu mayor desafío hoy?" data-placeholder-es="¿Qué querés lograr en tu carrera? ¿Cuál es tu mayor desafío hoy?" data-placeholder-en="What do you want to achieve in your career? What's your biggest challenge today?"></textarea>
+              <div class="legal-row" style="margin-bottom:12px">
+                <input type="checkbox" id="cons-cand-legal" required>
+                <label for="cons-cand-legal" style="font-size:11px;color:var(--gray)">
+                  <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and the processing of my contact data.'>Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.</span>
+                </label>
+              </div>
+              <button type="submit" class="cons-btn purple" data-es="Quiero potenciar mi carrera →" data-en="I want to boost my career →">Quiero potenciar mi carrera →</button>
+              <div class="cons-success purple" id="cons-cand-ok">
+                <span data-es="✅ ¡Perfecto! Te escribimos en 48hs para arrancar con tu estrategia." data-en="✅ Perfect! We'll write to you in 48 hours to start your strategy.">✅ ¡Perfecto! Te escribimos en 48hs para arrancar con tu estrategia.</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /consulting-grid -->
+
+    <!-- CTA bottom -->
+    <div class="consulting-cta fade-in">
+      <div class="consulting-cta-text">
+        <h3 data-es="¿No sabés por dónde empezar?" data-en="Not sure where to start?">¿No sabés por dónde empezar?</h3>
+        <p data-es="Agendá una llamada de diagnóstico gratuita de 30 minutos. Sin compromiso, con insights concretos." data-en="Schedule a free 30-minute diagnostic call. No commitment, with concrete insights.">Agendá una llamada de diagnóstico gratuita de 30 minutos. Sin compromiso, con insights concretos.</p>
+      </div>
+      <a href="mailto:hola@tnictalent.com" data-es="📞 Agendá una llamada gratis" data-en="📞 Schedule a free call">📞 Agendá una llamada gratis</a>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -689,8 +881,10 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
       <div class="footer-tagline">Talent · Technology · Connection</div>
     </div>
     <div class="footer-links">
+      <a href="#consultoria" data-es="Consultoría" data-en="Consulting">Consultoría</a>
       <a href="#legal" data-es="Legal" data-en="Legal">Legal</a>
       <a href="#" onclick="openModal(event)" data-es="Términos y Condiciones" data-en="Terms & Conditions">Términos y Condiciones</a>
+      <a href="mailto:hola@tnictalent.com">hola@tnictalent.com</a>
       <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a>
       <a href="/app" data-es="Abrir App →" data-en="Open App →">Abrir App →</a>
     </div>
@@ -795,7 +989,37 @@ function showSuccess(type){
   f.querySelector('.btn-submit').style.display='none';
 }
 
-// ── MODAL ──
+// ── CONSULTING FORMS ──
+function submitConsulting(e,type){
+  e.preventDefault();
+  var name,email,extra,msg;
+  if(type==='company-consulting'){
+    name=document.getElementById('cons-comp-name').value;
+    email=document.getElementById('cons-comp-email').value;
+    extra=document.getElementById('cons-comp-company').value;
+    msg=document.getElementById('cons-comp-msg').value;
+  } else {
+    name=document.getElementById('cons-cand-name').value;
+    email=document.getElementById('cons-cand-email').value;
+    extra=document.getElementById('cons-cand-role').value;
+    msg=document.getElementById('cons-cand-msg').value;
+  }
+  var btn=e.target.querySelector('.cons-btn');
+  btn.disabled=true;btn.textContent=LANG==='es'?'Enviando...':'Sending...';
+  var tipo=type==='company-consulting'?'Consultoría Empresa':'Consultoría Candidato';
+  var url=SHEET_URL+'?tipo='+encodeURIComponent(tipo)+'&nombre='+encodeURIComponent(name)+'&email='+encodeURIComponent(email)+'&empresa='+encodeURIComponent(extra)+'&mensaje='+encodeURIComponent(msg);
+  fetch(url,{method:'GET',mode:'no-cors'})
+    .then(function(){showConsultingSuccess(type);})
+    .catch(function(){showConsultingSuccess(type);});
+}
+function showConsultingSuccess(type){
+  var isComp=type==='company-consulting';
+  var okId=isComp?'cons-comp-ok':'cons-cand-ok';
+  document.getElementById(okId).style.display='block';
+  var f=document.getElementById(okId).closest('form');
+  f.querySelectorAll('input,textarea,.cons-btn').forEach(function(el){el.style.display='none';});
+  f.querySelector('.legal-row').style.display='none';
+}
 function openModal(e){if(e)e.preventDefault();document.getElementById('tc-modal').classList.add('open');document.body.style.overflow='hidden';}
 function closeModal(){document.getElementById('tc-modal').classList.remove('open');document.body.style.overflow='';}
 document.getElementById('tc-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});

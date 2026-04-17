@@ -1381,13 +1381,13 @@ function buildList(){
     return 0;
   });
 
-  list.innerHTML=filtered.map(function(m,i){
+  list.innerHTML=filtered.map(function(m){
     var av=m.photo?'<img src="'+m.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">':m.av;
     var hasChat=chats[m.name]&&chats[m.name].length>0;
     var lastMsg=m.lastMsg||(hasChat?chats[m.name][chats[m.name].length-1].text:'Mutual Interest · Tocá para chatear');
-    var mi=matches.indexOf(m);if(mi<0)mi=i;
-    // Extraer rol del otro lado según USER_ROLE
     var subLabel=m.type==='company'?'🏢 Empresa':'🧑‍💼 Candidato';
+    // Escapar nombre para uso en atributo HTML
+    var safeName=m.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
     return'<div class="mitem" style="flex-direction:column;align-items:stretch;gap:0">'
       +'<div style="display:flex;align-items:center;gap:10px">'
       +'<div class="miav" style="background:'+m.color+'">'+av+'</div>'
@@ -1398,11 +1398,10 @@ function buildList(){
       +'</div>'
       +'<div class="miright"><div class="mitime">'+(m.time||'')+'</div></div>'
       +'</div>'
-      // Botones de acción siempre visibles
       +'<div class="mitem-actions">'
-      +'<button class="mitem-btn mitem-btn-chat" onclick="event.stopPropagation();chatPrev=\'matches-scr\';openChat(matches['+mi+'])">💬 '+(hasChat?'Continuar chat':'Iniciar chat')+'</button>'
-      +'<button class="mitem-btn mitem-btn-sched" onclick="event.stopPropagation();openScheduleModal(\''+m.name+'\')">📅 Agendar</button>'
-      +'<button class="mitem-btn mitem-btn-info" onclick="event.stopPropagation();viewMatchDetail(matches['+mi+'])">👤 Ver perfil</button>'
+      +'<button class="mitem-btn mitem-btn-chat" onclick="event.stopPropagation();chatPrev=\'matches-scr\';openChatByName(\''+safeName+'\')">💬 '+(hasChat?'Continuar chat':'Iniciar chat')+'</button>'
+      +'<button class="mitem-btn mitem-btn-sched" onclick="event.stopPropagation();openScheduleModal(\''+safeName+'\')">📅 Agendar</button>'
+      +'<button class="mitem-btn mitem-btn-info" onclick="event.stopPropagation();viewMatchByName(\''+safeName+'\')">👤 Ver perfil</button>'
       +'</div>'
       +'</div>';
   }).join('');
@@ -1410,15 +1409,26 @@ function buildList(){
 
 function viewMatchDetail(m){currentDetail=m;detailPrev='matches-scr';buildDetailScreen(m);go('detail-scr');}
 
+// Busca por nombre — evita bugs de índice con listas filtradas/reordenadas
+function openChatByName(name){
+  var m=matches.find(function(x){return x.name===name;});
+  if(m)openChat(m);
+}
+function viewMatchByName(name){
+  var m=matches.find(function(x){return x.name===name;});
+  if(m){currentDetail=m;detailPrev='matches-scr';buildDetailScreen(m);go('detail-scr');}
+}
+
 function showNewChatOptions(){
   // Muestra modal para elegir con quién chatear (todos los matches)
   var modal=G('new-chat-modal');if(modal)modal.style.display='flex';
   var list=G('new-chat-list');if(!list)return;
   if(!matches.length){list.innerHTML='<div style="text-align:center;color:var(--gray);padding:20px">Sin matches aún</div>';return;}
-  list.innerHTML=matches.map(function(m,i){
+  list.innerHTML=matches.map(function(m){
     var av=m.photo?'<img src="'+m.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">':m.av;
     var hasChat=chats[m.name]&&chats[m.name].length>0;
-    return'<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--light);border-radius:var(--rl);cursor:pointer;border:1.5px solid '+(hasChat?'var(--b)':'var(--brd)')+'" onclick="closeNewChatModal();chatPrev=\'matches-scr\';openChat(matches['+i+'])">'
+    var safeName=m.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    return'<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--light);border-radius:var(--rl);cursor:pointer;border:1.5px solid '+(hasChat?'var(--b)':'var(--brd)')+'" onclick="closeNewChatModal();chatPrev=\'matches-scr\';openChatByName(\''+safeName+'\')">'
       +'<div class="miav" style="background:'+m.color+';width:40px;height:40px;flex-shrink:0">'+av+'</div>'
       +'<div style="flex:1;min-width:0">'
       +'<div style="font-size:13px;font-weight:700;color:var(--dark)">'+m.name+'</div>'

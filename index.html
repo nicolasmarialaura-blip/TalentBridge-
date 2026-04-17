@@ -171,6 +171,13 @@ input.cv-in{display:none}
 .mitime{font-size:10px;color:#bbb}
 .miunread{background:var(--b);color:#fff;font-size:10px;font-weight:700;border-radius:8px;padding:2px 6px}
 .nomatch{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gray);font-size:14px;padding:30px;text-align:center}
+.chat-filter-chip{padding:5px 12px;border-radius:var(--rp);font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--brd);color:var(--gray);background:var(--w);transition:all .15s}
+.chat-filter-chip.on{background:var(--b);border-color:var(--b);color:#fff}
+.mitem-actions{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--brd)}
+.mitem-btn{flex:1;border:none;border-radius:var(--r);padding:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+.mitem-btn-chat{background:var(--b);color:#fff}
+.mitem-btn-sched{background:var(--bxlight);color:var(--b)}
+.mitem-btn-info{background:var(--bxlight);color:var(--gray)}
 
 /* PROFILE */
 .phero{padding:20px 20px 14px;background:linear-gradient(135deg,var(--b),var(--b3));display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0}
@@ -587,7 +594,7 @@ input[type=range]{width:100%;accent-color:var(--b)}
 
 <div id="chat-scr" class="scr">
   <div class="chatheader">
-    <button class="backbtn" onclick="go(chatPrev)">←</button>
+    <button class="backbtn" onclick="goBackFromChat()">←</button>
     <div class="chav" id="chav"><img id="chav-img" src="" style="display:none" alt=""><span id="chav-init"></span></div>
     <div><div class="chname" id="chname"></div><div class="chrole" id="chrole"></div></div>
     <div class="online"><div class="odot"></div>Online</div>
@@ -631,8 +638,33 @@ input[type=range]{width:100%;accent-color:var(--b)}
 </div>
 
 <div id="matches-scr" class="scr">
-  <div class="scrhead"><div class="scrtitle">Mis Matches</div><div class="scrsub" id="msub2">0 conexiones activas</div></div>
+  <div class="scrhead">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div class="scrtitle" id="matches-title">Mis Conversaciones</div>
+        <div class="scrsub" id="msub2">0 conexiones activas</div>
+      </div>
+      <!-- Botón para iniciar chat directamente si hay matches sin chat -->
+      <button id="new-chat-btn" onclick="showNewChatOptions()" style="display:none;background:var(--b);color:#fff;border:none;border-radius:var(--rp);padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">+ Chat</button>
+    </div>
+    <!-- Filtro rápido -->
+    <div style="display:flex;gap:6px;margin-top:10px" id="chat-filter-row">
+      <div class="chat-filter-chip on" id="cf-all" onclick="setChatFilter('all')">Todos</div>
+      <div class="chat-filter-chip" id="cf-unread" onclick="setChatFilter('unread')">Sin leer</div>
+      <div class="chat-filter-chip" id="cf-active" onclick="setChatFilter('active')">Con mensajes</div>
+    </div>
+  </div>
   <div class="mlist" id="mlist"></div>
+  <!-- Modal para elegir con quién chatear -->
+  <div id="new-chat-modal" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:300;border-radius:var(--rxl);align-items:flex-end">
+    <div style="background:#fff;border-radius:var(--rxl) var(--rxl) 36px 36px;width:100%;max-height:70%;overflow-y:auto;padding:20px 18px 30px">
+      <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--dark);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">
+        <span>Iniciar conversación</span>
+        <button onclick="closeNewChatModal()" style="background:none;border:none;font-size:22px;color:var(--gray);cursor:pointer">×</button>
+      </div>
+      <div id="new-chat-list" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+  </div>
   <div class="bnav">
     <div class="ni" onclick="go('swipe-scr')"><div>🃏</div></div>
     <div class="ni on"><div>💬</div></div>
@@ -1161,63 +1193,98 @@ function addMatch(c,msg){
 // ─────────────────────────────────────────────
 function openChat(person){
   curChat=person;
-  // Init chat if not exists — mensaje de bienvenida contextual
+
+  // Si no hay historial, crear primer mensaje contextual según quién inicia
   if(!chats[person.name]){
     var welcomeMsg;
     if(USER_ROLE==='company'){
       welcomeMsg='Hola '+person.name+'! Vi tu perfil y me parece muy interesante. ¿Tenés disponibilidad para charlar sobre una oportunidad?';
     } else {
-      welcomeMsg='¡Hola! Me interesa tu oferta. ¿Podemos hablar más sobre el rol y la empresa?';
+      // Candidato iniciando con empresa
+      var coName=person.name||'la empresa';
+      welcomeMsg='¡Hola '+coName+'! Vi su oferta y me interesa mucho. ¿Puedo hacerles algunas preguntas sobre el rol?';
     }
     chats[person.name]=[{from:'me',text:welcomeMsg,time:nowTime(),auto:true}];
-    // Auto-reply after 1.5s
+
+    // Actualizar lastMsg en el match
+    var mx=matches.find(function(x){return x.name===person.name;});
+    if(mx){mx.lastMsg=welcomeMsg;mx.time='ahora';}
+
+    // Auto-reply contextual después de 1.5s
     setTimeout(function(){
       if(chats[person.name]&&chats[person.name].length===1){
         var replies=USER_ROLE==='company'
-          ?['¡Hola! Claro, con mucho gusto. ¿Me podés contar más sobre el rol?','Hola! Sí, disponible. ¿De qué empresa son?','¡Hola! Muchas gracias por el contacto. ¿Cuándo podemos hablar?']
-          :['¡Hola! Gracias por escribirnos. ¿Podés contarnos más sobre tu experiencia?','Hola! Perfecto. ¿Cuándo tenés disponibilidad para una llamada?','¡Hola! Muy interesante tu perfil. Coordinemos una entrevista.'];
-        chats[person.name].push({from:'them',text:replies[Math.floor(Math.random()*replies.length)],time:nowTime()});
+          ?['¡Hola! Claro, con mucho gusto. ¿Me podés contar más sobre tu experiencia?','¡Hola! Gracias por escribir. ¿Qué tecnologías manejás principalmente?','¡Hola! Perfecto. ¿Cuándo tenés disponibilidad para una llamada?']
+          :['¡Hola! Gracias por escribirnos. Claro que sí, ¿qué querés saber?','¡Hola! Con gusto. ¿Cuál es tu experiencia con nuestro stack?','¡Hola! Bienvenido. Contanos un poco de tu perfil.'];
+        var reply=replies[Math.floor(Math.random()*replies.length)];
+        chats[person.name].push({from:'them',text:reply,time:nowTime()});
+        var mx2=matches.find(function(x){return x.name===person.name;});
+        if(mx2){mx2.lastMsg=reply;mx2.time='ahora';}
         if(curChat&&curChat.name===person.name)renderChat();
       }
     },1500);
   }
-  var m=matches.find(function(x){return x.name===person.name;});if(m){m.unread=false;updateBadge();}
+
+  // Marcar como leído
+  var m=matches.find(function(x){return x.name===person.name;});
+  if(m){m.unread=false;updateBadge();}
+
+  // Render header del chat
   var chav=G('chav'),chimg=G('chav-img'),chinit=G('chav-init');
   chav.style.background=person.color;
   if(person.photo){chimg.src=person.photo;chimg.style.display='block';chinit.style.display='none';}
   else{chimg.style.display='none';chinit.style.display='block';chinit.textContent=person.av;}
-  G('chname').textContent=person.name;G('chrole').textContent=person.role+' · Mutual Interest';
+
+  // Label del header según rol
+  var roleLabel=person.type==='company'?'🏢 Empresa · Mutual Interest':'🧑‍💼 Candidato · Mutual Interest';
+  G('chname').textContent=person.name;
+  G('chrole').textContent=person.role+' · '+(person.type==='company'?'Empresa':'Candidato');
+
   renderChat();go('chat-scr');
 }
 function renderChat(){
   if(!curChat)return;
   var h=chats[curChat.name]||[];
-  G('chatbody').innerHTML=h.map(function(m){return'<div class="bw '+m.from+'"><div class="bub '+m.from+'">'+m.text+'</div><div class="bt">'+(m.time||'')+'</div></div>';}).join('');
+  G('chatbody').innerHTML=h.map(function(m){
+    return'<div class="bw '+m.from+'"><div class="bub '+m.from+'">'+m.text+'</div><div class="bt">'+(m.time||'')+'</div></div>';
+  }).join('');
   G('chatbody').scrollTop=G('chatbody').scrollHeight;
 }
+
 function sendMsg(){
   var inp=G('chatin');if(!inp.value.trim()||!curChat)return;
-  chats[curChat.name].push({from:'me',text:inp.value,time:nowTime()});
+  var text=inp.value.trim();
+  chats[curChat.name].push({from:'me',text:text,time:nowTime()});
+  // Actualizar lastMsg en matches
+  var mx=matches.find(function(x){return x.name===curChat.name;});
+  if(mx){mx.lastMsg=text;mx.time='ahora';}
   inp.value='';renderChat();
   var body=G('chatbody');
-  var t=document.createElement('div');t.className='bw them';t.innerHTML='<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  var t=document.createElement('div');t.className='bw them';
+  t.innerHTML='<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
   body.appendChild(t);body.scrollTop=body.scrollHeight;
-  var msgText=chats[curChat.name][chats[curChat.name].length-1].text.toLowerCase();
+  var msgLow=text.toLowerCase();
   setTimeout(function(){
     t.remove();
     var rs;
-    if(msgText.includes('entrevista')||msgText.includes('llamada')||msgText.includes('reunión')){
-      rs=['¡Perfecto! ¿El jueves a las 15hs te viene bien?','Claro, ¿qué días y horarios tenés disponibles?','¡Genial! Te mando el link por acá.'];
-    } else if(msgText.includes('salary')||msgText.includes('salario')||msgText.includes('sueldo')){
+    if(msgLow.includes('entrevista')||msgLow.includes('llamada')||msgLow.includes('reunión')||msgLow.includes('meet')){
+      rs=['¡Perfecto! ¿El jueves a las 15hs te viene bien?','Claro, ¿qué días y horarios tenés disponibles?','¡Genial! Te mando el link por acá.','Excelente. ¿Preferís Meet, Zoom o Teams?'];
+    } else if(msgLow.includes('salario')||msgLow.includes('sueldo')||msgLow.includes('compensación')||msgLow.includes('plata')){
       rs=['El rango es el que figura en el perfil, negociable según experiencia.','Podemos hablar de eso en la entrevista técnica.','Estamos abiertos a conversar sobre la compensación.'];
+    } else if(msgLow.includes('remoto')||msgLow.includes('presencial')||msgLow.includes('híbrido')||msgLow.includes('modalidad')){
+      rs=['Es 100% remoto, con reuniones ocasionales en CABA.','Híbrido: 3 días en oficina, 2 desde casa.','Totalmente flexible, nos manejamos por objetivos.'];
+    } else if(msgLow.includes('tecnología')||msgLow.includes('stack')||msgLow.includes('lenguaje')||msgLow.includes('framework')){
+      rs=['Usamos React + Node.js en el frontend/backend, PostgreSQL como DB principal.','El stack principal es Python + FastAPI, con infraestructura en AWS.','Trabajamos con Flutter para mobile y Node.js para el backend.'];
+    } else if(msgLow.includes('gracias')||msgLow.includes('ok')||msgLow.includes('perfecto')||msgLow.includes('excelente')){
+      rs=['¡Genial! Quedamos en contacto 🙌','¡Buenísimo! Cualquier duda, escribinos.','Perfecto, te confirmamos los detalles pronto.'];
     } else {
-      rs=['¡Perfecto! Te mando info 🙌','Genial, coordinamos por acá 👍','¿Cuándo tenés disponibilidad?','Claro, con gusto. ¿Algo más que quieras saber?'];
+      rs=['¡Perfecto! Te mando más info 🙌','Genial, coordinamos por acá 👍','¿Algo más que quieras saber?','Claro, con gusto. ¿Cuándo podemos hablar?'];
     }
     var r=rs[Math.floor(Math.random()*rs.length)];
     chats[curChat.name].push({from:'them',text:r,time:nowTime()});
+    var mx2=matches.find(function(x){return x.name===curChat.name;});
+    if(mx2){mx2.lastMsg=r;mx2.time='ahora';mx2.unread=false;}
     renderChat();
-    var mx3=matches.find(function(x){return x.name===curChat.name;});
-    if(mx3){mx3.lastMsg=r;mx3.time='ahora';}
   },900);
 }
 
@@ -1260,16 +1327,109 @@ function saveInterview(){
   G('sch-date').value='';G('sch-notes').value='';selectedInterview=null;buildSchedule();
 }
 
-// ── MATCHES LIST ──
+// ── MATCHES LIST + CHAT DIRECTO ──
+var chatFilter='all';
+
+function setChatFilter(f){
+  chatFilter=f;
+  ['all','unread','active'].forEach(function(x){
+    var el=G('cf-'+x);if(el)el.classList.toggle('on',x===f);
+  });
+  buildList();
+}
+
 function buildList(){
-  G('msub2').textContent=matches.length+' conexiones activas';
+  var title=G('matches-title');
+  if(title)title.textContent=USER_ROLE==='candidate'?'Mis Conversaciones':'Chats con candidatos';
+  G('msub2').textContent=matches.length+' conexión'+(matches.length===1?'':'es')+' activa'+(matches.length===1?'':'s');
+
+  // Mostrar botón "+ Chat" si hay matches
+  var btn=G('new-chat-btn');
+  if(btn)btn.style.display=matches.length?'block':'none';
+
   var list=G('mlist');
-  if(!matches.length){list.innerHTML='<div class="nomatch"><div style="font-size:40px">💙</div><div>Aún no tenés matches</div><div style="font-size:11px;margin-top:4px">Explorá perfiles y hacé swipe</div></div>';return;}
-  list.innerHTML=matches.map(function(m,i){
+  if(!matches.length){
+    list.innerHTML='<div class="nomatch">'
+      +'<div style="font-size:40px">💙</div>'
+      +'<div style="font-weight:700;color:var(--dark)">Aún no tenés conexiones</div>'
+      +'<div style="font-size:11px;margin-top:4px">Explorá perfiles y hacé swipe para conectar</div>'
+      +'<button class="bprimary" style="max-width:220px;margin-top:12px" onclick="go(\'swipe-scr\')">Explorar →</button>'
+      +'</div>';
+    return;
+  }
+
+  // Aplicar filtro
+  var filtered=matches.filter(function(m){
+    if(chatFilter==='unread')return m.unread;
+    if(chatFilter==='active')return chats[m.name]&&chats[m.name].length>0;
+    return true;
+  });
+
+  if(!filtered.length){
+    list.innerHTML='<div class="nomatch"><div style="font-size:32px">🔍</div><div style="font-size:13px">Sin resultados para este filtro</div></div>';
+    return;
+  }
+
+  // Ordenar: primero los que tienen mensajes sin leer, luego con mensajes, luego el resto
+  filtered.sort(function(a,b){
+    if(a.unread&&!b.unread)return -1;
+    if(!a.unread&&b.unread)return 1;
+    var ha=chats[a.name]&&chats[a.name].length>0;
+    var hb=chats[b.name]&&chats[b.name].length>0;
+    if(ha&&!hb)return -1;
+    if(!ha&&hb)return 1;
+    return 0;
+  });
+
+  list.innerHTML=filtered.map(function(m,i){
     var av=m.photo?'<img src="'+m.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">':m.av;
-    return'<div class="mitem" onclick="chatPrev=\'matches-scr\';openChat(matches['+i+'])"><div class="miav" style="background:'+m.color+'">'+av+'</div><div class="miinfo"><div class="miname">'+m.name+'</div><div class="mirole">'+m.role+(m.type==='company'?' · Empresa':'')+'</div><div class="milast">'+(m.lastMsg||'Mutual Interest · Iniciá la conversación')+'</div></div><div class="miright"><div class="mitime">'+(m.time||'')+'</div>'+(m.unread?'<div class="miunread">Nuevo</div>':'')+'</div></div>';
+    var hasChat=chats[m.name]&&chats[m.name].length>0;
+    var lastMsg=m.lastMsg||(hasChat?chats[m.name][chats[m.name].length-1].text:'Mutual Interest · Tocá para chatear');
+    var mi=matches.indexOf(m);if(mi<0)mi=i;
+    // Extraer rol del otro lado según USER_ROLE
+    var subLabel=m.type==='company'?'🏢 Empresa':'🧑‍💼 Candidato';
+    return'<div class="mitem" style="flex-direction:column;align-items:stretch;gap:0">'
+      +'<div style="display:flex;align-items:center;gap:10px">'
+      +'<div class="miav" style="background:'+m.color+'">'+av+'</div>'
+      +'<div class="miinfo">'
+      +'<div class="miname" style="display:flex;align-items:center;gap:6px">'+m.name+(m.unread?'<div class="miunread">Nuevo</div>':'')+'</div>'
+      +'<div class="mirole">'+m.role+' · <span style="color:var(--b);font-weight:700">'+subLabel+'</span></div>'
+      +'<div class="milast">'+lastMsg+'</div>'
+      +'</div>'
+      +'<div class="miright"><div class="mitime">'+(m.time||'')+'</div></div>'
+      +'</div>'
+      // Botones de acción siempre visibles
+      +'<div class="mitem-actions">'
+      +'<button class="mitem-btn mitem-btn-chat" onclick="event.stopPropagation();chatPrev=\'matches-scr\';openChat(matches['+mi+'])">💬 '+(hasChat?'Continuar chat':'Iniciar chat')+'</button>'
+      +'<button class="mitem-btn mitem-btn-sched" onclick="event.stopPropagation();openScheduleModal(\''+m.name+'\')">📅 Agendar</button>'
+      +'<button class="mitem-btn mitem-btn-info" onclick="event.stopPropagation();viewMatchDetail(matches['+mi+'])">👤 Ver perfil</button>'
+      +'</div>'
+      +'</div>';
   }).join('');
 }
+
+function viewMatchDetail(m){currentDetail=m;detailPrev='matches-scr';buildDetailScreen(m);go('detail-scr');}
+
+function showNewChatOptions(){
+  // Muestra modal para elegir con quién chatear (todos los matches)
+  var modal=G('new-chat-modal');if(modal)modal.style.display='flex';
+  var list=G('new-chat-list');if(!list)return;
+  if(!matches.length){list.innerHTML='<div style="text-align:center;color:var(--gray);padding:20px">Sin matches aún</div>';return;}
+  list.innerHTML=matches.map(function(m,i){
+    var av=m.photo?'<img src="'+m.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">':m.av;
+    var hasChat=chats[m.name]&&chats[m.name].length>0;
+    return'<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--light);border-radius:var(--rl);cursor:pointer;border:1.5px solid '+(hasChat?'var(--b)':'var(--brd)')+'" onclick="closeNewChatModal();chatPrev=\'matches-scr\';openChat(matches['+i+'])">'
+      +'<div class="miav" style="background:'+m.color+';width:40px;height:40px;flex-shrink:0">'+av+'</div>'
+      +'<div style="flex:1;min-width:0">'
+      +'<div style="font-size:13px;font-weight:700;color:var(--dark)">'+m.name+'</div>'
+      +'<div style="font-size:11px;color:var(--gray)">'+m.role+'</div>'
+      +'</div>'
+      +(hasChat?'<div style="font-size:10px;background:var(--blight);color:var(--b);border-radius:8px;padding:3px 8px;font-weight:600">Chat activo</div>':'<div style="font-size:10px;background:var(--bxlight);color:var(--gray);border-radius:8px;padding:3px 8px;font-weight:600">Iniciar</div>')
+      +'</div>';
+  }).join('');
+}
+function closeNewChatModal(){var m=G('new-chat-modal');if(m)m.style.display='none';}
+
 function updateBadge(){var n=matches.filter(function(m){return m.unread;}).length;G('nbadge').textContent=n;G('nbadge').classList.toggle('on',n>0);}
 
 // ── FILTERS ──
@@ -1506,6 +1666,12 @@ function copyLink(enc){var link=decodeURIComponent(enc);if(navigator.clipboard){
 function acceptSlot(ivIdx,slotIdx){var iv=agendaInterviews[ivIdx];if(!iv)return;var s=iv.altSlots[slotIdx];iv.date=s.date;iv.time=s.time;iv.status='confirmed';iv.altSlots=[];buildAgenda();addNotif('✅','Horario confirmado con <strong>'+iv.candidate+'</strong>','ahora');}
 
 // ── UTILS ──
+function goBackFromChat(){
+  // Si venía de matches, refrescar la lista antes de volver
+  if(chatPrev==='matches-scr')buildList();
+  go(chatPrev);
+}
+
 function nowTime(){var d=new Date();return(d.getHours()<10?'0':'')+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();}
 function restart(){idx=0;matches=[];chats={};curMatch=null;pipeline={};interviews=[];stats={seen:0,likes:0,mc:0,interviews:0};updateBadge();go('swipe-scr');render();}
 

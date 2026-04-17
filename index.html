@@ -10,177 +10,63 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root{
   --b:#2B5CE6;--b2:#3B6EF8;--b3:#6091FF;
   --blight:#EEF3FF;--bxlight:#F4F7FF;
   --dark:#18181B;--mid:#3F3F46;--gray:#71717A;
-  --light:#FAFAFA;--w:#fff;
-  --brd:#E4E4E7;
+  --light:#FAFAFA;--w:#fff;--brd:#E4E4E7;
+  --green:#16A34A;--amber:#D97706;--red:#E53E3E;--purple:#7C3AED;
   --r:12px;--rl:18px;--rxl:28px;
 }
-
 html{scroll-behavior:smooth}
-body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:linear-gradient(160deg,#EEF2FF 0%,#E8EEFF 35%,#F0F4FF 70%,#EEF2FF 100%);
-  color:var(--dark);
-  min-height:100vh;
-  overflow-x:hidden;
-}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(160deg,#EEF2FF 0%,#E8EEFF 35%,#F0F4FF 70%,#EEF2FF 100%);color:var(--dark);min-height:100vh;overflow-x:hidden}
 
 /* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(255,255,255,.85);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(43,92,230,.08);
-  padding:0 clamp(20px,5vw,60px);
-  height:64px;
-  display:flex;align-items:center;justify-content:space-between;
-}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(43,92,230,.08);padding:0 clamp(20px,5vw,60px);height:64px;display:flex;align-items:center;justify-content:space-between}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-mark{
-  background:#0F172A;border-radius:10px;
-  padding:4px 8px;height:36px;
-  display:flex;align-items:center;
-}
+.nav-logo-mark{background:#0F172A;border-radius:10px;padding:4px 8px;height:36px;display:flex;align-items:center}
 .nav-logo-mark svg{height:26px;width:auto}
-.nav-tagline{font-size:11px;font-weight:600;color:var(--gray);letter-spacing:.5px;display:none}
-@media(min-width:500px){.nav-tagline{display:block}}
-.nav-actions{display:flex;align-items:center;gap:10px}
-.btn-lang{background:var(--bxlight);border:1.5px solid var(--brd);border-radius:var(--r);padding:7px 14px;font-size:12px;font-weight:600;color:var(--gray);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.nav-tagline{font-size:11px;font-weight:600;color:var(--gray);letter-spacing:.5px}
+@media(max-width:500px){.nav-tagline{display:none}}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.btn-lang{background:var(--bxlight);border:1.5px solid var(--brd);border-radius:var(--r);padding:6px 12px;font-size:12px;font-weight:600;color:var(--gray);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
 .btn-lang.on{background:var(--b);border-color:var(--b);color:#fff}
-.btn-app{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:var(--r);padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none}
+.btn-app{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:var(--r);padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-block}
 .btn-app:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,92,230,.35)}
 
 /* ── HERO ── */
-.hero{
-  min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:100px clamp(20px,6vw,80px) 60px;
-  text-align:center;
-  position:relative;
-}
-
-/* Decorative blobs */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px clamp(20px,6vw,80px) 60px;text-align:center;position:relative}
 .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.4;pointer-events:none}
 .blob-1{width:500px;height:500px;background:radial-gradient(circle,#C7D7FF,transparent);top:-100px;left:-150px}
 .blob-2{width:400px;height:400px;background:radial-gradient(circle,#DDE8FF,transparent);bottom:0;right:-100px}
-
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--bxlight);border:1.5px solid rgba(43,92,230,.15);
-  border-radius:100px;padding:6px 16px;
-  font-size:11px;font-weight:700;color:var(--b);
-  letter-spacing:.5px;text-transform:uppercase;
-  margin-bottom:28px;
-  animation:fadeUp .6s ease both;
-}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bxlight);border:1.5px solid rgba(43,92,230,.15);border-radius:100px;padding:6px 16px;font-size:11px;font-weight:700;color:var(--b);letter-spacing:.5px;text-transform:uppercase;margin-bottom:28px;animation:fadeUp .6s ease both}
 .badge-dot{width:6px;height:6px;background:var(--b3);border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-.hero-logo{
-  margin-bottom:28px;
-  animation:fadeUp .6s .1s ease both;
-}
+.hero-logo{margin-bottom:28px;animation:fadeUp .6s .1s ease both}
 .hero-logo svg{height:clamp(60px,10vw,90px);width:auto}
-
-h1{
-  font-family:'Syne',sans-serif;
-  font-size:clamp(32px,6vw,58px);
-  font-weight:800;
-  line-height:1.1;
-  letter-spacing:-1.5px;
-  color:var(--dark);
-  max-width:700px;
-  margin-bottom:20px;
-  animation:fadeUp .6s .15s ease both;
-}
+h1{font-family:'Syne',sans-serif;font-size:clamp(32px,6vw,58px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;color:var(--dark);max-width:700px;margin-bottom:20px;animation:fadeUp .6s .15s ease both}
 h1 .accent{color:var(--b)}
-h1 .light{color:var(--gray)}
-
-.hero-sub{
-  font-size:clamp(15px,2.5vw,18px);
-  color:var(--mid);
-  line-height:1.65;
-  max-width:520px;
-  margin-bottom:40px;
-  animation:fadeUp .6s .2s ease both;
-}
-
-.hero-forms{
-  display:flex;flex-direction:column;gap:16px;
-  width:100%;max-width:480px;
-  animation:fadeUp .6s .25s ease both;
-}
-
-.form-card{
-  background:#fff;
-  border:1.5px solid var(--brd);
-  border-radius:var(--rxl);
-  padding:24px;
-  text-align:left;
-  box-shadow:0 4px 24px rgba(43,92,230,.07);
-  transition:box-shadow .2s;
-}
+.hero-sub{font-size:clamp(15px,2.5vw,18px);color:var(--mid);line-height:1.65;max-width:520px;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
+.hero-forms{display:flex;flex-direction:column;gap:16px;width:100%;max-width:480px;animation:fadeUp .6s .25s ease both}
+.form-card{background:#fff;border:1.5px solid var(--brd);border-radius:var(--rxl);padding:24px;text-align:left;box-shadow:0 4px 24px rgba(43,92,230,.07);transition:box-shadow .2s}
 .form-card:hover{box-shadow:0 8px 32px rgba(43,92,230,.12)}
 .form-card-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .form-card-icon{font-size:22px;width:40px;height:40px;background:var(--bxlight);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .form-card-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--dark)}
 .form-card-sub{font-size:11px;color:var(--gray);margin-top:1px}
-
 .inp-row{display:flex;gap:8px;flex-wrap:wrap}
 .inp-row input{flex:1;min-width:130px}
-input[type=text],input[type=email]{
-  width:100%;border:1.5px solid var(--brd);border-radius:10px;
-  padding:10px 14px;font-size:13px;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  color:var(--dark);background:var(--light);
-  outline:none;transition:border-color .2s;
-  margin-bottom:8px;
-}
+input[type=text],input[type=email]{width:100%;border:1.5px solid var(--brd);border-radius:10px;padding:10px 14px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--dark);background:var(--light);outline:none;transition:border-color .2s;margin-bottom:8px}
 input:focus{border-color:var(--b);background:#fff}
 input::placeholder{color:#aaa}
-
-/* Legal checkbox */
 .legal-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:12px}
 .legal-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--b);margin-top:2px;flex-shrink:0;cursor:pointer}
 .legal-row label{font-size:11px;color:var(--gray);line-height:1.5;cursor:pointer}
 .legal-row label a{color:var(--b);text-decoration:underline}
-
-.btn-submit{
-  width:100%;background:linear-gradient(135deg,var(--b),var(--b3));
-  color:#fff;border:none;border-radius:12px;
-  padding:12px 0;font-size:14px;font-weight:700;
-  cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;
-  transition:all .2s;
-}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:12px;padding:12px 0;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
 .btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,92,230,.35)}
 .btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-
-.success-msg{
-  display:none;text-align:center;padding:12px;
-  background:var(--bxlight);border-radius:12px;
-  font-size:13px;font-weight:600;color:var(--b);
-}
-
-/* ── FEATURES ── */
-.features{padding:80px clamp(20px,6vw,80px);max-width:1100px;margin:0 auto}
-.section-label{font-size:11px;font-weight:700;color:var(--b);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
-.section-title{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,40px);font-weight:800;color:var(--dark);line-height:1.15;letter-spacing:-.5px;margin-bottom:16px;max-width:560px}
-.section-sub{font-size:15px;color:var(--mid);line-height:1.65;max-width:480px;margin-bottom:48px}
-
-.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-.feat-card{
-  background:#fff;border:1.5px solid var(--brd);
-  border-radius:var(--rxl);padding:24px;
-  transition:all .2s;
-}
-.feat-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(43,92,230,.1);border-color:rgba(43,92,230,.2)}
-.feat-icon{font-size:28px;margin-bottom:14px;display:block}
-.feat-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--dark);margin-bottom:6px}
-.feat-desc{font-size:13px;color:var(--gray);line-height:1.6}
+.success-msg{display:none;text-align:center;padding:12px;background:var(--bxlight);border-radius:12px;font-size:13px;font-weight:600;color:var(--b)}
 
 /* ── SOCIAL PROOF ── */
 .proof{background:#fff;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);padding:48px clamp(20px,6vw,80px)}
@@ -189,52 +75,189 @@ input::placeholder{color:#aaa}
 .proof-num{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--b);line-height:1}
 .proof-lbl{font-size:12px;color:var(--gray);margin-top:4px;font-weight:500}
 
-/* ── LEGAL / DISCLAIMER ── */
-.legal-section{
-  background:linear-gradient(135deg,#F8FAFF,#EEF3FF);
-  border-top:1px solid var(--brd);
-  padding:60px clamp(20px,6vw,80px);
-}
+/* ── TUTORIAL ── */
+.tutorial-section{padding:80px clamp(20px,6vw,80px);max-width:1100px;margin:0 auto}
+.section-label{font-size:11px;font-weight:700;color:var(--b);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,40px);font-weight:800;color:var(--dark);letter-spacing:-.5px;margin-bottom:12px}
+.section-sub{font-size:15px;color:var(--mid);line-height:1.65;max-width:480px;margin-bottom:40px}
+
+/* Step nav */
+.steps-nav{display:flex;justify-content:flex-start;gap:0;margin-bottom:40px;background:#fff;border:1.5px solid var(--brd);border-radius:16px;padding:4px;width:fit-content}
+.step-btn{padding:8px 18px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:none;color:var(--gray);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.step-btn.on{background:var(--b);color:#fff;box-shadow:0 2px 10px rgba(43,92,230,.3)}
+.step-num-circle{width:18px;height:18px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.2);font-weight:800}
+.step-btn:not(.on) .step-num-circle{background:var(--bxlight);color:var(--b)}
+@media(max-width:500px){.step-btn{padding:8px 12px;font-size:10px}}
+
+/* Tutorial layout */
+.tutorial-layout{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center}
+@media(max-width:768px){.tutorial-layout{grid-template-columns:1fr;}.phone-wrap{order:-1}}
+
+/* Phone mockup */
+.phone-wrap{display:flex;justify-content:center}
+.phone{width:260px;height:520px;background:#fff;border-radius:38px;box-shadow:0 32px 80px rgba(43,92,230,.18),0 0 0 1px rgba(43,92,230,.08),inset 0 0 0 2px rgba(0,0,0,.06);overflow:hidden;position:relative;flex-shrink:0}
+.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:22px;background:#0F172A;border-radius:0 0 14px 14px;z-index:10}
+
+/* Screens */
+.pscreen{position:absolute;inset:0;display:none;flex-direction:column;background:#F4F7FF;border-radius:38px}
+.pscreen.active{display:flex}
+
+/* Topbar */
+.p-topbar{display:flex;align-items:center;justify-content:space-between;padding:28px 14px 10px;background:#fff;border-bottom:1px solid var(--brd);flex-shrink:0}
+.p-logo{background:#0F172A;border-radius:6px;padding:2px 6px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff}
+.p-logo span{color:var(--b)}
+.p-tabs{display:flex;background:var(--bxlight);border-radius:100px;padding:2px;gap:2px}
+.p-tab{font-size:9px;font-weight:600;padding:4px 8px;border-radius:100px;color:var(--gray)}
+.p-tab.on{background:var(--b);color:#fff}
+
+/* Card area */
+.p-card-area{flex:1;display:flex;align-items:center;justify-content:center;padding:10px;position:relative;overflow:hidden}
+.p-card{width:100%;background:#fff;border-radius:20px;box-shadow:0 4px 20px rgba(43,92,230,.12);padding:14px;display:flex;flex-direction:column;align-items:center;position:relative}
+.p-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;font-family:'Syne',sans-serif;margin-bottom:8px}
+.p-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--dark)}
+.p-role{font-size:10px;color:var(--b);font-weight:600;margin-top:2px}
+.p-loc{font-size:9px;color:var(--gray);margin-top:2px}
+.p-skills{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-top:8px}
+.p-sk{background:var(--bxlight);color:var(--b);border-radius:6px;padding:2px 7px;font-size:9px;font-weight:600}
+.p-score{display:flex;align-items:center;gap:6px;background:var(--bxlight);border-radius:100px;padding:3px 10px;margin-top:8px}
+.p-bar-bg{width:60px;height:4px;background:var(--brd);border-radius:10px;overflow:hidden}
+.p-bar-fill{height:100%;background:linear-gradient(90deg,var(--b),var(--b3));border-radius:10px}
+.p-pct{font-size:10px;font-weight:700;color:var(--b)}
+.p-stamp{position:absolute;top:12px;font-size:11px;font-weight:800;border:2.5px solid;border-radius:6px;padding:3px 8px;opacity:0;pointer-events:none}
+.p-stamp.like{left:10px;color:var(--b);border-color:var(--b);transform:rotate(-15deg)}
+.p-stamp.pass{right:10px;color:var(--red);border-color:var(--red);transform:rotate(15deg)}
+
+/* Actions */
+.p-actions{display:flex;justify-content:center;align-items:center;gap:28px;padding:8px 0 10px;background:#fff;border-top:1px solid var(--brd);flex-shrink:0}
+.p-pass{width:42px;height:42px;border-radius:50%;background:#fff;border:2px solid var(--brd);font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer}
+.p-like{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--b),var(--b3));font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(43,92,230,.35);cursor:pointer}
+
+/* Bottom nav phone */
+.p-bnav{display:flex;justify-content:space-around;background:#fff;padding:8px 0 12px;border-top:1px solid var(--brd);flex-shrink:0}
+.p-ni{display:flex;flex-direction:column;align-items:center;gap:2px;opacity:.3;font-size:14px}
+.p-ni.on{opacity:1}
+.p-ni-lbl{font-size:8px;font-weight:700;color:var(--b)}
+
+/* Screen MATCH */
+#ps-match{background:linear-gradient(160deg,#0F172A,#1B4FD8);align-items:center;justify-content:center;gap:10px;padding:28px 16px 16px;text-align:center}
+.pm-emoji{font-size:36px}.pm-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-1px}
+.pm-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);border-radius:100px;padding:3px 12px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.pm-sub{font-size:11px;color:rgba(255,255,255,.65);line-height:1.5}
+.pm-avs{display:flex;align-items:center;gap:10px;margin:4px 0}
+.pm-av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;box-shadow:0 0 0 3px #fff;font-family:'Syne',sans-serif}
+.pm-btn{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:100px;padding:10px 0;font-size:11px;font-weight:700;cursor:pointer;width:100%;max-width:200px;font-family:'Plus Jakarta Sans',sans-serif}
+.pm-ghost{background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:8px 0;font-size:10px;cursor:pointer;width:100%;max-width:200px;font-family:'Plus Jakarta Sans',sans-serif}
+
+/* Screen CHAT */
+#ps-chat{background:#fff}
+.pc-header{display:flex;align-items:center;gap:8px;padding:28px 12px 10px;background:#fff;border-bottom:1px solid var(--brd);flex-shrink:0}
+.pc-back{font-size:16px;color:var(--b);cursor:pointer;background:none;border:none}
+.pc-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;font-family:'Syne',sans-serif}
+.pc-name{font-size:12px;font-weight:700;color:var(--dark)}.pc-role{font-size:9px;color:var(--gray)}
+.pc-online{margin-left:auto;font-size:9px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:3px}
+.pc-dot{width:5px;height:5px;background:var(--green);border-radius:50%}
+.pc-body{flex:1;display:flex;flex-direction:column;gap:8px;padding:10px 12px;overflow:hidden}
+.pc-bw{display:flex;flex-direction:column}.pc-bw.me{align-items:flex-end}.pc-bw.them{align-items:flex-start}
+.pc-bub{max-width:80%;border-radius:12px;padding:6px 10px;font-size:10px;line-height:1.4}
+.pc-bub.them{background:#F4F7FF;color:var(--dark)}.pc-bub.me{background:var(--b);color:#fff}
+.pc-bt{font-size:8px;color:#bbb;margin-top:2px}
+.pc-input-row{display:flex;gap:6px;padding:6px 10px 14px;background:#fff;border-top:1px solid var(--brd);flex-shrink:0}
+.pc-inp{flex:1;border:1.5px solid var(--brd);border-radius:100px;padding:7px 12px;font-size:10px;outline:none;background:var(--bxlight)}
+.pc-send{width:30px;height:30px;border-radius:50%;background:var(--b);color:#fff;border:none;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* Screen AGENDA */
+#ps-agenda{background:var(--bxlight)}
+.pa-header{padding:28px 14px 12px;background:#fff;border-bottom:1px solid var(--brd);flex-shrink:0}
+.pa-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--dark)}
+.pa-sub{font-size:10px;color:var(--gray);margin-top:2px}
+.pa-tabs{display:flex;background:var(--bxlight);border-radius:100px;padding:2px;gap:2px;margin-top:8px}
+.pa-tab{flex:1;font-size:9px;font-weight:600;padding:5px 0;border-radius:100px;color:var(--gray);text-align:center}
+.pa-tab.on{background:var(--b);color:#fff}
+.pa-body{flex:1;overflow:hidden;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.pa-card{background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 1px 6px rgba(0,0,0,.05);border-left:3px solid var(--green)}
+.pa-header2{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.pa-cav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;font-family:'Syne',sans-serif}
+.pa-cname{font-size:11px;font-weight:700;color:var(--dark)}.pa-crole{font-size:9px;color:var(--gray)}
+.pa-status{margin-left:auto;font-size:8px;font-weight:700;background:#D1FAE5;color:#065F46;border-radius:6px;padding:2px 7px}
+.pa-details{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.pa-dr{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--mid)}
+.pa-icon{font-size:11px;width:14px;text-align:center}
+.pa-actions{display:flex;gap:5px}
+.pa-btn{flex:1;border:none;border-radius:7px;padding:6px;font-size:9px;font-weight:600;cursor:pointer}
+.pa-btn-meet{background:#1B7F4F;color:#fff}.pa-btn-edit{background:var(--bxlight);color:var(--b)}
+
+/* Screen PIPELINE */
+#ps-pipeline{background:var(--bxlight)}
+.pk-header{padding:28px 14px 12px;background:#fff;border-bottom:1px solid var(--brd);flex-shrink:0}
+.pk-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--dark)}
+.pk-body{flex:1;display:flex;gap:0;overflow-x:auto;padding:8px 6px}
+.pk-col{min-width:76px;flex:1;display:flex;flex-direction:column;gap:6px;padding:0 4px}
+.pk-col-h{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 6px;border-radius:6px;margin-bottom:2px;text-align:center}
+.pk-col-h.nuevo{background:#DBEAFE;color:#1D4ED8}.pk-col-h.entrevista{background:#FEF3C7;color:#92400E}
+.pk-col-h.oferta{background:#D1FAE5;color:#065F46}.pk-col-h.contratado{background:#EDE9FE;color:#5B21B6}
+.pk-card{background:#fff;border-radius:8px;padding:6px 8px;box-shadow:0 1px 4px rgba(0,0,0,.05);border-left:2px solid var(--b)}
+.pk-card.entrevista{border-left-color:var(--amber)}.pk-card.oferta{border-left-color:var(--green)}.pk-card.contratado{border-left-color:var(--purple)}
+.pk-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;font-family:'Syne',sans-serif;margin-bottom:3px}
+.pk-name{font-size:9px;font-weight:700;color:var(--dark)}.pk-role{font-size:8px;color:var(--gray)}
+
+/* Finger */
+.finger{position:absolute;font-size:22px;pointer-events:none;z-index:50;opacity:0;transition:opacity .3s}
+.finger.show{opacity:1}
+
+/* Animations */
+@keyframes swipeRight{0%{transform:translateX(0) rotate(0);opacity:1}100%{transform:translateX(300px) rotate(18deg);opacity:0}}
+@keyframes stampLike{0%{opacity:0}30%{opacity:1}70%{opacity:1}100%{opacity:0}}
+@keyframes msgAppear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Info panel */
+.info-panel .step-info{display:none}
+.info-panel .step-info.active{display:flex;flex-direction:column;gap:16px;animation:fadeIn .4s ease}
+.step-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bxlight);border:1.5px solid rgba(43,92,230,.15);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--b);width:fit-content}
+.step-num-big{width:22px;height:22px;background:var(--b);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.step-title{font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,28px);font-weight:800;color:var(--dark);letter-spacing:-.5px;line-height:1.2}
+.step-desc{font-size:14px;color:var(--mid);line-height:1.7}
+.step-tips{display:flex;flex-direction:column;gap:8px}
+.tip{display:flex;align-items:flex-start;gap:10px;background:#fff;border:1.5px solid var(--brd);border-radius:12px;padding:12px 14px}
+.tip-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.tip-text{font-size:13px;color:var(--mid);line-height:1.5}
+.tip-text strong{color:var(--dark)}
+.step-nav{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+.btn-prev,.btn-next{padding:10px 22px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;border:none}
+.btn-prev{background:var(--bxlight);color:var(--b)}.btn-prev:hover{background:var(--blight)}
+.btn-next{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;box-shadow:0 4px 14px rgba(43,92,230,.3)}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,92,230,.4)}
+
+/* ── FEATURES ── */
+.features{padding:80px clamp(20px,6vw,80px);max-width:1100px;margin:0 auto}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.feat-card{background:#fff;border:1.5px solid var(--brd);border-radius:var(--rxl);padding:24px;transition:all .2s}
+.feat-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(43,92,230,.1);border-color:rgba(43,92,230,.2)}
+.feat-icon{font-size:28px;margin-bottom:14px;display:block}
+.feat-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--dark);margin-bottom:6px}
+.feat-desc{font-size:13px;color:var(--gray);line-height:1.6}
+
+/* ── LEGAL ── */
+.legal-section{background:linear-gradient(135deg,#F8FAFF,#EEF3FF);border-top:1px solid var(--brd);padding:60px clamp(20px,6vw,80px)}
 .legal-inner{max-width:900px;margin:0 auto}
 .legal-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
 .legal-icon{font-size:28px;width:48px;height:48px;background:var(--bxlight);border:1.5px solid rgba(43,92,230,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .legal-header-text h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--dark)}
 .legal-header-text p{font-size:12px;color:var(--gray);margin-top:2px}
-
 .legal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px}
-.legal-card{
-  background:#fff;border:1.5px solid var(--brd);
-  border-radius:var(--rl);padding:18px 20px;
-}
+.legal-card{background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:18px 20px}
 .legal-card-title{font-size:12px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .legal-card p{font-size:12px;color:var(--gray);line-height:1.65}
 .legal-card a{color:var(--b);text-decoration:underline}
-
-.legal-disclaimer{
-  background:rgba(43,92,230,.04);
-  border:1.5px solid rgba(43,92,230,.12);
-  border-radius:var(--rl);padding:16px 20px;
-  font-size:12px;color:var(--mid);line-height:1.7;
-}
+.legal-disclaimer{background:rgba(43,92,230,.04);border:1.5px solid rgba(43,92,230,.12);border-radius:var(--rl);padding:16px 20px;font-size:12px;color:var(--mid);line-height:1.7}
 .legal-disclaimer strong{color:var(--dark)}
 
-/* ── MODAL T&C ── */
-.modal-overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.5);backdrop-filter:blur(4px);
-  z-index:500;align-items:center;justify-content:center;padding:20px;
-}
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
-.modal{
-  background:#fff;border-radius:var(--rxl);
-  max-width:640px;width:100%;max-height:85vh;
-  display:flex;flex-direction:column;overflow:hidden;
-  box-shadow:0 32px 80px rgba(0,0,0,.2);
-}
-.modal-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:20px 24px;border-bottom:1px solid var(--brd);flex-shrink:0;
-}
+.modal{background:#fff;border-radius:var(--rxl);max-width:640px;width:100%;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.2)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--brd);flex-shrink:0}
 .modal-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--dark)}
 .modal-close{background:none;border:none;font-size:22px;color:var(--gray);cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
 .modal-close:hover{background:var(--bxlight)}
@@ -249,11 +272,7 @@ input::placeholder{color:#aaa}
 .modal-footer button{width:100%;background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:12px;padding:12px 0;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
 
 /* ── FOOTER ── */
-footer{
-  padding:40px clamp(20px,6vw,80px);
-  border-top:1px solid var(--brd);
-  background:#fff;
-}
+footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);background:#fff}
 .footer-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
 .footer-logo{display:flex;align-items:center;gap:8px}
 .footer-logo-mark{background:#0F172A;border-radius:8px;padding:3px 7px;display:flex;align-items:center}
@@ -264,9 +283,7 @@ footer{
 .footer-links a:hover{color:var(--b)}
 .footer-copy{font-size:11px;color:#bbb;width:100%}
 
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
+/* Fade in on scroll */
 .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .fade-in.visible{opacity:1;transform:none}
 </style>
@@ -287,7 +304,7 @@ footer{
   <div class="nav-actions">
     <button class="btn-lang on" id="btn-es" onclick="setLang('es')">ES</button>
     <button class="btn-lang" id="btn-en" onclick="setLang('en')">EN</button>
-    <a class="btn-app" href="/app">Entrar a la app →</a>
+    <a class="btn-app" id="btn-app" href="/app">Entrar a la app →</a>
   </div>
 </nav>
 
@@ -295,12 +312,10 @@ footer{
 <section class="hero">
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
-
   <div class="hero-badge">
     <span class="badge-dot"></span>
-    <span class="badge-text" data-es="Beta abierta · LATAM" data-en="Open Beta · LATAM">Beta abierta · LATAM</span>
+    <span data-es="Beta abierta · LATAM" data-en="Open Beta · LATAM">Beta abierta · LATAM</span>
   </div>
-
   <div class="hero-logo">
     <svg viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
       <text x="8" y="70" font-family="Arial Black,sans-serif" font-weight="900" font-size="76" fill="#2B5CE6">t</text>
@@ -313,13 +328,11 @@ footer{
       <line x1="6" y1="42" x2="20" y2="22" stroke="#6091FF" stroke-width="2"/>
     </svg>
   </div>
-
   <h1>
-    <span class="hero-h1" data-es='El match perfecto entre <span class="accent">talento IT</span> y <span class="accent">empresas</span> de LATAM' data-en='The perfect match between <span class="accent">IT talent</span> and <span class="accent">companies</span> in LATAM'>
+    <span data-es='El match perfecto entre <span class="accent">talento IT</span> y <span class="accent">empresas</span> de LATAM' data-en='The perfect match between <span class="accent">IT talent</span> and <span class="accent">companies</span> in LATAM'>
       El match perfecto entre <span class="accent">talento IT</span> y <span class="accent">empresas</span> de LATAM
     </span>
   </h1>
-
   <p class="hero-sub" data-es="Conectamos desarrolladores, diseñadores y tech leads con las mejores oportunidades. Swipe, match, y empezá a hablar." data-en="We connect developers, designers and tech leads with the best opportunities. Swipe, match, and start talking.">
     Conectamos desarrolladores, diseñadores y tech leads con las mejores oportunidades. Swipe, match, y empezá a hablar.
   </p>
@@ -336,21 +349,19 @@ footer{
       </div>
       <form onsubmit="submitForm(event,'candidate')">
         <div class="inp-row">
-          <input type="text" id="cand-name" placeholder="Tu nombre" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" required autocomplete="off" name="cand-name-tnic">
-          <input type="email" id="cand-email" placeholder="Tu email" data-placeholder-es="Tu email" data-placeholder-en="Your email" required autocomplete="off" name="cand-email-tnic">
+          <input type="text" id="cand-name" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" placeholder="Tu nombre" required autocomplete="off" name="cand-name-tnic">
+          <input type="email" id="cand-email" data-placeholder-es="Tu email" data-placeholder-en="Your email" placeholder="Tu email" required autocomplete="off" name="cand-email-tnic">
         </div>
         <div class="legal-row">
           <input type="checkbox" id="cand-legal" required>
           <label for="cand-legal">
-            <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta y los datos son referenciales.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and <a href="#" onclick="openModal(event)">Privacy Policy</a>. I understand tNic is in beta and data is referential.'>
-              Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta y los datos son referenciales.
+            <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and <a href="#" onclick="openModal(event)">Privacy Policy</a>. I understand tNic is in beta phase.'>
+              Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta.
             </span>
           </label>
         </div>
         <button type="submit" class="btn-submit" data-es="Unirme a la lista de espera 🚀" data-en="Join the waitlist 🚀">Unirme a la lista de espera 🚀</button>
-        <div class="success-msg" id="cand-ok">
-          <span data-es="✅ ¡Listo! Te avisamos cuando tu acceso esté disponible." data-en="✅ Done! We'll notify you when access is ready.">✅ ¡Listo! Te avisamos cuando tu acceso esté disponible.</span>
-        </div>
+        <div class="success-msg" id="cand-ok"><span data-es="✅ ¡Listo! Te avisamos cuando tu acceso esté disponible." data-en="✅ Done! We'll notify you when access is ready.">✅ ¡Listo! Te avisamos cuando tu acceso esté disponible.</span></div>
       </form>
     </div>
 
@@ -365,21 +376,19 @@ footer{
       </div>
       <form onsubmit="submitForm(event,'company')">
         <div class="inp-row">
-          <input type="text" id="comp-name" placeholder="Tu nombre" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" required autocomplete="off" name="comp-name-tnic">
-          <input type="email" id="comp-email" placeholder="Email corporativo" data-placeholder-es="Email corporativo" data-placeholder-en="Corporate email" required autocomplete="off" name="comp-email-tnic">
+          <input type="text" id="comp-name" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" placeholder="Tu nombre" required autocomplete="off" name="comp-name-tnic">
+          <input type="email" id="comp-email" data-placeholder-es="Email corporativo" data-placeholder-en="Corporate email" placeholder="Email corporativo" required autocomplete="off" name="comp-email-tnic">
         </div>
         <div class="legal-row">
           <input type="checkbox" id="comp-legal" required>
           <label for="comp-legal">
-            <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta y los datos son referenciales.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and <a href="#" onclick="openModal(event)">Privacy Policy</a>. I understand tNic is in beta and data is referential.'>
-              Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta y los datos son referenciales.
+            <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and <a href="#" onclick="openModal(event)">Privacy Policy</a>. I understand tNic is in beta phase.'>
+              Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta.
             </span>
           </label>
         </div>
         <button type="submit" class="btn-submit" data-es="Sumarme como empresa 🏢" data-en="Join as a company 🏢">Sumarme como empresa 🏢</button>
-        <div class="success-msg" id="comp-ok">
-          <span data-es="✅ ¡Genial! Te contactamos en las próximas 48hs." data-en="✅ Great! We'll contact you within 48 hours.">✅ ¡Genial! Te contactamos en las próximas 48hs.</span>
-        </div>
+        <div class="success-msg" id="comp-ok"><span data-es="✅ ¡Genial! Te contactamos en las próximas 48hs." data-en="✅ Great! We'll contact you within 48 hours.">✅ ¡Genial! Te contactamos en las próximas 48hs.</span></div>
       </form>
     </div>
   </div>
@@ -395,47 +404,254 @@ footer{
   </div>
 </div>
 
-<!-- FEATURES -->
-<section class="features">
-  <div class="section-label fade-in" data-es="Cómo funciona" data-en="How it works">Cómo funciona</div>
-  <h2 class="section-title fade-in" data-es="Conectar talento nunca fue tan directo" data-en="Connecting talent was never this direct">Conectar talento nunca fue tan directo</h2>
-  <p class="section-sub fade-in" data-es="tNic combina lo mejor del matching inteligente con la simplicidad de una app mobile-first." data-en="tNic combines the best of intelligent matching with the simplicity of a mobile-first app.">tNic combina lo mejor del matching inteligente con la simplicidad de una app mobile-first.</p>
+<!-- TUTORIAL -->
+<section style="background:#fff;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);padding:80px clamp(20px,6vw,80px)">
+  <div class="tutorial-section" style="padding:0">
+    <div class="section-label fade-in" data-es="Tutorial" data-en="Tutorial">Tutorial</div>
+    <h2 class="section-title fade-in" data-es="¿Cómo funciona tNic?" data-en="How does tNic work?">¿Cómo funciona tNic?</h2>
+    <p class="section-sub fade-in" data-es="Cuatro pasos para conectar con tu próxima oportunidad o tu próximo talento." data-en="Four steps to connect with your next opportunity or your next talent.">Cuatro pasos para conectar con tu próxima oportunidad o tu próximo talento.</p>
 
-  <div class="feat-grid">
-    <div class="feat-card fade-in">
-      <span class="feat-icon">🃏</span>
-      <div class="feat-title" data-es="Swipe inteligente" data-en="Smart Swipe">Swipe inteligente</div>
-      <p class="feat-desc" data-es="Explorá perfiles de empresas y candidatos con un sistema de match basado en skills, seniority y cultura." data-en="Explore company and candidate profiles with a match system based on skills, seniority and culture.">Explorá perfiles de empresas y candidatos con un sistema de match basado en skills, seniority y cultura.</p>
+    <div class="steps-nav fade-in">
+      <button class="step-btn on" id="sbtn-0" onclick="goStep(0)"><div class="step-num-circle">1</div><span data-es="Swipe" data-en="Swipe">Swipe</span></button>
+      <button class="step-btn" id="sbtn-1" onclick="goStep(1)"><div class="step-num-circle">2</div><span data-es="Match" data-en="Match">Match</span></button>
+      <button class="step-btn" id="sbtn-2" onclick="goStep(2)"><div class="step-num-circle">3</div><span data-es="Chat" data-en="Chat">Chat</span></button>
+      <button class="step-btn" id="sbtn-3" onclick="goStep(3)"><div class="step-num-circle">4</div><span data-es="Agenda" data-en="Schedule">Agenda</span></button>
+      <button class="step-btn" id="sbtn-4" onclick="goStep(4)"><div class="step-num-circle">5</div><span data-es="Pipeline" data-en="Pipeline">Pipeline</span></button>
     </div>
-    <div class="feat-card fade-in">
-      <span class="feat-icon">💙</span>
-      <div class="feat-title" data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</div>
-      <p class="feat-desc" data-es="Solo cuando hay interés de ambos lados se habilita el chat. Sin spam, sin contactos no deseados." data-en="Only when both sides show interest is the chat enabled. No spam, no unwanted contact.">Solo cuando hay interés de ambos lados se habilita el chat. Sin spam, sin contactos no deseados.</p>
-    </div>
-    <div class="feat-card fade-in">
-      <span class="feat-icon">💬</span>
-      <div class="feat-title" data-es="Chat bidireccional" data-en="Two-way Chat">Chat bidireccional</div>
-      <p class="feat-desc" data-es="Tanto candidatos como recruiters pueden iniciar la conversación cuando quieran, con contexto del proceso." data-en="Both candidates and recruiters can start the conversation whenever they want, with process context.">Tanto candidatos como recruiters pueden iniciar la conversación cuando quieran, con contexto del proceso.</p>
-    </div>
-    <div class="feat-card fade-in">
-      <span class="feat-icon">📅</span>
-      <div class="feat-title" data-es="Agenda integrada" data-en="Integrated Scheduling">Agenda integrada</div>
-      <p class="feat-desc" data-es="Agendá entrevistas con Meet, Zoom o Teams directo desde la app, con horarios alternativos y recordatorios." data-en="Schedule interviews with Meet, Zoom or Teams directly from the app, with alternative slots and reminders.">Agendá entrevistas con Meet, Zoom o Teams directo desde la app, con horarios alternativos y recordatorios.</p>
-    </div>
-    <div class="feat-card fade-in">
-      <span class="feat-icon">📋</span>
-      <div class="feat-title" data-es="Pipeline Kanban" data-en="Kanban Pipeline">Pipeline Kanban</div>
-      <p class="feat-desc" data-es="Gestioná tu pipeline de candidatos en etapas: Nuevo, Entrevista, Oferta y Contratado, todo en un lugar." data-en="Manage your candidate pipeline in stages: New, Interview, Offer and Hired, all in one place.">Gestioná tu pipeline de candidatos en etapas: Nuevo, Entrevista, Oferta y Contratado, todo en un lugar.</p>
-    </div>
-    <div class="feat-card fade-in">
-      <span class="feat-icon">🎯</span>
-      <div class="feat-title" data-es="Ranking por JD" data-en="JD Ranking">Ranking por JD</div>
-      <p class="feat-desc" data-es="Pegá un Job Description y tNic rankea automáticamente los mejores candidatos según sus skills y experiencia." data-en="Paste a Job Description and tNic automatically ranks the best candidates by skills and experience.">Pegá un Job Description y tNic rankea automáticamente los mejores candidatos según sus skills y experiencia.</p>
+
+    <div class="tutorial-layout">
+      <!-- PHONE -->
+      <div class="phone-wrap">
+        <div class="phone">
+
+          <!-- SCREEN 1: SWIPE -->
+          <div class="pscreen active" id="ps-swipe">
+            <div class="p-topbar">
+              <div class="p-logo"><span>t</span>Nic</div>
+              <div class="p-tabs"><div class="p-tab on">👤</div><div class="p-tab">🏢</div></div>
+              <div style="font-size:14px;opacity:.4">🔔</div>
+            </div>
+            <div class="p-card-area">
+              <div class="p-card" id="swipe-card">
+                <div class="p-stamp like" id="stamp-like">LIKE 💙</div>
+                <div class="p-stamp pass" id="stamp-pass">PASS ✖</div>
+                <div class="p-av" id="card-av" style="background:#D97706">AM</div>
+                <div class="p-name" id="card-name">Andrés M.</div>
+                <div class="p-role" id="card-role">Mobile Developer</div>
+                <div class="p-loc" id="card-loc">📍 CABA, AR</div>
+                <div class="p-skills" id="card-skills">
+                  <span class="p-sk">Flutter</span><span class="p-sk">Swift</span><span class="p-sk">Firebase</span>
+                </div>
+                <div class="p-score">
+                  <div class="p-bar-bg"><div class="p-bar-fill" id="card-bar" style="width:95%"></div></div>
+                  <div class="p-pct" id="card-pct">95%</div>
+                </div>
+              </div>
+              <div class="finger" id="finger">👆</div>
+            </div>
+            <div class="p-actions">
+              <div class="p-pass" onclick="doPass()">✖</div>
+              <div class="p-like" id="like-btn" onclick="doLike()">💙</div>
+            </div>
+            <div class="p-bnav">
+              <div class="p-ni on"><div>🃏</div><div class="p-ni-lbl">Explorar</div></div>
+              <div class="p-ni"><div>💬</div></div><div class="p-ni"><div>📋</div></div>
+              <div class="p-ni"><div>📅</div></div><div class="p-ni"><div>👤</div></div>
+            </div>
+          </div>
+
+          <!-- SCREEN 2: MATCH -->
+          <div class="pscreen" id="ps-match">
+            <div class="pm-emoji">🎉</div>
+            <div class="pm-title">Mutual Interest</div>
+            <div class="pm-badge">New Connection</div>
+            <div class="pm-sub" id="match-sub">Andrés M. y vos tienen Mutual Interest</div>
+            <div class="pm-avs">
+              <div class="pm-av" style="background:#0F172A;font-size:11px"><span style="color:#6091FF">t</span><span style="color:#fff">N</span></div>
+              <div style="font-size:20px">💙</div>
+              <div class="pm-av" id="match-av" style="background:#D97706">AM</div>
+            </div>
+            <button class="pm-btn" onclick="goStep(2)">💬 Iniciar Chat</button>
+            <button class="pm-ghost" onclick="goStep(0)">Seguir viendo</button>
+          </div>
+
+          <!-- SCREEN 3: CHAT -->
+          <div class="pscreen" id="ps-chat">
+            <div class="pc-header">
+              <button class="pc-back" onclick="goStep(1)">←</button>
+              <div class="pc-av" style="background:#D97706">AM</div>
+              <div><div class="pc-name">Andrés M.</div><div class="pc-role">Mobile Dev · Candidato</div></div>
+              <div class="pc-online"><div class="pc-dot"></div>Online</div>
+            </div>
+            <div class="pc-body" id="chat-body">
+              <div class="pc-bw me"><div class="pc-bub me">¡Hola Andrés! Vi tu perfil, me interesa tu experiencia con Flutter.</div><div class="pc-bt">10:32</div></div>
+              <div class="pc-bw them"><div class="pc-bub them">¡Hola! Claro, con mucho gusto. ¿De qué empresa son?</div><div class="pc-bt">10:33</div></div>
+              <div class="pc-bw me"><div class="pc-bub me">Somos Globant, buscamos Flutter Senior. ¿Te interesa una entrevista?</div><div class="pc-bt">10:34</div></div>
+              <div class="pc-bw them"><div class="pc-bub them">¡Perfecto! ¿El jueves a las 15hs te viene bien? 🙌</div><div class="pc-bt">10:35</div></div>
+            </div>
+            <div class="pc-input-row">
+              <input class="pc-inp" placeholder="Escribí un mensaje...">
+              <div class="pc-send">➤</div>
+            </div>
+          </div>
+
+          <!-- SCREEN 4: AGENDA -->
+          <div class="pscreen" id="ps-agenda">
+            <div class="pa-header">
+              <div class="pa-title">📅 Agenda</div>
+              <div class="pa-sub">1 entrevista agendada</div>
+              <div class="pa-tabs">
+                <div class="pa-tab on">Todas</div>
+                <div class="pa-tab">Pendientes</div>
+                <div class="pa-tab">Confirmadas</div>
+              </div>
+            </div>
+            <div class="pa-body">
+              <div class="pa-card">
+                <div class="pa-header2">
+                  <div class="pa-cav" style="background:#D97706">AM</div>
+                  <div><div class="pa-cname">Andrés M.</div><div class="pa-crole">Mobile Developer</div></div>
+                  <div class="pa-status">✓ Confirmada</div>
+                </div>
+                <div class="pa-details">
+                  <div class="pa-dr"><span class="pa-icon">📅</span>Jueves 24 · 15:00</div>
+                  <div class="pa-dr"><span class="pa-icon">⏱</span>45 minutos</div>
+                  <div class="pa-dr"><span class="pa-icon">🎥</span>Google Meet</div>
+                  <div class="pa-dr"><span class="pa-icon">📝</span>Entrevista técnica Flutter</div>
+                </div>
+                <div class="pa-actions">
+                  <button class="pa-btn pa-btn-meet">🎥 Unirse</button>
+                  <button class="pa-btn pa-btn-edit">✏️ Editar</button>
+                </div>
+              </div>
+            </div>
+            <div class="p-bnav">
+              <div class="p-ni"><div>🃏</div></div><div class="p-ni"><div>💬</div></div>
+              <div class="p-ni"><div>📋</div></div>
+              <div class="p-ni on"><div>📅</div><div class="p-ni-lbl">Agenda</div></div>
+              <div class="p-ni"><div>👤</div></div>
+            </div>
+          </div>
+
+          <!-- SCREEN 5: PIPELINE -->
+          <div class="pscreen" id="ps-pipeline">
+            <div class="pk-header">
+              <div class="pk-title">📋 Pipeline</div>
+            </div>
+            <div class="pa-body" style="flex-direction:row;gap:0;padding:8px 4px;overflow-x:auto;flex:1">
+              <div class="pk-col">
+                <div class="pk-col-h nuevo">Nuevo</div>
+                <div class="pk-card"><div class="pk-av" style="background:#2B5CE6">MG</div><div class="pk-name">Matías G.</div><div class="pk-role">Full Stack</div></div>
+              </div>
+              <div class="pk-col">
+                <div class="pk-col-h entrevista">Entrevista</div>
+                <div class="pk-card entrevista"><div class="pk-av" style="background:#D97706">AM</div><div class="pk-name">Andrés M.</div><div class="pk-role">Mobile Dev</div></div>
+              </div>
+              <div class="pk-col">
+                <div class="pk-col-h oferta">Oferta</div>
+                <div class="pk-card oferta"><div class="pk-av" style="background:#7C3AED">VR</div><div class="pk-name">Valentina R.</div><div class="pk-role">Data Eng.</div></div>
+              </div>
+              <div class="pk-col">
+                <div class="pk-col-h contratado">Cont.</div>
+                <div class="pk-card contratado"><div class="pk-av" style="background:#059669">LP</div><div class="pk-name">Lucas P.</div><div class="pk-role">DevOps</div></div>
+              </div>
+            </div>
+            <div class="p-bnav">
+              <div class="p-ni"><div>🃏</div></div><div class="p-ni"><div>💬</div></div>
+              <div class="p-ni on"><div>📋</div><div class="p-ni-lbl">Pipeline</div></div>
+              <div class="p-ni"><div>📅</div></div><div class="p-ni"><div>👤</div></div>
+            </div>
+          </div>
+
+        </div><!-- /phone -->
+      </div>
+
+      <!-- INFO PANEL -->
+      <div class="info-panel">
+        <!-- Step 0 -->
+        <div class="step-info active" id="info-0">
+          <div class="step-badge"><div class="step-num-big">1</div><span data-es="Explorá perfiles" data-en="Explore profiles">Explorá perfiles</span></div>
+          <h3 class="step-title" data-es="Swipeá para encontrar tu match ideal" data-en="Swipe to find your ideal match">Swipeá para encontrar tu match ideal</h3>
+          <p class="step-desc" data-es="Explorá perfiles de candidatos IT o empresas. El score de match calculado automáticamente te dice qué tan alineado estás antes de decidir." data-en="Browse IT candidate or company profiles. The automatically calculated match score tells you how aligned you are before deciding.">Explorá perfiles de candidatos IT o empresas. El score de match calculado automáticamente te dice qué tan alineado estás antes de decidir.</p>
+          <div class="step-tips">
+            <div class="tip"><div class="tip-icon">💙</div><div class="tip-text"><strong data-es="Like" data-en="Like">Like</strong> — <span data-es="deslizá a la derecha o tocá el botón azul para mostrar interés" data-en="swipe right or tap the blue button to show interest">deslizá a la derecha o tocá el botón azul para mostrar interés</span></div></div>
+            <div class="tip"><div class="tip-icon">✖</div><div class="tip-text"><strong data-es="Pass" data-en="Pass">Pass</strong> — <span data-es="deslizá a la izquierda para ver el siguiente perfil" data-en="swipe left to see the next profile">deslizá a la izquierda para ver el siguiente perfil</span></div></div>
+            <div class="tip"><div class="tip-icon">🎯</div><div class="tip-text"><strong data-es="Match Score" data-en="Match Score">Match Score</strong> — <span data-es="porcentaje basado en skills, seniority y disponibilidad" data-en="percentage based on skills, seniority and availability">porcentaje basado en skills, seniority y disponibilidad</span></div></div>
+          </div>
+          <div class="step-nav"><button class="btn-next" onclick="goStep(1)" data-es="Siguiente: Match →" data-en="Next: Match →">Siguiente: Match →</button></div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="step-info" id="info-1">
+          <div class="step-badge"><div class="step-num-big">2</div><span data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</span></div>
+          <h3 class="step-title" data-es="Cuando hay interés mutuo, ¡es un match!" data-en="When there's mutual interest, it's a match!">Cuando hay interés mutuo, ¡es un match!</h3>
+          <p class="step-desc" data-es="Solo cuando candidato y empresa se dan like mutuamente se habilita la conexión. Sin spam, sin contactos no deseados — solo conexiones reales." data-en="Only when candidate and company mutually like each other is the connection enabled. No spam, no unwanted contacts — only real connections.">Solo cuando candidato y empresa se dan like mutuamente se habilita la conexión. Sin spam, sin contactos no deseados — solo conexiones reales.</p>
+          <div class="step-tips">
+            <div class="tip"><div class="tip-icon">🎉</div><div class="tip-text"><strong data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</strong> — <span data-es="aparece automáticamente cuando los dos lados hacen like" data-en="appears automatically when both sides like each other">aparece automáticamente cuando los dos lados hacen like</span></div></div>
+            <div class="tip"><div class="tip-icon">💬</div><div class="tip-text"><strong data-es="Chat habilitado" data-en="Chat enabled">Chat habilitado</strong> — <span data-es="a partir del match cualquiera puede iniciar la conversación" data-en="from the match, anyone can start the conversation">a partir del match cualquiera puede iniciar la conversación</span></div></div>
+          </div>
+          <div class="step-nav"><button class="btn-prev" onclick="goStep(0)" data-es="← Anterior" data-en="← Back">← Anterior</button><button class="btn-next" onclick="goStep(2)" data-es="Siguiente: Chat →" data-en="Next: Chat →">Siguiente: Chat →</button></div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-info" id="info-2">
+          <div class="step-badge"><div class="step-num-big">3</div><span data-es="Chat bidireccional" data-en="Two-way Chat">Chat bidireccional</span></div>
+          <h3 class="step-title" data-es="Hablá directamente con quien te interesa" data-en="Talk directly with who interests you">Hablá directamente con quien te interesa</h3>
+          <p class="step-desc" data-es="Candidatos y recruiters pueden iniciar la conversación cuando quieran. El chat queda accesible desde Matches en cualquier momento." data-en="Candidates and recruiters can start the conversation whenever they want. The chat is accessible from Matches at any time.">Candidatos y recruiters pueden iniciar la conversación cuando quieran. El chat queda accesible desde Matches en cualquier momento.</p>
+          <div class="step-tips">
+            <div class="tip"><div class="tip-icon">👤</div><div class="tip-text"><strong data-es="Candidato" data-en="Candidate">Candidato</strong> — <span data-es="preguntá sobre el rol, salario, modalidad y stack" data-en="ask about the role, salary, work mode and stack">preguntá sobre el rol, salario, modalidad y stack</span></div></div>
+            <div class="tip"><div class="tip-icon">🏢</div><div class="tip-text"><strong data-es="Empresa" data-en="Company">Empresa</strong> — <span data-es="presentá la oportunidad y coordiná los próximos pasos" data-en="present the opportunity and coordinate next steps">presentá la oportunidad y coordiná los próximos pasos</span></div></div>
+            <div class="tip"><div class="tip-icon">📅</div><div class="tip-text"><span data-es="Desde el chat podés agendar entrevistas directamente" data-en="From the chat you can schedule interviews directly">Desde el chat podés agendar entrevistas directamente</span></div></div>
+          </div>
+          <div class="step-nav"><button class="btn-prev" onclick="goStep(1)" data-es="← Anterior" data-en="← Back">← Anterior</button><button class="btn-next" onclick="goStep(3)" data-es="Siguiente: Agenda →" data-en="Next: Schedule →">Siguiente: Agenda →</button></div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-info" id="info-3">
+          <div class="step-badge"><div class="step-num-big">4</div><span data-es="Agenda integrada" data-en="Integrated Schedule">Agenda integrada</span></div>
+          <h3 class="step-title" data-es="Agendá entrevistas con un toque" data-en="Schedule interviews with one tap">Agendá entrevistas con un toque</h3>
+          <p class="step-desc" data-es="Coordiná entrevistas por Google Meet, Zoom o Teams directo desde la app. El candidato recibe los detalles automáticamente." data-en="Schedule interviews via Google Meet, Zoom or Teams directly from the app. The candidate receives the details automatically.">Coordiná entrevistas por Google Meet, Zoom o Teams directo desde la app. El candidato recibe los detalles automáticamente.</p>
+          <div class="step-tips">
+            <div class="tip"><div class="tip-icon">🎥</div><div class="tip-text"><strong data-es="Plataformas" data-en="Platforms">Plataformas</strong> — <span data-es="Meet, Zoom, Teams o presencial" data-en="Meet, Zoom, Teams or in-person">Meet, Zoom, Teams o presencial</span></div></div>
+            <div class="tip"><div class="tip-icon">⏰</div><div class="tip-text"><strong data-es="Horarios alternativos" data-en="Alternative slots">Horarios alternativos</strong> — <span data-es="proponé varias opciones para que el candidato elija" data-en="propose several options for the candidate to choose">proponé varias opciones para que el candidato elija</span></div></div>
+          </div>
+          <div class="step-nav"><button class="btn-prev" onclick="goStep(2)" data-es="← Anterior" data-en="← Back">← Anterior</button><button class="btn-next" onclick="goStep(4)" data-es="Siguiente: Pipeline →" data-en="Next: Pipeline →">Siguiente: Pipeline →</button></div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-info" id="info-4">
+          <div class="step-badge"><div class="step-num-big">5</div><span data-es="Pipeline Kanban" data-en="Kanban Pipeline">Pipeline Kanban</span></div>
+          <h3 class="step-title" data-es="Gestioná todo el proceso desde un lugar" data-en="Manage the entire process from one place">Gestioná todo el proceso desde un lugar</h3>
+          <p class="step-desc" data-es="Avanzá a los candidatos por las etapas: Nuevo → Entrevista → Oferta → Contratado. Tenés todo el pipeline visible de un vistazo." data-en="Move candidates through stages: New → Interview → Offer → Hired. The entire pipeline is visible at a glance.">Avanzá a los candidatos por las etapas: Nuevo → Entrevista → Oferta → Contratado. Tenés todo el pipeline visible de un vistazo.</p>
+          <div class="step-tips">
+            <div class="tip"><div class="tip-icon">📋</div><div class="tip-text"><span data-es="Kanban visual con 4 columnas para gestionar todo el proceso de selección" data-en="Visual Kanban with 4 columns to manage the entire selection process">Kanban visual con 4 columnas para gestionar todo el proceso de selección</span></div></div>
+            <div class="tip"><div class="tip-icon">🎯</div><div class="tip-text"><strong data-es="Ranking por JD" data-en="JD Ranking">Ranking por JD</strong> — <span data-es="pegá un Job Description y tNic rankea automáticamente los mejores candidatos" data-en="paste a Job Description and tNic automatically ranks the best candidates">pegá un JD y tNic rankea automáticamente los mejores candidatos</span></div></div>
+          </div>
+          <div class="step-nav">
+            <button class="btn-prev" onclick="goStep(3)" data-es="← Anterior" data-en="← Back">← Anterior</button>
+            <button class="btn-next" style="background:linear-gradient(135deg,#16A34A,#059669)" onclick="window.open('/app','_blank')" data-es="🚀 Abrir la app" data-en="🚀 Open the app">🚀 Abrir la app</button>
+          </div>
+        </div>
+      </div><!-- /info-panel -->
     </div>
   </div>
 </section>
 
-<!-- LEGAL SECTION -->
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-label fade-in" data-es="Características" data-en="Features">Características</div>
+  <h2 class="section-title fade-in" data-es="Todo lo que necesitás para conectar talento" data-en="Everything you need to connect talent">Todo lo que necesitás para conectar talento</h2>
+  <div class="feat-grid">
+    <div class="feat-card fade-in"><span class="feat-icon">🃏</span><div class="feat-title" data-es="Swipe inteligente" data-en="Smart Swipe">Swipe inteligente</div><p class="feat-desc" data-es="Match score automático basado en skills, seniority, disponibilidad e idiomas." data-en="Automatic match score based on skills, seniority, availability and languages.">Match score automático basado en skills, seniority, disponibilidad e idiomas.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">💙</span><div class="feat-title" data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</div><p class="feat-desc" data-es="Solo cuando hay interés de ambos lados se habilita el chat. Sin spam." data-en="Only when both sides show interest is the chat enabled. No spam.">Solo cuando hay interés de ambos lados se habilita el chat. Sin spam.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">💬</span><div class="feat-title" data-es="Chat bidireccional" data-en="Two-way Chat">Chat bidireccional</div><p class="feat-desc" data-es="Candidatos y recruiters inician conversaciones cuando quieran, con contexto del proceso." data-en="Candidates and recruiters start conversations whenever they want, with process context.">Candidatos y recruiters inician conversaciones cuando quieran, con contexto del proceso.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">📅</span><div class="feat-title" data-es="Agenda integrada" data-en="Integrated Schedule">Agenda integrada</div><p class="feat-desc" data-es="Meet, Zoom o Teams directo desde la app. Con horarios alternativos y recordatorios." data-en="Meet, Zoom or Teams directly from the app. With alternative slots and reminders.">Meet, Zoom o Teams directo desde la app. Con horarios alternativos y recordatorios.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">📋</span><div class="feat-title" data-es="Pipeline Kanban" data-en="Kanban Pipeline">Pipeline Kanban</div><p class="feat-desc" data-es="Nuevo → Entrevista → Oferta → Contratado. Todo el proceso en un lugar." data-en="New → Interview → Offer → Hired. The entire process in one place.">Nuevo → Entrevista → Oferta → Contratado. Todo el proceso en un lugar.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">🎯</span><div class="feat-title" data-es="Ranking por JD" data-en="JD Ranking">Ranking por JD</div><p class="feat-desc" data-es="Pegá un Job Description y tNic rankea automáticamente los mejores candidatos." data-en="Paste a Job Description and tNic automatically ranks the best candidates.">Pegá un Job Description y tNic rankea automáticamente los mejores candidatos.</p></div>
+  </div>
+</section>
+
+<!-- LEGAL -->
 <section class="legal-section" id="legal">
   <div class="legal-inner">
     <div class="legal-header fade-in">
@@ -445,30 +661,16 @@ footer{
         <p data-es="Leé esta información antes de usar la plataforma" data-en="Please read this information before using the platform">Leé esta información antes de usar la plataforma</p>
       </div>
     </div>
-
     <div class="legal-grid fade-in">
-      <div class="legal-card">
-        <div class="legal-card-title">🧪 <span data-es="Estado Beta" data-en="Beta Status">Estado Beta</span></div>
-        <p data-es="tNic se encuentra actualmente en fase de desarrollo beta. Los datos mostrados son referenciales y orientativos. Las funcionalidades pueden cambiar sin previo aviso. No garantizamos disponibilidad continua del servicio." data-en="tNic is currently in beta development phase. Data shown is referential and indicative. Features may change without notice. We do not guarantee continuous service availability.">tNic se encuentra actualmente en fase de desarrollo beta. Los datos mostrados son referenciales y orientativos. Las funcionalidades pueden cambiar sin previo aviso. No garantizamos disponibilidad continua del servicio.</p>
-      </div>
-      <div class="legal-card">
-        <div class="legal-card-title">🔒 <span data-es="Privacidad y Datos" data-en="Privacy and Data">Privacidad y Datos</span></div>
-        <p data-es="Los datos personales que ingreses (nombre, email) son recopilados únicamente para la lista de espera y comunicaciones de tNic. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación en cualquier momento escribiendo a" data-en="Personal data you enter (name, email) is collected solely for the waitlist and tNic communications. It is not sold or shared with third parties. You can request deletion at any time by writing to">Los datos personales que ingreses (nombre, email) son recopilados únicamente para la lista de espera y comunicaciones de tNic. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación escribiendo a <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a></p>
-      </div>
-      <div class="legal-card">
-        <div class="legal-card-title">⚠️ <span data-es="Limitación de Responsabilidad" data-en="Limitation of Liability">Limitación de Responsabilidad</span></div>
-        <p data-es="tNic actúa como plataforma de conexión y no es responsable de las decisiones de contratación, condiciones laborales, ni veracidad de la información publicada por candidatos o empresas. La plataforma no garantiza resultados en procesos de selección." data-en="tNic acts as a connection platform and is not responsible for hiring decisions, employment conditions, or the accuracy of information published by candidates or companies. The platform does not guarantee results in selection processes.">tNic actúa como plataforma de conexión y no es responsable de las decisiones de contratación, condiciones laborales, ni veracidad de información publicada. La plataforma no garantiza resultados en procesos de selección.</p>
-      </div>
-      <div class="legal-card">
-        <div class="legal-card-title">📋 <span data-es="Uso Aceptable" data-en="Acceptable Use">Uso Aceptable</span></div>
-        <p data-es="Al usar tNic aceptás no publicar información falsa, no realizar actividades fraudulentas, y no usar la plataforma para fines distintos a la conexión laboral legítima. Nos reservamos el derecho de suspender cuentas que violen estas condiciones." data-en="By using tNic you agree not to publish false information, not to carry out fraudulent activities, and not to use the platform for purposes other than legitimate employment connection. We reserve the right to suspend accounts that violate these conditions.">Al usar tNic aceptás no publicar información falsa, no realizar actividades fraudulentas, y no usar la plataforma para fines distintos a la conexión laboral legítima. Nos reservamos el derecho de suspender cuentas.</p>
-      </div>
+      <div class="legal-card"><div class="legal-card-title">🧪 <span data-es="Estado Beta" data-en="Beta Status">Estado Beta</span></div><p data-es="tNic está en fase de desarrollo beta. Los datos son referenciales. Las funcionalidades pueden cambiar sin previo aviso. No garantizamos disponibilidad continua del servicio." data-en="tNic is in beta development phase. Data is referential. Features may change without notice. We do not guarantee continuous service availability.">tNic está en fase de desarrollo beta. Los datos son referenciales. Las funcionalidades pueden cambiar sin previo aviso. No garantizamos disponibilidad continua del servicio.</p></div>
+      <div class="legal-card"><div class="legal-card-title">🔒 <span data-es="Privacidad y Datos" data-en="Privacy and Data">Privacidad y Datos</span></div><p data-es="Los datos (nombre, email) son recopilados solo para la lista de espera. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación en cualquier momento escribiendo a " data-en="Data (name, email) is collected only for the waitlist. Not sold or shared with third parties. You can request deletion at any time by writing to ">Los datos (nombre, email) son recopilados solo para la lista de espera. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación a <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a></p></div>
+      <div class="legal-card"><div class="legal-card-title">⚠️ <span data-es="Limitación de Responsabilidad" data-en="Limitation of Liability">Limitación de Responsabilidad</span></div><p data-es="tNic actúa como plataforma de conexión y no es responsable de decisiones de contratación, condiciones laborales, ni veracidad de información publicada. No garantiza resultados en procesos de selección." data-en="tNic acts as a connection platform and is not responsible for hiring decisions, employment conditions, or accuracy of information published. It does not guarantee results in selection processes.">tNic actúa como plataforma de conexión y no es responsable de decisiones de contratación, condiciones laborales, ni veracidad de información publicada.</p></div>
+      <div class="legal-card"><div class="legal-card-title">📋 <span data-es="Uso Aceptable" data-en="Acceptable Use">Uso Aceptable</span></div><p data-es="Al usar tNic aceptás no publicar información falsa, no realizar actividades fraudulentas, y usar la plataforma solo para conexión laboral IT legítima." data-en="By using tNic you agree not to publish false information, not to carry out fraudulent activities, and to use the platform only for legitimate IT employment connection.">Al usar tNic aceptás no publicar información falsa, no realizar actividades fraudulentas, y usar la plataforma solo para conexión laboral IT legítima.</p></div>
     </div>
-
     <div class="legal-disclaimer fade-in">
       <strong data-es="Aviso Legal — " data-en="Legal Notice — ">Aviso Legal — </strong>
-      <span data-es="tNic es una plataforma digital en etapa experimental operada en la República Argentina. El uso de este servicio implica la aceptación plena de los términos y condiciones vigentes. tNic no constituye un servicio de empleo, agencia de colocación laboral ni intermediario laboral registrado. Los perfiles, empresas y candidatos mostrados en la versión beta son datos de demostración y no representan relaciones laborales reales. Las marcas mencionadas en la plataforma son propiedad de sus respectivos titulares. Para consultas legales: legal@tnictalent.com · Para cancelar tu suscripción a comunicaciones: unsubscribe@tnictalent.com" data-en="tNic is a digital platform in experimental stage operated in the Argentine Republic. Use of this service implies full acceptance of the current terms and conditions. tNic does not constitute an employment service, job placement agency or registered labor intermediary. Profiles, companies and candidates shown in the beta version are demonstration data and do not represent real employment relationships. Brands mentioned on the platform are the property of their respective owners. For legal inquiries: legal@tnictalent.com · To cancel your subscription to communications: unsubscribe@tnictalent.com">
-        tNic es una plataforma digital en etapa experimental operada en la República Argentina. El uso de este servicio implica la aceptación plena de los términos y condiciones vigentes. tNic no constituye un servicio de empleo, agencia de colocación laboral ni intermediario laboral registrado. Los perfiles, empresas y candidatos mostrados en la versión beta son datos de demostración y no representan relaciones laborales reales. Las marcas mencionadas en la plataforma son propiedad de sus respectivos titulares. Para consultas legales: <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a>
+      <span data-es="tNic es una plataforma digital en etapa experimental operada en la República Argentina. El uso de este servicio implica la aceptación plena de los términos y condiciones vigentes. tNic no constituye un servicio de empleo, agencia de colocación laboral ni intermediario laboral registrado. Los perfiles, empresas y candidatos mostrados en la versión beta son datos de demostración y no representan relaciones laborales reales. Las marcas mencionadas son propiedad de sus respectivos titulares. Consultas legales: legal@tnictalent.com" data-en="tNic is a digital platform in experimental stage operated in the Argentine Republic. Use of this service implies full acceptance of current terms and conditions. tNic does not constitute an employment service, job placement agency or registered labor intermediary. Profiles shown in the beta version are demonstration data and do not represent real employment relationships. Brands mentioned are property of their respective owners. Legal inquiries: legal@tnictalent.com">
+        tNic es una plataforma digital en etapa experimental operada en la República Argentina. El uso de este servicio implica la aceptación plena de los términos y condiciones vigentes. tNic no constituye un servicio de empleo, agencia de colocación laboral ni intermediario laboral registrado. Los perfiles, empresas y candidatos mostrados en la versión beta son datos de demostración y no representan relaciones laborales reales. Las marcas mencionadas son propiedad de sus respectivos titulares. Consultas legales: <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a>
       </span>
     </div>
   </div>
@@ -489,30 +691,26 @@ footer{
     <div class="footer-links">
       <a href="#legal" data-es="Legal" data-en="Legal">Legal</a>
       <a href="#" onclick="openModal(event)" data-es="Términos y Condiciones" data-en="Terms & Conditions">Términos y Condiciones</a>
-      <a href="mailto:legal@tnictalent.com" data-es="Contacto Legal" data-en="Legal Contact">Contacto Legal</a>
-      <a href="/app" data-es="Abrir App" data-en="Open App">Abrir App →</a>
+      <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a>
+      <a href="/app" data-es="Abrir App →" data-en="Open App →">Abrir App →</a>
     </div>
     <div class="footer-copy" data-es="© 2025 tNic. Plataforma en fase beta. Todos los derechos reservados." data-en="© 2025 tNic. Platform in beta phase. All rights reserved.">© 2025 tNic. Plataforma en fase beta. Todos los derechos reservados.</div>
   </div>
 </footer>
 
-<!-- MODAL TÉRMINOS Y CONDICIONES -->
+<!-- MODAL T&C -->
 <div class="modal-overlay" id="tc-modal">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title" data-es="Términos y Condiciones — tNic" data-en="Terms and Conditions — tNic">Términos y Condiciones — tNic</div>
       <button class="modal-close" onclick="closeModal()">×</button>
     </div>
-    <div class="modal-body" id="modal-body-es">
+    <div class="modal-body" id="modal-es">
       <div class="highlight">⚠️ tNic es una plataforma en fase beta. Todo el contenido es experimental y referencial. Al usar la plataforma aceptás estos términos en su totalidad.</div>
-
       <h3>1. Objeto y naturaleza del servicio</h3>
-      <p>tNic es una plataforma digital de conexión entre candidatos del sector tecnológico y empresas que buscan talento IT. tNic actúa exclusivamente como intermediario tecnológico y no es parte de ninguna relación laboral que pueda surgir entre sus usuarios.</p>
-      <p>tNic no es una agencia de empleo, bolsa de trabajo registrada, ni empresa de colocación laboral bajo las leyes de la República Argentina (Ley N° 24.013 y modificatorias).</p>
-
+      <p>tNic es una plataforma digital de conexión entre candidatos del sector tecnológico y empresas que buscan talento IT. tNic actúa exclusivamente como intermediario tecnológico y no es parte de ninguna relación laboral que pueda surgir entre sus usuarios. tNic no es una agencia de empleo, bolsa de trabajo registrada, ni empresa de colocación laboral bajo las leyes de la República Argentina (Ley N° 24.013 y modificatorias).</p>
       <h3>2. Estado beta y limitaciones</h3>
-      <p>La plataforma se encuentra en desarrollo activo. Los perfiles, empresas y estadísticas mostradas en la versión beta pueden ser datos de demostración. No garantizamos la disponibilidad continua, exactitud de los datos, ni el resultado de los procesos de selección iniciados a través de tNic.</p>
-
+      <p>La plataforma se encuentra en desarrollo activo. Los perfiles, empresas y estadísticas mostradas pueden ser datos de demostración. No garantizamos la disponibilidad continua, exactitud de los datos, ni el resultado de los procesos de selección iniciados a través de tNic.</p>
       <h3>3. Datos personales y privacidad</h3>
       <p>Los datos recopilados (nombre, email) son tratados conforme a la Ley N° 25.326 de Protección de Datos Personales de Argentina. Son utilizados únicamente para comunicaciones de tNic y la gestión de la lista de espera. No son vendidos ni cedidos a terceros sin consentimiento expreso.</p>
       <ul>
@@ -520,71 +718,46 @@ footer{
         <li>Período de retención: hasta que solicites la baja o 2 años desde el último acceso</li>
         <li>Base legal del tratamiento: consentimiento explícito del usuario</li>
       </ul>
-
       <h3>4. Responsabilidades del usuario</h3>
-      <p>Al registrarte en tNic aceptás:</p>
-      <ul>
-        <li>Proporcionar información veraz y actualizada</li>
-        <li>No suplantar identidades ni crear perfiles falsos</li>
-        <li>No usar la plataforma para contactos no relacionados con empleo IT</li>
-        <li>No realizar actividades fraudulentas, spam o scraping</li>
-        <li>Respetar la privacidad de otros usuarios</li>
-      </ul>
-
+      <p>Al registrarte en tNic aceptás: proporcionar información veraz, no suplantar identidades, no crear perfiles falsos, no usar la plataforma para fines distintos al empleo IT, y respetar la privacidad de otros usuarios.</p>
       <h3>5. Limitación de responsabilidad</h3>
       <p>tNic no se responsabiliza por: decisiones de contratación, condiciones laborales acordadas, incumplimientos entre partes, exactitud de CV o perfiles de empresa, ni pérdidas derivadas del uso de la plataforma. El servicio se provee "tal cual está" durante la fase beta.</p>
-
       <h3>6. Propiedad intelectual</h3>
       <p>El nombre tNic, su logo, diseño y código son propiedad de sus creadores. Las marcas de empresas mencionadas (Mercado Libre, Globant, etc.) son propiedad de sus respectivos titulares y se usan solo con fines demostrativos.</p>
-
-      <h3>7. Ley aplicable</h3>
+      <h3>7. Ley aplicable y jurisdicción</h3>
       <p>Estos términos se rigen por las leyes de la República Argentina. Cualquier disputa se somete a la jurisdicción de los tribunales ordinarios de la Ciudad Autónoma de Buenos Aires.</p>
-
       <h3>8. Modificaciones</h3>
-      <p>tNic puede modificar estos términos en cualquier momento. Los cambios se notificarán por email a los usuarios registrados. El uso continuado de la plataforma implica aceptación de los nuevos términos.</p>
-
+      <p>tNic puede modificar estos términos en cualquier momento. Los cambios se notificarán por email a los usuarios registrados. El uso continuado implica aceptación de los nuevos términos.</p>
       <h3>9. Contacto</h3>
-      <p>Para cualquier consulta legal: <strong>legal@tnictalent.com</strong><br>Para cancelar comunicaciones: <strong>unsubscribe@tnictalent.com</strong></p>
+      <p>Consultas legales: <strong>legal@tnictalent.com</strong> · Cancelar comunicaciones: <strong>unsubscribe@tnictalent.com</strong></p>
     </div>
-    <div class="modal-body" id="modal-body-en" style="display:none">
+    <div class="modal-body" id="modal-en" style="display:none">
       <div class="highlight">⚠️ tNic is a platform in beta phase. All content is experimental and referential. By using the platform you accept these terms in their entirety.</div>
-
       <h3>1. Purpose and nature of the service</h3>
       <p>tNic is a digital connection platform between candidates in the technology sector and companies looking for IT talent. tNic acts exclusively as a technological intermediary and is not party to any employment relationship that may arise between its users.</p>
-
       <h3>2. Beta status and limitations</h3>
-      <p>The platform is under active development. Profiles, companies and statistics shown in the beta version may be demonstration data. We do not guarantee continuous availability, data accuracy, or the outcome of any selection processes initiated through tNic.</p>
-
+      <p>The platform is under active development. Profiles, companies and statistics shown may be demonstration data. We do not guarantee continuous availability, data accuracy, or the outcome of any selection processes.</p>
       <h3>3. Personal data and privacy</h3>
-      <p>Data collected (name, email) is processed in accordance with applicable Argentine data protection law. It is used solely for tNic communications and waitlist management. It is not sold or transferred to third parties without express consent.</p>
-      <ul>
-        <li>Right of access, rectification and deletion: write to <strong>legal@tnictalent.com</strong></li>
-        <li>Retention period: until you request deletion or 2 years from last access</li>
-      </ul>
-
+      <p>Data collected (name, email) is used solely for tNic communications and waitlist management. It is not sold or transferred to third parties without express consent. Right of access, rectification and deletion: write to <strong>legal@tnictalent.com</strong></p>
       <h3>4. User responsibilities</h3>
-      <p>By registering on tNic you agree to provide truthful information, not impersonate others, not use the platform for non-IT-employment purposes, and respect other users' privacy.</p>
-
+      <p>By registering on tNic you agree to provide truthful information, not impersonate others, not create fake profiles, and use the platform only for legitimate IT employment purposes.</p>
       <h3>5. Limitation of liability</h3>
       <p>tNic is not responsible for hiring decisions, agreed employment conditions, breaches between parties, accuracy of CVs or company profiles, or losses arising from use of the platform. The service is provided "as is" during the beta phase.</p>
-
       <h3>6. Intellectual property</h3>
-      <p>The tNic name, logo, design and code are the property of their creators. Company brands mentioned are property of their respective owners and used for demonstration purposes only.</p>
-
+      <p>The tNic name, logo, design and code are the property of their creators. Company brands mentioned are the property of their respective owners and used for demonstration purposes only.</p>
       <h3>7. Governing law</h3>
-      <p>These terms are governed by the laws of the Argentine Republic. Any dispute is subject to the jurisdiction of the ordinary courts of the Autonomous City of Buenos Aires.</p>
-
-      <h3>9. Contact</h3>
-      <p>Legal inquiries: <strong>legal@tnictalent.com</strong><br>To unsubscribe: <strong>unsubscribe@tnictalent.com</strong></p>
+      <p>These terms are governed by Argentine law. Disputes are subject to the courts of the Autonomous City of Buenos Aires.</p>
+      <h3>8. Contact</h3>
+      <p>Legal inquiries: <strong>legal@tnictalent.com</strong> · Unsubscribe: <strong>unsubscribe@tnictalent.com</strong></p>
     </div>
     <div class="modal-footer">
-      <button onclick="closeModal()" data-es="Entendido, cerrar" data-en="Got it, close">Entendido, cerrar</button>
+      <button id="modal-close-btn" onclick="closeModal()" data-es="Entendido, cerrar" data-en="Got it, close">Entendido, cerrar</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── APPS SCRIPT URL ──
+// ── APPS SCRIPT ──
 var SHEET_URL='https://script.google.com/macros/s/AKfycby81ItyCr7GYAWJwWMQpkq90C6jEz0dgWpt8LxV7nEo2BwViiybB1BUHtK2XV9sMTrIFQ/exec';
 
 // ── LANG ──
@@ -593,46 +766,33 @@ function setLang(l){
   LANG=l;
   document.getElementById('btn-es').classList.toggle('on',l==='es');
   document.getElementById('btn-en').classList.toggle('on',l==='en');
-  // Nav app button
-  var appBtn=document.querySelector('.btn-app');
-  if(appBtn)appBtn.textContent=l==='es'?'Entrar a la app →':'Open app →';
-  // Update all data-es/data-en text nodes
+  document.getElementById('btn-app').textContent=l==='es'?'Entrar a la app →':'Open app →';
   document.querySelectorAll('[data-es]').forEach(function(el){
-    if(el.tagName==='INPUT'){
-      var ph=el.getAttribute('data-placeholder-'+l);if(ph)el.placeholder=ph;
-    } else {
-      var txt=el.getAttribute('data-'+l);
-      if(txt)el.innerHTML=txt;
-    }
+    var key='data-'+l;
+    if(el.tagName==='INPUT'){var ph=el.getAttribute('data-placeholder-'+l);if(ph)el.placeholder=ph;}
+    else{var v=el.getAttribute(key);if(v)el.innerHTML=v;}
   });
-  // Modal bodies
-  document.getElementById('modal-body-es').style.display=l==='es'?'block':'none';
-  document.getElementById('modal-body-en').style.display=l==='en'?'block':'none';
-  // Modal footer button
-  var mfBtn=document.querySelector('.modal-footer button');
-  if(mfBtn)mfBtn.textContent=l==='es'?'Entendido, cerrar':'Got it, close';
+  document.getElementById('modal-es').style.display=l==='es'?'block':'none';
+  document.getElementById('modal-en').style.display=l==='en'?'block':'none';
 }
 
-// ── FORM SUBMIT ──
+// ── FORMS ──
 function submitForm(e,type){
   e.preventDefault();
-  var name='',email='';
-  if(type==='candidate'){name=document.getElementById('cand-name').value;email=document.getElementById('cand-email').value;}
-  else{name=document.getElementById('comp-name').value;email=document.getElementById('comp-email').value;}
+  var name=type==='candidate'?document.getElementById('cand-name').value:document.getElementById('comp-name').value;
+  var email=type==='candidate'?document.getElementById('cand-email').value:document.getElementById('comp-email').value;
   var btn=e.target.querySelector('.btn-submit');
   btn.disabled=true;btn.textContent=LANG==='es'?'Enviando...':'Sending...';
   var url=SHEET_URL+'?tipo='+(type==='candidate'?'Candidato':'Empresa')+'&nombre='+encodeURIComponent(name)+'&email='+encodeURIComponent(email);
-  fetch(url,{method:'GET',mode:'no-cors'})
-    .then(function(){showSuccess(type);})
-    .catch(function(){showSuccess(type);});
+  fetch(url,{method:'GET',mode:'no-cors'}).then(function(){showSuccess(type);}).catch(function(){showSuccess(type);});
 }
 function showSuccess(type){
   var okId=type==='candidate'?'cand-ok':'comp-ok';
   document.getElementById(okId).style.display='block';
-  var form=document.getElementById(okId).closest('form');
-  form.querySelector('.inp-row').style.display='none';
-  form.querySelector('.legal-row').style.display='none';
-  form.querySelector('.btn-submit').style.display='none';
+  var f=document.getElementById(okId).closest('form');
+  f.querySelector('.inp-row').style.display='none';
+  f.querySelector('.legal-row').style.display='none';
+  f.querySelector('.btn-submit').style.display='none';
 }
 
 // ── MODAL ──
@@ -641,9 +801,93 @@ function closeModal(){document.getElementById('tc-modal').classList.remove('open
 document.getElementById('tc-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 
+// ── TUTORIAL ──
+var currentStep=0;
+var cards=[
+  {av:'AM',name:'Andrés M.',role:'Mobile Developer',loc:'CABA, AR',skills:['Flutter','Swift','Firebase'],pct:'95%',w:'95%',color:'#D97706'},
+  {av:'VR',name:'Valentina R.',role:'Data Engineer',loc:'Córdoba, AR',skills:['Python','Spark','dbt'],pct:'87%',w:'87%',color:'#7C3AED'},
+  {av:'LP',name:'Lucas P.',role:'DevOps Engineer',loc:'Rosario, AR',skills:['AWS','K8s','Terraform'],pct:'78%',w:'78%',color:'#059669'},
+  {av:'MG',name:'Matías G.',role:'Full Stack Dev',loc:'Buenos Aires, AR',skills:['React','Node.js','PG'],pct:'92%',w:'92%',color:'#2B5CE6'},
+];
+var cardIdx=0,swipeTimer=null;
+
+function goStep(s){
+  currentStep=s;
+  // Nav
+  for(var i=0;i<5;i++){var b=document.getElementById('sbtn-'+i);if(b)b.classList.toggle('on',i===s);}
+  // Info panels
+  document.querySelectorAll('.step-info').forEach(function(p,i){p.classList.toggle('active',i===s);});
+  // Screens
+  var ids=['ps-swipe','ps-match','ps-chat','ps-agenda','ps-pipeline'];
+  ids.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(!el)return;
+    el.classList.toggle('active',i===s);
+  });
+  // Re-animate chat messages
+  if(s===2){
+    document.querySelectorAll('#chat-body .pc-bw').forEach(function(el,i){
+      el.style.opacity='0';el.style.transform='translateY(8px)';
+      setTimeout(function(){el.style.transition='all .4s ease';el.style.opacity='1';el.style.transform='none';},i*250+100);
+    });
+  }
+}
+
+function runSwipeDemo(){
+  var card=document.getElementById('swipe-card');
+  var stampL=document.getElementById('stamp-like');
+  var finger=document.getElementById('finger');
+  if(!card||currentStep!==0)return;
+  finger.style.cssText='opacity:1;bottom:120px;left:50%;transform:translateX(-50%)';
+  setTimeout(function(){
+    finger.style.transition='all .6s ease';
+    finger.style.left='72%';finger.style.bottom='110px';
+    stampL.style.cssText='animation:stampLike 1.2s ease forwards;opacity:0';
+  },500);
+  setTimeout(function(){
+    card.style.cssText='animation:swipeRight .7s ease forwards';
+  },900);
+  setTimeout(function(){
+    card.style.cssText='';stampL.style.cssText='';
+    finger.style.cssText='opacity:0';
+    cardIdx=(cardIdx+1)%cards.length;
+    var c=cards[cardIdx];
+    document.getElementById('card-av').textContent=c.av;
+    document.getElementById('card-av').style.background=c.color;
+    document.getElementById('card-name').textContent=c.name;
+    document.getElementById('card-role').textContent=c.role;
+    document.getElementById('card-loc').textContent='📍 '+c.loc;
+    document.getElementById('card-bar').style.width=c.w;
+    document.getElementById('card-pct').textContent=c.pct;
+    document.getElementById('card-skills').innerHTML=c.skills.map(function(s){return'<span class="p-sk">'+s+'</span>';}).join('');
+    document.getElementById('match-av').textContent=c.av;
+    document.getElementById('match-av').style.background=c.color;
+    document.getElementById('match-sub').textContent=c.name+' y vos tienen Mutual Interest';
+  },1700);
+}
+
+function doLike(){runSwipeDemo();if(currentStep===0)setTimeout(function(){goStep(1);},2200);}
+function doPass(){
+  var card=document.getElementById('card');var stamp=document.getElementById('stamp-pass');
+  if(card)card.style.cssText='animation:swipeLeft .7s ease forwards';
+  if(stamp)stamp.style.cssText='animation:stampPass 1.2s ease forwards';
+  setTimeout(function(){if(card)card.style.cssText='';if(stamp)stamp.style.cssText='';},1800);
+}
+
+// CSS keyframes for pass
+var s=document.createElement('style');
+s.textContent='@keyframes swipeLeft{0%{transform:translateX(0) rotate(0);opacity:1}100%{transform:translateX(-300px) rotate(-18deg);opacity:0}}@keyframes stampPass{0%{opacity:0}30%{opacity:1}70%{opacity:1}100%{opacity:0}}';
+document.head.appendChild(s);
+
+// Auto demo loop
+swipeTimer=setInterval(function(){if(currentStep===0)runSwipeDemo();},3500);
+
 // ── SCROLL ANIMATIONS ──
-var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.12});
-document.querySelectorAll('.fade-in').forEach(function(el){observer.observe(el);});
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(function(el){obs.observe(el);});
+
+// Init
+goStep(0);
 </script>
 </body>
 </html>

@@ -297,6 +297,42 @@ input.cv-in{display:none}
 .lopt-check{margin-left:auto;font-size:16px;color:#fff;opacity:0}.lopt.sel .lopt-check{opacity:1}
 .lbtn{background:#fff;color:#1B4FD8;border:none;border-radius:var(--rp);padding:14px 0;font-size:15px;font-weight:700;cursor:pointer;width:100%;max-width:280px;font-family:'Syne',sans-serif}
 #onboard-scr{background:linear-gradient(160deg,#0F172A 0%,#1B4FD8 100%);align-items:center;justify-content:center;gap:20px;padding:36px 28px;text-align:center}
+
+/* ── WELCOME SCREEN ── */
+#welcome-scr{background:linear-gradient(160deg,#0F172A 0%,#1B4FD8 100%);align-items:center;justify-content:center;padding:0;text-align:center;overflow:hidden}
+.welcome-inner{display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:100%;padding:40px 28px 32px;gap:0}
+.welcome-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:20px}
+.welcome-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:4px 14px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:1px;text-transform:uppercase}
+.welcome-headline{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2;max-width:280px}
+.welcome-sub{font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;max-width:260px}
+.welcome-features{display:flex;flex-direction:column;gap:10px;width:100%;max-width:280px}
+.welcome-feat{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;text-align:left}
+.welcome-feat-icon{font-size:20px;flex-shrink:0}
+.welcome-feat-text{font-size:12px;color:rgba(255,255,255,.8);line-height:1.4}
+.welcome-feat-text strong{color:#fff;display:block;font-size:13px;margin-bottom:2px}
+.welcome-bottom{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+.welcome-tc{display:flex;align-items:flex-start;gap:8px;background:rgba(255,255,255,.05);border-radius:12px;padding:10px 14px;width:100%;max-width:280px;text-align:left}
+.welcome-tc input[type=checkbox]{width:16px;height:16px;accent-color:#6091FF;margin-top:2px;flex-shrink:0;cursor:pointer}
+.welcome-tc label{font-size:11px;color:rgba(255,255,255,.55);line-height:1.5;cursor:pointer}
+.welcome-tc label a{color:#93C5FD;text-decoration:underline}
+.welcome-btn{background:#fff;color:#1B4FD8;border:none;border-radius:28px;padding:14px 0;font-size:15px;font-weight:700;cursor:pointer;width:100%;max-width:280px;font-family:'Syne',sans-serif;transition:all .2s;opacity:.4;pointer-events:none}
+.welcome-btn.on{opacity:1;pointer-events:auto}
+.welcome-btn.on:hover{background:#EEF3FF}
+
+/* TC modal en app */
+#app-tc-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:flex-end;justify-content:center}
+#app-tc-modal.open{display:flex}
+.app-tc-sheet{background:#fff;border-radius:24px 24px 0 0;width:100%;max-height:80vh;display:flex;flex-direction:column}
+.app-tc-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #E4E4E7;flex-shrink:0}
+.app-tc-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#18181B}
+.app-tc-close{background:none;border:none;font-size:22px;color:#71717A;cursor:pointer}
+.app-tc-body{flex:1;overflow-y:auto;padding:20px}
+.app-tc-body h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#18181B;margin:16px 0 6px}
+.app-tc-body h3:first-child{margin-top:0}
+.app-tc-body p{font-size:12px;color:#71717A;line-height:1.7;margin-bottom:8px}
+.app-tc-body .highlight{background:#EEF3FF;border-left:3px solid #2B5CE6;padding:10px 14px;border-radius:0 8px 8px 0;font-size:11px;color:#3F3F46;margin:10px 0}
+.app-tc-footer{padding:14px 20px;border-top:1px solid #E4E4E7;flex-shrink:0}
+.app-tc-footer button{width:100%;background:linear-gradient(135deg,#2B5CE6,#6091FF);color:#fff;border:none;border-radius:14px;padding:12px 0;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
 .role-card{width:100%;max-width:280px;border-radius:var(--rxl);padding:22px 20px;cursor:pointer;transition:all .2s;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);text-align:left;display:flex;align-items:center;gap:16px}
 .role-card.sel{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.65)}
 .role-icon{font-size:36px;flex-shrink:0}.role-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#fff}
@@ -501,6 +537,54 @@ input[type=range]{width:100%;accent-color:var(--b)}
   <button class="lbtn" id="lbtn" onclick="startApp()">Continuar →</button>
 </div>
 
+<!-- ══ WELCOME SCREEN ══ -->
+<div id="welcome-scr" class="scr">
+  <div class="welcome-inner">
+    <div class="welcome-logo-wrap">
+      <div class="welcome-badge">Beta · LATAM</div>
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 65' style='height:50px;width:auto'>
+        <circle cx='8' cy='14' r='5' fill='#6091FF'/>
+        <circle cx='8' cy='32' r='5' fill='#6091FF'/>
+        <circle cx='8' cy='50' r='5' fill='#6091FF'/>
+        <line x1='8' y1='14' x2='22' y2='23' stroke='#6091FF' stroke-width='2'/>
+        <line x1='8' y1='32' x2='22' y2='23' stroke='#6091FF' stroke-width='2'/>
+        <line x1='8' y1='32' x2='22' y2='41' stroke='#6091FF' stroke-width='2'/>
+        <line x1='8' y1='50' x2='22' y2='41' stroke='#6091FF' stroke-width='2'/>
+        <text x='28' y='56' font-family='Arial Black' font-weight='900' font-size='56' fill='#2B5CE6'>t</text>
+        <text x='65' y='56' font-family='Arial Black' font-weight='900' font-size='56' fill='white'>Nic</text>
+      </svg>
+      <div class="welcome-headline">Talent.<br>Technology.<br>Connection.</div>
+      <div class="welcome-sub">La plataforma IT que conecta talento con empresas líderes de LATAM.</div>
+    </div>
+
+    <div class="welcome-features">
+      <div class="welcome-feat">
+        <div class="welcome-feat-icon">🃏</div>
+        <div class="welcome-feat-text"><strong>Smart Match</strong>Score automático basado en skills, seniority y cultura</div>
+      </div>
+      <div class="welcome-feat">
+        <div class="welcome-feat-icon">💬</div>
+        <div class="welcome-feat-text"><strong>Chat directo</strong>Sin intermediarios. Solo cuando hay interés mutuo</div>
+      </div>
+      <div class="welcome-feat">
+        <div class="welcome-feat-icon">📅</div>
+        <div class="welcome-feat-text"><strong>Agenda integrada</strong>Coordiná entrevistas con Meet, Zoom o Teams</div>
+      </div>
+    </div>
+
+    <div class="welcome-bottom">
+      <div class="welcome-tc">
+        <input type="checkbox" id="welcome-tc-check" onchange="toggleWelcomeBtn()">
+        <label for="welcome-tc-check">
+          Acepto los <a href="#" onclick="openAppTC(event)">Términos y Condiciones</a> y la <a href="#" onclick="openAppTC(event)">Política de Privacidad</a> de tNic. Entiendo que la app está en fase beta.
+        </label>
+      </div>
+      <button class="welcome-btn" id="welcome-btn" onclick="goToOnboard()">Empezar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ONBOARD ROL ══ -->
 <div id="onboard-scr" class="scr">
   <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' style='height:40px;width:auto'><text x='10' y='48' font-family='Arial Black' font-weight='900' font-size='48' fill='#6091FF'>t</text><text x='42' y='48' font-family='Arial Black' font-weight='900' font-size='48' fill='white'>Nic</text></svg>
   <div class="onboard-title">¿Cómo querés usar tNic?</div>
@@ -1161,7 +1245,13 @@ function pickLang(lang){LANG=lang;['es','en'].forEach(function(l){var o=G('lopt-
 function startApp(){
   var has=loadAll();
   if(has&&USER_ROLE){applyRoleUI();go('swipe-scr');sortDataSetByMatch();render();setTimeout(function(){initCardEvents();updateNdot();buildAgenda();},100);}
-  else{go('onboard-scr');}
+  else{
+    // Si ya aceptó T&C, ir al onboarding de rol
+    var tcAccepted=false;
+    try{tcAccepted=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
+    if(tcAccepted){go('onboard-scr');}
+    else{go('welcome-scr');}
+  }
 }
 function changeLang(){go('lang-scr');}
 
@@ -1399,9 +1489,9 @@ function buildList(){
       +'<div class="miright"><div class="mitime">'+(m.time||'')+'</div></div>'
       +'</div>'
       +'<div class="mitem-actions">'
-      +'<button class="mitem-btn mitem-btn-chat" onclick="event.stopPropagation();chatPrev=\'matches-scr\';openChatByName(\''+safeName+'\')">💬 '+(hasChat?'Continuar chat':'Iniciar chat')+'</button>'
-      +'<button class="mitem-btn mitem-btn-sched" onclick="event.stopPropagation();openScheduleModal(\''+safeName+'\')">📅 Agendar</button>'
-      +'<button class="mitem-btn mitem-btn-info" onclick="event.stopPropagation();viewMatchByName(\''+safeName+'\')">👤 Ver perfil</button>'
+      +'<button class="mitem-btn mitem-btn-chat" data-mname="'+safeName+'" onclick="event.stopPropagation();chatPrev=\'matches-scr\';openChatByName(this.dataset.mname)">💬 '+(hasChat?'Continuar chat':'Iniciar chat')+'</button>'
+      +'<button class="mitem-btn mitem-btn-sched" data-mname="'+safeName+'" onclick="event.stopPropagation();openScheduleModal(this.dataset.mname)">📅 Agendar</button>'
+      +'<button class="mitem-btn mitem-btn-info" data-mname="'+safeName+'" onclick="event.stopPropagation();viewMatchByName(this.dataset.mname)">👤 Ver perfil</button>'
       +'</div>'
       +'</div>';
   }).join('');
@@ -1428,7 +1518,7 @@ function showNewChatOptions(){
     var av=m.photo?'<img src="'+m.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">':m.av;
     var hasChat=chats[m.name]&&chats[m.name].length>0;
     var safeName=m.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    return'<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--light);border-radius:var(--rl);cursor:pointer;border:1.5px solid '+(hasChat?'var(--b)':'var(--brd)')+'" onclick="closeNewChatModal();chatPrev=\'matches-scr\';openChatByName(\''+safeName+'\')">'
+    return'<div class="mitem-btn" data-mname="'+safeName+'" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--light);border-radius:var(--rl);cursor:pointer;border:1.5px solid '+(hasChat?'var(--b)':'var(--brd)')+'" onclick="closeNewChatModal();chatPrev=\'matches-scr\';openChatByName(this.dataset.mname)">'
       +'<div class="miav" style="background:'+m.color+';width:40px;height:40px;flex-shrink:0">'+av+'</div>'
       +'<div style="flex:1;min-width:0">'
       +'<div style="font-size:13px;font-weight:700;color:var(--dark)">'+m.name+'</div>'
@@ -1576,6 +1666,25 @@ function saveCandidateProfile(){
 }
 
 // ── ROLE SYSTEM ──
+// ── WELCOME SCREEN ──
+function toggleWelcomeBtn(){
+  var cb=document.getElementById('welcome-tc-check');
+  var btn=document.getElementById('welcome-btn');
+  if(btn)btn.classList.toggle('on',cb&&cb.checked);
+}
+function goToOnboard(){
+  // Marcar que aceptó T&C
+  try{localStorage.setItem('tnic_tc_accepted','1');}catch(e){}
+  go('onboard-scr');
+}
+function openAppTC(e){
+  if(e)e.preventDefault();
+  document.getElementById('app-tc-modal').classList.add('open');
+}
+function closeAppTC(){
+  document.getElementById('app-tc-modal').classList.remove('open');
+}
+
 function selectRole(role){USER_ROLE=role;['candidate','company'].forEach(function(r){var c=G('role-'+r);if(c)c.classList.toggle('sel',r===role);});var btn=G('onboard-btn');if(btn){btn.disabled=false;btn.style.opacity='1';}}
 function confirmRole(){
   if(!USER_ROLE)return;applyRoleUI();
@@ -1695,5 +1804,33 @@ window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_pr
 function installApp(){var b=G('install-banner');if(b)b.style.display='none';if(_prompt){_prompt.prompt();_prompt=null;}}
 function dismissInstall(){var b=G('install-banner');if(b)b.style.display='none';}
 </script>
+<!-- ══ APP T&C MODAL ══ -->
+<div id="app-tc-modal">
+  <div class="app-tc-sheet">
+    <div class="app-tc-header">
+      <div class="app-tc-title">Términos y Condiciones — tNic</div>
+      <button class="app-tc-close" onclick="closeAppTC()">×</button>
+    </div>
+    <div class="app-tc-body">
+      <div class="highlight">⚠️ tNic está en fase beta. El contenido es experimental y referencial.</div>
+      <h3>1. Naturaleza del servicio</h3>
+      <p>tNic es una plataforma de conexión entre candidatos IT y empresas. Actúa como intermediario tecnológico y no es parte de ninguna relación laboral. No es una agencia de empleo registrada.</p>
+      <h3>2. Estado beta</h3>
+      <p>La app está en desarrollo activo. Los perfiles y datos pueden ser de demostración. No garantizamos disponibilidad continua ni resultados en procesos de selección.</p>
+      <h3>3. Privacidad y datos</h3>
+      <p>Tus datos son tratados conforme a la Ley N° 25.326 de Argentina. Se usan solo para el funcionamiento de tNic. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación a legal@tnictalent.com</p>
+      <h3>4. Uso aceptable</h3>
+      <p>Al usar tNic aceptás no publicar información falsa, no suplantar identidades, y usar la plataforma solo para conexión laboral IT legítima.</p>
+      <h3>5. Limitación de responsabilidad</h3>
+      <p>tNic no se responsabiliza por decisiones de contratación, condiciones laborales ni veracidad de la información publicada por candidatos o empresas.</p>
+      <h3>6. Contacto</h3>
+      <p>Consultas legales: legal@tnictalent.com · Web: tnictalent.com</p>
+    </div>
+    <div class="app-tc-footer">
+      <button onclick="closeAppTC()">Entendido, cerrar</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

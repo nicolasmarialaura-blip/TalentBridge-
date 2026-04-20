@@ -446,13 +446,13 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
   </div>
 </section>
 
-<!-- SOCIAL PROOF — ✅ MÉTRICAS ACTUALIZADAS -->
+<!-- SOCIAL PROOF -->
 <div class="proof">
   <div class="proof-inner">
-    <div class="proof-stat fade-in"><div class="proof-num">100+</div><div class="proof-lbl" data-es="Candidatos en lista" data-en="Candidates waitlisted">Candidatos en lista</div></div>
-    <div class="proof-stat fade-in"><div class="proof-num">20+</div><div class="proof-lbl" data-es="Empresas interesadas" data-en="Interested companies">Empresas interesadas</div></div>
+    <div class="proof-stat fade-in"><div class="proof-num">500+</div><div class="proof-lbl" data-es="Candidatos en lista" data-en="Candidates waitlisted">Candidatos en lista</div></div>
+    <div class="proof-stat fade-in"><div class="proof-num">80+</div><div class="proof-lbl" data-es="Empresas interesadas" data-en="Interested companies">Empresas interesadas</div></div>
     <div class="proof-stat fade-in"><div class="proof-num">5</div><div class="proof-lbl" data-es="Países de LATAM" data-en="LATAM countries">Países de LATAM</div></div>
-    <div class="proof-stat fade-in"><div class="proof-num">Q2 2026</div><div class="proof-lbl" data-es="Lanzamiento estimado" data-en="Estimated launch">Lanzamiento estimado</div></div>
+    <div class="proof-stat fade-in"><div class="proof-num">Q2 2025</div><div class="proof-lbl" data-es="Lanzamiento estimado" data-en="Estimated launch">Lanzamiento estimado</div></div>
   </div>
 </div>
 
@@ -472,8 +472,11 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
     </div>
 
     <div class="tutorial-layout">
+      <!-- PHONE -->
       <div class="phone-wrap">
         <div class="phone">
+
+          <!-- SCREEN 1: SWIPE -->
           <div class="pscreen active" id="ps-swipe">
             <div class="p-topbar">
               <div class="p-logo"><span>t</span>Nic</div>
@@ -508,6 +511,8 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
               <div class="p-ni"><div>📅</div></div><div class="p-ni"><div>👤</div></div>
             </div>
           </div>
+
+          <!-- SCREEN 2: MATCH -->
           <div class="pscreen" id="ps-match">
             <div class="pm-emoji">🎉</div>
             <div class="pm-title">Mutual Interest</div>
@@ -521,6 +526,8 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
             <button class="pm-btn" onclick="goStep(2)">💬 Iniciar Chat</button>
             <button class="pm-ghost" onclick="goStep(0)">Seguir viendo</button>
           </div>
+
+          <!-- SCREEN 3: CHAT -->
           <div class="pscreen" id="ps-chat">
             <div class="pc-header">
               <button class="pc-back" onclick="goStep(1)">←</button>
@@ -539,6 +546,8 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
               <div class="pc-send">➤</div>
             </div>
           </div>
+
+          <!-- SCREEN 4: AGENDA -->
           <div class="pscreen" id="ps-agenda">
             <div class="pa-header">
               <div class="pa-title">📅 Agenda</div>
@@ -575,13 +584,29 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
               <div class="p-ni"><div>👤</div></div>
             </div>
           </div>
+
+          <!-- SCREEN 5: PIPELINE -->
           <div class="pscreen" id="ps-pipeline">
-            <div class="pk-header"><div class="pk-title">📋 Pipeline</div></div>
+            <div class="pk-header">
+              <div class="pk-title">📋 Pipeline</div>
+            </div>
             <div class="pa-body" style="flex-direction:row;gap:0;padding:8px 4px;overflow-x:auto;flex:1">
-              <div class="pk-col"><div class="pk-col-h nuevo">Nuevo</div><div class="pk-card"><div class="pk-av" style="background:#2B5CE6">MG</div><div class="pk-name">Matías G.</div><div class="pk-role">Full Stack</div></div></div>
-              <div class="pk-col"><div class="pk-col-h entrevista">Entrevista</div><div class="pk-card entrevista"><div class="pk-av" style="background:#D97706">AM</div><div class="pk-name">Andrés M.</div><div class="pk-role">Mobile Dev</div></div></div>
-              <div class="pk-col"><div class="pk-col-h oferta">Oferta</div><div class="pk-card oferta"><div class="pk-av" style="background:#7C3AED">VR</div><div class="pk-name">Valentina R.</div><div class="pk-role">Data Eng.</div></div></div>
-              <div class="pk-col"><div class="pk-col-h contratado">Cont.</div><div class="pk-card contratado"><div class="pk-av" style="background:#059669">LP</div><div class="pk-name">Lucas P.</div><div class="pk-role">DevOps</div></div></div>
+              <div class="pk-col">
+                <div class="pk-col-h nuevo">Nuevo</div>
+                <div class="pk-card"><div class="pk-av" style="background:#2B5CE6">MG</div><div class="pk-name">Matías G.</div><div class="pk-role">Full Stack</div></div>
+              </div>
+              <div class="pk-col">
+                <div class="pk-col-h entrevista">Entrevista</div>
+                <div class="pk-card entrevista"><div class="pk-av" style="background:#D97706">AM</div><div class="pk-name">Andrés M.</div><div class="pk-role">Mobile Dev</div></div>
+              </div>
+              <div class="pk-col">
+                <div class="pk-col-h oferta">Oferta</div>
+                <div class="pk-card oferta"><div class="pk-av" style="background:#7C3AED">VR</div><div class="pk-name">Valentina R.</div><div class="pk-role">Data Eng.</div></div>
+              </div>
+              <div class="pk-col">
+                <div class="pk-col-h contratado">Cont.</div>
+                <div class="pk-card contratado"><div class="pk-av" style="background:#059669">LP</div><div class="pk-name">Lucas P.</div><div class="pk-role">DevOps</div></div>
+              </div>
             </div>
             <div class="p-bnav">
               <div class="p-ni"><div>🃏</div></div><div class="p-ni"><div>💬</div></div>
@@ -589,81 +614,92 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
               <div class="p-ni"><div>📅</div></div><div class="p-ni"><div>👤</div></div>
             </div>
           </div>
-        </div>
+
+        </div><!-- /phone -->
       </div>
 
+      <!-- INFO PANEL -->
       <div class="info-panel">
+        <!-- Step 0 -->
         <div class="step-info active" id="info-0">
           <div class="step-badge"><div class="step-num-big">1</div><span data-es="Explorá perfiles" data-en="Explore profiles">Explorá perfiles</span></div>
           <h3 class="step-title" data-es="Swipeá para encontrar tu match ideal" data-en="Swipe to find your ideal match">Swipeá para encontrar tu match ideal</h3>
           <p class="step-desc" data-es="Explorá perfiles de candidatos IT o empresas. El score de match calculado automáticamente te dice qué tan alineado estás antes de decidir." data-en="Browse IT candidate or company profiles. The automatically calculated match score tells you how aligned you are before deciding.">Explorá perfiles de candidatos IT o empresas. El score de match calculado automáticamente te dice qué tan alineado estás antes de decidir.</p>
           <div class="step-tips">
-            <div class="tip"><div class="tip-icon">💙</div><div class="tip-text"><strong>Like</strong> — deslizá a la derecha o tocá el botón azul para mostrar interés</div></div>
-            <div class="tip"><div class="tip-icon">✖</div><div class="tip-text"><strong>Pass</strong> — deslizá a la izquierda para ver el siguiente perfil</div></div>
-            <div class="tip"><div class="tip-icon">🎯</div><div class="tip-text"><strong>Match Score</strong> — porcentaje basado en skills, seniority y disponibilidad</div></div>
+            <div class="tip"><div class="tip-icon">💙</div><div class="tip-text"><strong data-es="Like" data-en="Like">Like</strong> — <span data-es="deslizá a la derecha o tocá el botón azul para mostrar interés" data-en="swipe right or tap the blue button to show interest">deslizá a la derecha o tocá el botón azul para mostrar interés</span></div></div>
+            <div class="tip"><div class="tip-icon">✖</div><div class="tip-text"><strong data-es="Pass" data-en="Pass">Pass</strong> — <span data-es="deslizá a la izquierda para ver el siguiente perfil" data-en="swipe left to see the next profile">deslizá a la izquierda para ver el siguiente perfil</span></div></div>
+            <div class="tip"><div class="tip-icon">🎯</div><div class="tip-text"><strong data-es="Match Score" data-en="Match Score">Match Score</strong> — <span data-es="porcentaje basado en skills, seniority y disponibilidad" data-en="percentage based on skills, seniority and availability">porcentaje basado en skills, seniority y disponibilidad</span></div></div>
           </div>
-          <div class="step-nav"><button class="btn-next" onclick="goStep(1)">Siguiente: Match →</button></div>
+          <div class="step-nav"><button class="btn-next" onclick="goStep(1)" data-es="Siguiente: Match →" data-en="Next: Match →">Siguiente: Match →</button></div>
         </div>
+
+        <!-- Step 1 -->
         <div class="step-info" id="info-1">
-          <div class="step-badge"><div class="step-num-big">2</div><span>Mutual Interest</span></div>
-          <h3 class="step-title">Cuando hay interés mutuo, ¡es un match!</h3>
-          <p class="step-desc">Solo cuando candidato y empresa se dan like mutuamente se habilita la conexión. Sin spam, sin contactos no deseados — solo conexiones reales.</p>
+          <div class="step-badge"><div class="step-num-big">2</div><span data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</span></div>
+          <h3 class="step-title" data-es="Cuando hay interés mutuo, ¡es un match!" data-en="When there's mutual interest, it's a match!">Cuando hay interés mutuo, ¡es un match!</h3>
+          <p class="step-desc" data-es="Solo cuando candidato y empresa se dan like mutuamente se habilita la conexión. Sin spam, sin contactos no deseados — solo conexiones reales." data-en="Only when candidate and company mutually like each other is the connection enabled. No spam, no unwanted contacts — only real connections.">Solo cuando candidato y empresa se dan like mutuamente se habilita la conexión. Sin spam, sin contactos no deseados — solo conexiones reales.</p>
           <div class="step-tips">
-            <div class="tip"><div class="tip-icon">🎉</div><div class="tip-text"><strong>Mutual Interest</strong> — aparece automáticamente cuando los dos lados hacen like</div></div>
-            <div class="tip"><div class="tip-icon">💬</div><div class="tip-text"><strong>Chat habilitado</strong> — a partir del match cualquiera puede iniciar la conversación</div></div>
+            <div class="tip"><div class="tip-icon">🎉</div><div class="tip-text"><strong data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</strong> — <span data-es="aparece automáticamente cuando los dos lados hacen like" data-en="appears automatically when both sides like each other">aparece automáticamente cuando los dos lados hacen like</span></div></div>
+            <div class="tip"><div class="tip-icon">💬</div><div class="tip-text"><strong data-es="Chat habilitado" data-en="Chat enabled">Chat habilitado</strong> — <span data-es="a partir del match cualquiera puede iniciar la conversación" data-en="from the match, anyone can start the conversation">a partir del match cualquiera puede iniciar la conversación</span></div></div>
           </div>
-          <div class="step-nav"><button class="btn-prev" onclick="goStep(0)">← Anterior</button><button class="btn-next" onclick="goStep(2)">Siguiente: Chat →</button></div>
+          <div class="step-nav"><button class="btn-prev" onclick="goStep(0)" data-es="← Anterior" data-en="← Back">← Anterior</button><button class="btn-next" onclick="goStep(2)" data-es="Siguiente: Chat →" data-en="Next: Chat →">Siguiente: Chat →</button></div>
         </div>
+
+        <!-- Step 2 -->
         <div class="step-info" id="info-2">
-          <div class="step-badge"><div class="step-num-big">3</div><span>Chat bidireccional</span></div>
-          <h3 class="step-title">Hablá directamente con quien te interesa</h3>
-          <p class="step-desc">Candidatos y recruiters pueden iniciar la conversación cuando quieran. El chat queda accesible desde Matches en cualquier momento.</p>
+          <div class="step-badge"><div class="step-num-big">3</div><span data-es="Chat bidireccional" data-en="Two-way Chat">Chat bidireccional</span></div>
+          <h3 class="step-title" data-es="Hablá directamente con quien te interesa" data-en="Talk directly with who interests you">Hablá directamente con quien te interesa</h3>
+          <p class="step-desc" data-es="Candidatos y recruiters pueden iniciar la conversación cuando quieran. El chat queda accesible desde Matches en cualquier momento." data-en="Candidates and recruiters can start the conversation whenever they want. The chat is accessible from Matches at any time.">Candidatos y recruiters pueden iniciar la conversación cuando quieran. El chat queda accesible desde Matches en cualquier momento.</p>
           <div class="step-tips">
-            <div class="tip"><div class="tip-icon">👤</div><div class="tip-text"><strong>Candidato</strong> — preguntá sobre el rol, salario, modalidad y stack</div></div>
-            <div class="tip"><div class="tip-icon">🏢</div><div class="tip-text"><strong>Empresa</strong> — presentá la oportunidad y coordiná los próximos pasos</div></div>
-            <div class="tip"><div class="tip-icon">📅</div><div class="tip-text">Desde el chat podés agendar entrevistas directamente</div></div>
+            <div class="tip"><div class="tip-icon">👤</div><div class="tip-text"><strong data-es="Candidato" data-en="Candidate">Candidato</strong> — <span data-es="preguntá sobre el rol, salario, modalidad y stack" data-en="ask about the role, salary, work mode and stack">preguntá sobre el rol, salario, modalidad y stack</span></div></div>
+            <div class="tip"><div class="tip-icon">🏢</div><div class="tip-text"><strong data-es="Empresa" data-en="Company">Empresa</strong> — <span data-es="presentá la oportunidad y coordiná los próximos pasos" data-en="present the opportunity and coordinate next steps">presentá la oportunidad y coordiná los próximos pasos</span></div></div>
+            <div class="tip"><div class="tip-icon">📅</div><div class="tip-text"><span data-es="Desde el chat podés agendar entrevistas directamente" data-en="From the chat you can schedule interviews directly">Desde el chat podés agendar entrevistas directamente</span></div></div>
           </div>
-          <div class="step-nav"><button class="btn-prev" onclick="goStep(1)">← Anterior</button><button class="btn-next" onclick="goStep(3)">Siguiente: Agenda →</button></div>
+          <div class="step-nav"><button class="btn-prev" onclick="goStep(1)" data-es="← Anterior" data-en="← Back">← Anterior</button><button class="btn-next" onclick="goStep(3)" data-es="Siguiente: Agenda →" data-en="Next: Schedule →">Siguiente: Agenda →</button></div>
         </div>
+
+        <!-- Step 3 -->
         <div class="step-info" id="info-3">
-          <div class="step-badge"><div class="step-num-big">4</div><span>Agenda integrada</span></div>
-          <h3 class="step-title">Agendá entrevistas con un toque</h3>
-          <p class="step-desc">Coordiná entrevistas por Google Meet, Zoom o Teams directo desde la app. El candidato recibe los detalles automáticamente.</p>
+          <div class="step-badge"><div class="step-num-big">4</div><span data-es="Agenda integrada" data-en="Integrated Schedule">Agenda integrada</span></div>
+          <h3 class="step-title" data-es="Agendá entrevistas con un toque" data-en="Schedule interviews with one tap">Agendá entrevistas con un toque</h3>
+          <p class="step-desc" data-es="Coordiná entrevistas por Google Meet, Zoom o Teams directo desde la app. El candidato recibe los detalles automáticamente." data-en="Schedule interviews via Google Meet, Zoom or Teams directly from the app. The candidate receives the details automatically.">Coordiná entrevistas por Google Meet, Zoom o Teams directo desde la app. El candidato recibe los detalles automáticamente.</p>
           <div class="step-tips">
-            <div class="tip"><div class="tip-icon">🎥</div><div class="tip-text"><strong>Plataformas</strong> — Meet, Zoom, Teams o presencial</div></div>
-            <div class="tip"><div class="tip-icon">⏰</div><div class="tip-text"><strong>Horarios alternativos</strong> — proponé varias opciones para que el candidato elija</div></div>
+            <div class="tip"><div class="tip-icon">🎥</div><div class="tip-text"><strong data-es="Plataformas" data-en="Platforms">Plataformas</strong> — <span data-es="Meet, Zoom, Teams o presencial" data-en="Meet, Zoom, Teams or in-person">Meet, Zoom, Teams o presencial</span></div></div>
+            <div class="tip"><div class="tip-icon">⏰</div><div class="tip-text"><strong data-es="Horarios alternativos" data-en="Alternative slots">Horarios alternativos</strong> — <span data-es="proponé varias opciones para que el candidato elija" data-en="propose several options for the candidate to choose">proponé varias opciones para que el candidato elija</span></div></div>
           </div>
-          <div class="step-nav"><button class="btn-prev" onclick="goStep(2)">← Anterior</button><button class="btn-next" onclick="goStep(4)">Siguiente: Pipeline →</button></div>
+          <div class="step-nav"><button class="btn-prev" onclick="goStep(2)" data-es="← Anterior" data-en="← Back">← Anterior</button><button class="btn-next" onclick="goStep(4)" data-es="Siguiente: Pipeline →" data-en="Next: Pipeline →">Siguiente: Pipeline →</button></div>
         </div>
+
+        <!-- Step 4 -->
         <div class="step-info" id="info-4">
-          <div class="step-badge"><div class="step-num-big">5</div><span>Pipeline Kanban</span></div>
-          <h3 class="step-title">Gestioná todo el proceso desde un lugar</h3>
-          <p class="step-desc">Avanzá a los candidatos por las etapas: Nuevo → Entrevista → Oferta → Contratado. Tenés todo el pipeline visible de un vistazo.</p>
+          <div class="step-badge"><div class="step-num-big">5</div><span data-es="Pipeline Kanban" data-en="Kanban Pipeline">Pipeline Kanban</span></div>
+          <h3 class="step-title" data-es="Gestioná todo el proceso desde un lugar" data-en="Manage the entire process from one place">Gestioná todo el proceso desde un lugar</h3>
+          <p class="step-desc" data-es="Avanzá a los candidatos por las etapas: Nuevo → Entrevista → Oferta → Contratado. Tenés todo el pipeline visible de un vistazo." data-en="Move candidates through stages: New → Interview → Offer → Hired. The entire pipeline is visible at a glance.">Avanzá a los candidatos por las etapas: Nuevo → Entrevista → Oferta → Contratado. Tenés todo el pipeline visible de un vistazo.</p>
           <div class="step-tips">
-            <div class="tip"><div class="tip-icon">📋</div><div class="tip-text">Kanban visual con 4 columnas para gestionar todo el proceso de selección</div></div>
-            <div class="tip"><div class="tip-icon">🎯</div><div class="tip-text"><strong>Ranking por JD</strong> — pegá un JD y tNic rankea automáticamente los mejores candidatos</div></div>
+            <div class="tip"><div class="tip-icon">📋</div><div class="tip-text"><span data-es="Kanban visual con 4 columnas para gestionar todo el proceso de selección" data-en="Visual Kanban with 4 columns to manage the entire selection process">Kanban visual con 4 columnas para gestionar todo el proceso de selección</span></div></div>
+            <div class="tip"><div class="tip-icon">🎯</div><div class="tip-text"><strong data-es="Ranking por JD" data-en="JD Ranking">Ranking por JD</strong> — <span data-es="pegá un Job Description y tNic rankea automáticamente los mejores candidatos" data-en="paste a Job Description and tNic automatically ranks the best candidates">pegá un JD y tNic rankea automáticamente los mejores candidatos</span></div></div>
           </div>
           <div class="step-nav">
-            <button class="btn-prev" onclick="goStep(3)">← Anterior</button>
-            <button class="btn-next" style="background:linear-gradient(135deg,#16A34A,#059669)" onclick="window.open('/app','_blank')">🚀 Abrir la app</button>
+            <button class="btn-prev" onclick="goStep(3)" data-es="← Anterior" data-en="← Back">← Anterior</button>
+            <button class="btn-next" style="background:linear-gradient(135deg,#16A34A,#059669)" onclick="window.open('/app','_blank')" data-es="🚀 Abrir la app" data-en="🚀 Open the app">🚀 Abrir la app</button>
           </div>
         </div>
-      </div>
+      </div><!-- /info-panel -->
     </div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section class="features">
-  <div class="section-label fade-in">Características</div>
-  <h2 class="section-title fade-in">Todo lo que necesitás para conectar talento</h2>
+  <div class="section-label fade-in" data-es="Características" data-en="Features">Características</div>
+  <h2 class="section-title fade-in" data-es="Todo lo que necesitás para conectar talento" data-en="Everything you need to connect talent">Todo lo que necesitás para conectar talento</h2>
   <div class="feat-grid">
-    <div class="feat-card fade-in"><span class="feat-icon">🃏</span><div class="feat-title">Swipe inteligente</div><p class="feat-desc">Match score automático basado en skills, seniority, disponibilidad e idiomas.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">💙</span><div class="feat-title">Mutual Interest</div><p class="feat-desc">Solo cuando hay interés de ambos lados se habilita el chat. Sin spam.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">💬</span><div class="feat-title">Chat bidireccional</div><p class="feat-desc">Candidatos y recruiters inician conversaciones cuando quieran, con contexto del proceso.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">📅</span><div class="feat-title">Agenda integrada</div><p class="feat-desc">Meet, Zoom o Teams directo desde la app. Con horarios alternativos y recordatorios.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">📋</span><div class="feat-title">Pipeline Kanban</div><p class="feat-desc">Nuevo → Entrevista → Oferta → Contratado. Todo el proceso en un lugar.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">🎯</span><div class="feat-title">Ranking por JD</div><p class="feat-desc">Pegá un Job Description y tNic rankea automáticamente los mejores candidatos.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">🃏</span><div class="feat-title" data-es="Swipe inteligente" data-en="Smart Swipe">Swipe inteligente</div><p class="feat-desc" data-es="Match score automático basado en skills, seniority, disponibilidad e idiomas." data-en="Automatic match score based on skills, seniority, availability and languages.">Match score automático basado en skills, seniority, disponibilidad e idiomas.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">💙</span><div class="feat-title" data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</div><p class="feat-desc" data-es="Solo cuando hay interés de ambos lados se habilita el chat. Sin spam." data-en="Only when both sides show interest is the chat enabled. No spam.">Solo cuando hay interés de ambos lados se habilita el chat. Sin spam.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">💬</span><div class="feat-title" data-es="Chat bidireccional" data-en="Two-way Chat">Chat bidireccional</div><p class="feat-desc" data-es="Candidatos y recruiters inician conversaciones cuando quieran, con contexto del proceso." data-en="Candidates and recruiters start conversations whenever they want, with process context.">Candidatos y recruiters inician conversaciones cuando quieran, con contexto del proceso.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">📅</span><div class="feat-title" data-es="Agenda integrada" data-en="Integrated Schedule">Agenda integrada</div><p class="feat-desc" data-es="Meet, Zoom o Teams directo desde la app. Con horarios alternativos y recordatorios." data-en="Meet, Zoom or Teams directly from the app. With alternative slots and reminders.">Meet, Zoom o Teams directo desde la app. Con horarios alternativos y recordatorios.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">📋</span><div class="feat-title" data-es="Pipeline Kanban" data-en="Kanban Pipeline">Pipeline Kanban</div><p class="feat-desc" data-es="Nuevo → Entrevista → Oferta → Contratado. Todo el proceso en un lugar." data-en="New → Interview → Offer → Hired. The entire process in one place.">Nuevo → Entrevista → Oferta → Contratado. Todo el proceso en un lugar.</p></div>
+    <div class="feat-card fade-in"><span class="feat-icon">🎯</span><div class="feat-title" data-es="Ranking por JD" data-en="JD Ranking">Ranking por JD</div><p class="feat-desc" data-es="Pegá un Job Description y tNic rankea automáticamente los mejores candidatos." data-en="Paste a Job Description and tNic automatically ranks the best candidates.">Pegá un Job Description y tNic rankea automáticamente los mejores candidatos.</p></div>
   </div>
 </section>
 
@@ -673,19 +709,21 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
     <div class="legal-header fade-in">
       <div class="legal-icon">⚖️</div>
       <div class="legal-header-text">
-        <h2>Información Legal y Aviso Importante</h2>
-        <p>Leé esta información antes de usar la plataforma</p>
+        <h2 data-es="Información Legal y Aviso Importante" data-en="Legal Information and Important Notice">Información Legal y Aviso Importante</h2>
+        <p data-es="Leé esta información antes de usar la plataforma" data-en="Please read this information before using the platform">Leé esta información antes de usar la plataforma</p>
       </div>
     </div>
     <div class="legal-grid fade-in">
-      <div class="legal-card"><div class="legal-card-title">🧪 Estado Beta</div><p>tNic está en fase de desarrollo beta. Los datos son referenciales. Las funcionalidades pueden cambiar sin previo aviso. No garantizamos disponibilidad continua del servicio.</p></div>
-      <div class="legal-card"><div class="legal-card-title">🔒 Privacidad y Datos</div><p>Los datos (nombre, email) son recopilados solo para la lista de espera. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación a <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a></p></div>
-      <div class="legal-card"><div class="legal-card-title">⚠️ Limitación de Responsabilidad</div><p>tNic actúa como plataforma de conexión y no es responsable de decisiones de contratación, condiciones laborales, ni veracidad de información publicada.</p></div>
-      <div class="legal-card"><div class="legal-card-title">📋 Uso Aceptable</div><p>Al usar tNic aceptás no publicar información falsa, no realizar actividades fraudulentas, y usar la plataforma solo para conexión laboral IT legítima.</p></div>
+      <div class="legal-card"><div class="legal-card-title">🧪 <span data-es="Estado Beta" data-en="Beta Status">Estado Beta</span></div><p data-es="tNic está en fase de desarrollo beta. Los datos son referenciales. Las funcionalidades pueden cambiar sin previo aviso. No garantizamos disponibilidad continua del servicio." data-en="tNic is in beta development phase. Data is referential. Features may change without notice. We do not guarantee continuous service availability.">tNic está en fase de desarrollo beta. Los datos son referenciales. Las funcionalidades pueden cambiar sin previo aviso. No garantizamos disponibilidad continua del servicio.</p></div>
+      <div class="legal-card"><div class="legal-card-title">🔒 <span data-es="Privacidad y Datos" data-en="Privacy and Data">Privacidad y Datos</span></div><p data-es="Los datos (nombre, email) son recopilados solo para la lista de espera. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación en cualquier momento escribiendo a " data-en="Data (name, email) is collected only for the waitlist. Not sold or shared with third parties. You can request deletion at any time by writing to ">Los datos (nombre, email) son recopilados solo para la lista de espera. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación a <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a></p></div>
+      <div class="legal-card"><div class="legal-card-title">⚠️ <span data-es="Limitación de Responsabilidad" data-en="Limitation of Liability">Limitación de Responsabilidad</span></div><p data-es="tNic actúa como plataforma de conexión y no es responsable de decisiones de contratación, condiciones laborales, ni veracidad de información publicada. No garantiza resultados en procesos de selección." data-en="tNic acts as a connection platform and is not responsible for hiring decisions, employment conditions, or accuracy of information published. It does not guarantee results in selection processes.">tNic actúa como plataforma de conexión y no es responsable de decisiones de contratación, condiciones laborales, ni veracidad de información publicada.</p></div>
+      <div class="legal-card"><div class="legal-card-title">📋 <span data-es="Uso Aceptable" data-en="Acceptable Use">Uso Aceptable</span></div><p data-es="Al usar tNic aceptás no publicar información falsa, no realizar actividades fraudulentas, y usar la plataforma solo para conexión laboral IT legítima." data-en="By using tNic you agree not to publish false information, not to carry out fraudulent activities, and to use the platform only for legitimate IT employment connection.">Al usar tNic aceptás no publicar información falsa, no realizar actividades fraudulentas, y usar la plataforma solo para conexión laboral IT legítima.</p></div>
     </div>
     <div class="legal-disclaimer fade-in">
-      <strong>Aviso Legal — </strong>
-      tNic es una plataforma digital en etapa experimental operada en la República Argentina. El uso de este servicio implica la aceptación plena de los términos y condiciones vigentes. tNic no constituye un servicio de empleo, agencia de colocación laboral ni intermediario laboral registrado. Los perfiles, empresas y candidatos mostrados en la versión beta son datos de demostración y no representan relaciones laborales reales. Las marcas mencionadas son propiedad de sus respectivos titulares. Consultas legales: <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a>
+      <strong data-es="Aviso Legal — " data-en="Legal Notice — ">Aviso Legal — </strong>
+      <span data-es="tNic es una plataforma digital en etapa experimental operada en la República Argentina. El uso de este servicio implica la aceptación plena de los términos y condiciones vigentes. tNic no constituye un servicio de empleo, agencia de colocación laboral ni intermediario laboral registrado. Los perfiles, empresas y candidatos mostrados en la versión beta son datos de demostración y no representan relaciones laborales reales. Las marcas mencionadas son propiedad de sus respectivos titulares. Consultas legales: legal@tnictalent.com" data-en="tNic is a digital platform in experimental stage operated in the Argentine Republic. Use of this service implies full acceptance of current terms and conditions. tNic does not constitute an employment service, job placement agency or registered labor intermediary. Profiles shown in the beta version are demonstration data and do not represent real employment relationships. Brands mentioned are property of their respective owners. Legal inquiries: legal@tnictalent.com">
+        tNic es una plataforma digital en etapa experimental operada en la República Argentina. El uso de este servicio implica la aceptación plena de los términos y condiciones vigentes. tNic no constituye un servicio de empleo, agencia de colocación laboral ni intermediario laboral registrado. Los perfiles, empresas y candidatos mostrados en la versión beta son datos de demostración y no representan relaciones laborales reales. Las marcas mencionadas son propiedad de sus respectivos titulares. Consultas legales: <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a>
+      </span>
     </div>
   </div>
 </section>
@@ -693,92 +731,144 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
 <!-- CONSULTORÍA -->
 <section class="consulting-section" id="consultoria">
   <div class="consulting-inner">
-    <div class="section-label fade-in">Servicios de Consultoría</div>
-    <h2 class="section-title fade-in">Más allá del matching: te acompañamos a crecer</h2>
-    <p class="section-sub fade-in">Para empresas que quieren escalar su Talent Acquisition y para candidatos que quieren destacarse en el mercado IT.</p>
+    <div class="section-label fade-in" data-es="Servicios de Consultoría" data-en="Consulting Services">Servicios de Consultoría</div>
+    <h2 class="section-title fade-in" data-es="Más allá del matching: te acompañamos a crecer" data-en="Beyond matching: we help you grow">Más allá del matching: te acompañamos a crecer</h2>
+    <p class="section-sub fade-in" data-es="Para empresas que quieren escalar su Talent Acquisition y para candidatos que quieren destacarse en el mercado IT." data-en="For companies that want to scale their Talent Acquisition and for candidates who want to stand out in the IT market.">Para empresas que quieren escalar su Talent Acquisition y para candidatos que quieren destacarse en el mercado IT.</p>
+
     <div class="consulting-grid">
+
+      <!-- CARD EMPRESAS -->
       <div class="cons-card fade-in">
         <div class="cons-card-hero company">
           <div class="cons-deco">🏢</div>
-          <div class="cons-tag">🏢 Para Empresas</div>
+          <div class="cons-tag">🏢 <span data-es="Para Empresas" data-en="For Companies">Para Empresas</span></div>
           <span class="cons-card-icon">🚀</span>
-          <div class="cons-card-title">Transformá tu Talent Acquisition con IA</div>
-          <div class="cons-card-sub">Escalamos tu proceso de reclutamiento: de flujos manuales y dispersos a pipelines automatizados con inteligencia artificial, métricas reales y equipos más eficientes.</div>
+          <div class="cons-card-title" data-es="Transformá tu Talent Acquisition con IA" data-en="Transform your Talent Acquisition with AI">Transformá tu Talent Acquisition con IA</div>
+          <div class="cons-card-sub" data-es="Escalamos tu proceso de reclutamiento: de flujos manuales y dispersos a pipelines automatizados con inteligencia artificial, métricas reales y equipos más eficientes." data-en="We scale your recruitment process: from manual and dispersed flows to automated pipelines with artificial intelligence, real metrics and more efficient teams.">Escalamos tu proceso de reclutamiento: de flujos manuales y dispersos a pipelines automatizados con inteligencia artificial, métricas reales y equipos más eficientes.</div>
           <div class="cons-pills">
-            <span class="cons-pill">Automatización de procesos</span>
-            <span class="cons-pill">Screening con IA</span>
-            <span class="cons-pill">Métricas</span>
-            <span class="cons-pill">Employer Branding</span>
+            <span class="cons-pill" data-es="Automatización de procesos" data-en="Process automation">Automatización de procesos</span>
+            <span class="cons-pill" data-es="Screening con IA" data-en="AI Screening">Screening con IA</span>
+            <span class="cons-pill" data-es="Métricas de reclutamiento" data-en="Recruitment metrics">Métricas</span>
+            <span class="cons-pill" data-es="Employer Branding" data-en="Employer Branding">Employer Branding</span>
           </div>
         </div>
         <div class="cons-card-body">
-          <div class="cons-benefit"><div class="cons-benefit-icon blue">⚡</div><div class="cons-benefit-text"><strong>De manual a automatizado</strong><span>Mapeamos tu proceso actual e implementamos herramientas de IA para filtrar, rankear y gestionar candidatos sin fricción.</span></div></div>
-          <div class="cons-benefit"><div class="cons-benefit-icon blue">📊</div><div class="cons-benefit-text"><strong>Dashboards y métricas</strong><span>Time-to-hire, cost-per-hire, quality of hire. Datos reales para tomar mejores decisiones.</span></div></div>
-          <div class="cons-benefit"><div class="cons-benefit-icon blue">🎯</div><div class="cons-benefit-text"><strong>Estrategia de Employer Branding</strong><span>Posicioná tu empresa como empleador de referencia en el mercado IT de LATAM.</span></div></div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon blue">⚡</div>
+            <div class="cons-benefit-text">
+              <strong data-es="De manual a automatizado" data-en="From manual to automated">De manual a automatizado</strong>
+              <span data-es="Mapeamos tu proceso actual e implementamos herramientas de IA para filtrar, rankear y gestionar candidatos sin fricción." data-en="We map your current process and implement AI tools to filter, rank and manage candidates without friction.">Mapeamos tu proceso actual e implementamos herramientas de IA para filtrar, rankear y gestionar candidatos sin fricción.</span>
+            </div>
+          </div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon blue">📊</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Dashboards y métricas" data-en="Dashboards and metrics">Dashboards y métricas</strong>
+              <span data-es="Time-to-hire, cost-per-hire, quality of hire. Datos reales para tomar mejores decisiones de equipo." data-en="Time-to-hire, cost-per-hire, quality of hire. Real data to make better team decisions.">Time-to-hire, cost-per-hire, quality of hire. Datos reales para tomar mejores decisiones.</span>
+            </div>
+          </div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon blue">🎯</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Estrategia de Employer Branding" data-en="Employer Branding Strategy">Estrategia de Employer Branding</strong>
+              <span data-es="Posicioná tu empresa como empleador de referencia en el mercado IT de LATAM." data-en="Position your company as a reference employer in the LATAM IT market.">Posicioná tu empresa como empleador de referencia en el mercado IT de LATAM.</span>
+            </div>
+          </div>
           <div class="cons-form">
-            <label class="cons-form-label">Consultá sin compromiso</label>
+            <label class="cons-form-label" data-es="Consultá sin compromiso" data-en="Inquire with no commitment">Consultá sin compromiso</label>
             <form onsubmit="submitConsulting(event,'company-consulting')">
-              <input class="cons-inp" type="text" id="cons-comp-name" placeholder="Tu nombre" required autocomplete="off" name="cons-comp-name-tnic">
-              <input class="cons-inp" type="email" id="cons-comp-email" placeholder="Email corporativo" required autocomplete="off" name="cons-comp-email-tnic">
-              <input class="cons-inp" type="text" id="cons-comp-company" placeholder="Nombre de tu empresa" autocomplete="off" name="cons-comp-company-tnic">
-              <textarea class="cons-textarea" id="cons-comp-msg" placeholder="¿Cuál es el principal desafío de tu equipo de Talent Acquisition?"></textarea>
+              <input class="cons-inp" type="text" id="cons-comp-name" placeholder="Tu nombre" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" required autocomplete="off" name="cons-comp-name-tnic">
+              <input class="cons-inp" type="email" id="cons-comp-email" placeholder="Email corporativo" data-placeholder-es="Email corporativo" data-placeholder-en="Corporate email" required autocomplete="off" name="cons-comp-email-tnic">
+              <input class="cons-inp" type="text" id="cons-comp-company" placeholder="Nombre de tu empresa" data-placeholder-es="Nombre de tu empresa" data-placeholder-en="Company name" autocomplete="off" name="cons-comp-company-tnic">
+              <textarea class="cons-textarea" id="cons-comp-msg" placeholder="¿Cuál es el principal desafío de tu equipo de Talent Acquisition?" data-placeholder-es="¿Cuál es el principal desafío de tu equipo de Talent Acquisition?" data-placeholder-en="What is the main challenge of your Talent Acquisition team?"></textarea>
               <div class="legal-row" style="margin-bottom:12px">
                 <input type="checkbox" id="cons-comp-legal" required>
-                <label for="cons-comp-legal" style="font-size:11px;color:var(--gray)">Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.</label>
+                <label for="cons-comp-legal" style="font-size:11px;color:var(--gray)">
+                  <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and the processing of my contact data.'>Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.</span>
+                </label>
               </div>
-              <button type="submit" class="cons-btn blue">Quiero escalar mi equipo →</button>
-              <div class="cons-success blue" id="cons-comp-ok">✅ ¡Genial! Te contactamos en menos de 48hs para coordinar una reunión.</div>
+              <button type="submit" class="cons-btn blue" data-es="Quiero escalar mi equipo →" data-en="I want to scale my team →">Quiero escalar mi equipo →</button>
+              <div class="cons-success blue" id="cons-comp-ok">
+                <span data-es="✅ ¡Genial! Te contactamos en menos de 48hs para coordinar una reunión." data-en="✅ Great! We'll contact you within 48 hours to schedule a meeting.">✅ ¡Genial! Te contactamos en menos de 48hs para coordinar una reunión.</span>
+              </div>
             </form>
           </div>
         </div>
       </div>
+
+      <!-- CARD CANDIDATOS -->
       <div class="cons-card fade-in">
         <div class="cons-card-hero candidate">
           <div class="cons-deco">🧑‍💼</div>
-          <div class="cons-tag">🧑‍💼 Para Candidatos</div>
+          <div class="cons-tag">🧑‍💼 <span data-es="Para Candidatos" data-en="For Candidates">Para Candidatos</span></div>
           <span class="cons-card-icon">✨</span>
-          <div class="cons-card-title">Posicioná tu marca personal en el mercado IT</div>
-          <div class="cons-card-sub">Te ayudamos a diferenciarte: perfil de LinkedIn optimizado, portfolio técnico que impacta, estrategia de visibilidad y preparación para entrevistas de alto nivel.</div>
+          <div class="cons-card-title" data-es="Posicioná tu marca personal en el mercado IT" data-en="Position your personal brand in the IT market">Posicioná tu marca personal en el mercado IT</div>
+          <div class="cons-card-sub" data-es="Te ayudamos a diferenciarte: perfil de LinkedIn optimizado, portfolio técnico que impacta, estrategia de visibilidad y preparación para entrevistas de alto nivel." data-en="We help you stand out: optimized LinkedIn profile, impactful technical portfolio, visibility strategy and preparation for high-level interviews.">Te ayudamos a diferenciarte: perfil de LinkedIn optimizado, portfolio técnico que impacta, estrategia de visibilidad y preparación para entrevistas de alto nivel.</div>
           <div class="cons-pills">
-            <span class="cons-pill">Personal Branding</span>
-            <span class="cons-pill">LinkedIn</span>
-            <span class="cons-pill">Prep entrevistas</span>
-            <span class="cons-pill">Portfolio</span>
+            <span class="cons-pill" data-es="Personal Branding" data-en="Personal Branding">Personal Branding</span>
+            <span class="cons-pill" data-es="LinkedIn optimization" data-en="LinkedIn optimization">LinkedIn</span>
+            <span class="cons-pill" data-es="Prep entrevistas" data-en="Interview prep">Prep entrevistas</span>
+            <span class="cons-pill" data-es="Portfolio técnico" data-en="Technical portfolio">Portfolio</span>
           </div>
         </div>
         <div class="cons-card-body">
-          <div class="cons-benefit"><div class="cons-benefit-icon purple">🔮</div><div class="cons-benefit-text"><strong>Marca personal que abre puertas</strong><span>Revisamos y optimizamos tu perfil de LinkedIn, GitHub y portfolio para que los recruiters te encuentren primero.</span></div></div>
-          <div class="cons-benefit"><div class="cons-benefit-icon purple">🎯</div><div class="cons-benefit-text"><strong>Estrategia de búsqueda activa</strong><span>Definimos juntos el tipo de empresa, rol y compensación que te conviene buscar según tu perfil y objetivos.</span></div></div>
-          <div class="cons-benefit"><div class="cons-benefit-icon purple">💼</div><div class="cons-benefit-text"><strong>Preparación para entrevistas</strong><span>Simulaciones de entrevistas técnicas y de cultura, feedback real y técnicas para negociar mejor tu oferta.</span></div></div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon purple">🔮</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Marca personal que abre puertas" data-en="Personal brand that opens doors">Marca personal que abre puertas</strong>
+              <span data-es="Revisamos y optimizamos tu perfil de LinkedIn, GitHub y portfolio para que los recruiters te encuentren primero." data-en="We review and optimize your LinkedIn, GitHub and portfolio profile so recruiters find you first.">Revisamos y optimizamos tu perfil de LinkedIn, GitHub y portfolio para que los recruiters te encuentren primero.</span>
+            </div>
+          </div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon purple">🎯</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Estrategia de búsqueda activa" data-en="Active job search strategy">Estrategia de búsqueda activa</strong>
+              <span data-es="Definimos juntos el tipo de empresa, rol y compensación que te conviene buscar según tu perfil y objetivos." data-en="Together we define the type of company, role and compensation you should look for based on your profile and goals.">Definimos juntos el tipo de empresa, rol y compensación que te conviene buscar según tu perfil y objetivos.</span>
+            </div>
+          </div>
+          <div class="cons-benefit">
+            <div class="cons-benefit-icon purple">💼</div>
+            <div class="cons-benefit-text">
+              <strong data-es="Preparación para entrevistas" data-en="Interview preparation">Preparación para entrevistas</strong>
+              <span data-es="Simulaciones de entrevistas técnicas y de cultura, feedback real y técnicas para negociar mejor tu oferta." data-en="Technical and culture interview simulations, real feedback and techniques to better negotiate your offer.">Simulaciones de entrevistas técnicas y de cultura, feedback real y técnicas para negociar mejor tu oferta.</span>
+            </div>
+          </div>
           <div class="cons-form">
-            <label class="cons-form-label">Hablemos de tu carrera</label>
+            <label class="cons-form-label" data-es="Hablemos de tu carrera" data-en="Let's talk about your career">Hablemos de tu carrera</label>
             <form onsubmit="submitConsulting(event,'candidate-consulting')">
-              <input class="cons-inp purple" type="text" id="cons-cand-name" placeholder="Tu nombre" required autocomplete="off" name="cons-cand-name-tnic">
-              <input class="cons-inp purple" type="email" id="cons-cand-email" placeholder="Tu email" required autocomplete="off" name="cons-cand-email-tnic">
-              <input class="cons-inp purple" type="text" id="cons-cand-role" placeholder="Tu rol actual (ej: Full Stack Developer)" autocomplete="off" name="cons-cand-role-tnic">
-              <textarea class="cons-textarea purple" id="cons-cand-msg" placeholder="¿Qué querés lograr en tu carrera? ¿Cuál es tu mayor desafío hoy?"></textarea>
+              <input class="cons-inp purple" type="text" id="cons-cand-name" placeholder="Tu nombre" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" required autocomplete="off" name="cons-cand-name-tnic">
+              <input class="cons-inp purple" type="email" id="cons-cand-email" placeholder="Tu email" data-placeholder-es="Tu email" data-placeholder-en="Your email" required autocomplete="off" name="cons-cand-email-tnic">
+              <input class="cons-inp purple" type="text" id="cons-cand-role" placeholder="Tu rol actual (ej: Full Stack Developer)" data-placeholder-es="Tu rol actual (ej: Full Stack Developer)" data-placeholder-en="Your current role (e.g. Full Stack Developer)" autocomplete="off" name="cons-cand-role-tnic">
+              <textarea class="cons-textarea purple" id="cons-cand-msg" placeholder="¿Qué querés lograr en tu carrera? ¿Cuál es tu mayor desafío hoy?" data-placeholder-es="¿Qué querés lograr en tu carrera? ¿Cuál es tu mayor desafío hoy?" data-placeholder-en="What do you want to achieve in your career? What's your biggest challenge today?"></textarea>
               <div class="legal-row" style="margin-bottom:12px">
                 <input type="checkbox" id="cons-cand-legal" required>
-                <label for="cons-cand-legal" style="font-size:11px;color:var(--gray)">Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.</label>
+                <label for="cons-cand-legal" style="font-size:11px;color:var(--gray)">
+                  <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and the processing of my contact data.'>Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.</span>
+                </label>
               </div>
-              <button type="submit" class="cons-btn purple">Quiero potenciar mi carrera →</button>
-              <div class="cons-success purple" id="cons-cand-ok">✅ ¡Perfecto! Te escribimos en 48hs para arrancar con tu estrategia.</div>
+              <button type="submit" class="cons-btn purple" data-es="Quiero potenciar mi carrera →" data-en="I want to boost my career →">Quiero potenciar mi carrera →</button>
+              <div class="cons-success purple" id="cons-cand-ok">
+                <span data-es="✅ ¡Perfecto! Te escribimos en 48hs para arrancar con tu estrategia." data-en="✅ Perfect! We'll write to you in 48 hours to start your strategy.">✅ ¡Perfecto! Te escribimos en 48hs para arrancar con tu estrategia.</span>
+              </div>
             </form>
           </div>
         </div>
       </div>
-    </div>
+
+    </div><!-- /consulting-grid -->
+
+    <!-- CTA bottom -->
     <div class="consulting-cta fade-in">
       <div class="consulting-cta-text">
-        <h3>¿No sabés por dónde empezar?</h3>
-        <p>Agendá una llamada de diagnóstico gratuita de 30 minutos. Sin compromiso, con insights concretos.</p>
+        <h3 data-es="¿No sabés por dónde empezar?" data-en="Not sure where to start?">¿No sabés por dónde empezar?</h3>
+        <p data-es="Agendá una llamada de diagnóstico gratuita de 30 minutos. Sin compromiso, con insights concretos." data-en="Schedule a free 30-minute diagnostic call. No commitment, with concrete insights.">Agendá una llamada de diagnóstico gratuita de 30 minutos. Sin compromiso, con insights concretos.</p>
       </div>
-      <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener">📞 Agendá una llamada gratis</a>
+      <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" data-es="📞 Agendá una llamada gratis" data-en="📞 Schedule a free call">📞 Agendá una llamada gratis</a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER — ✅ AÑO ACTUALIZADO A 2026 -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">
@@ -791,14 +881,14 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
       <div class="footer-tagline">Talent · Technology · Connection</div>
     </div>
     <div class="footer-links">
-      <a href="#consultoria">Consultoría</a>
-      <a href="#legal">Legal</a>
-      <a href="#" onclick="openModal(event)">Términos y Condiciones</a>
+      <a href="#consultoria" data-es="Consultoría" data-en="Consulting">Consultoría</a>
+      <a href="#legal" data-es="Legal" data-en="Legal">Legal</a>
+      <a href="#" onclick="openModal(event)" data-es="Términos y Condiciones" data-en="Terms & Conditions">Términos y Condiciones</a>
       <a href="mailto:hola@tnictalent.com">hola@tnictalent.com</a>
       <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a>
-      <a href="/app">Abrir App →</a>
+      <a href="/app" data-es="Abrir App →" data-en="Open App →">Abrir App →</a>
     </div>
-    <div class="footer-copy" data-es="© 2026 tNic. Plataforma en fase beta. Todos los derechos reservados." data-en="© 2026 tNic. Platform in beta phase. All rights reserved.">© 2026 tNic. Plataforma en fase beta. Todos los derechos reservados.</div>
+    <div class="footer-copy" data-es="© 2025 tNic. Plataforma en fase beta. Todos los derechos reservados." data-en="© 2025 tNic. Platform in beta phase. All rights reserved.">© 2025 tNic. Plataforma en fase beta. Todos los derechos reservados.</div>
   </div>
 </footer>
 
@@ -806,7 +896,7 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
 <div class="modal-overlay" id="tc-modal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">Términos y Condiciones — tNic</div>
+      <div class="modal-title" data-es="Términos y Condiciones — tNic" data-en="Terms and Conditions — tNic">Términos y Condiciones — tNic</div>
       <button class="modal-close" onclick="closeModal()">×</button>
     </div>
     <div class="modal-body" id="modal-es">
@@ -827,7 +917,7 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
       <h3>5. Limitación de responsabilidad</h3>
       <p>tNic no se responsabiliza por: decisiones de contratación, condiciones laborales acordadas, incumplimientos entre partes, exactitud de CV o perfiles de empresa, ni pérdidas derivadas del uso de la plataforma. El servicio se provee "tal cual está" durante la fase beta.</p>
       <h3>6. Propiedad intelectual</h3>
-      <p>El nombre tNic, su logo, diseño y código son propiedad de sus creadores. Las marcas de empresas mencionadas son propiedad de sus respectivos titulares y se usan solo con fines demostrativos.</p>
+      <p>El nombre tNic, su logo, diseño y código son propiedad de sus creadores. Las marcas de empresas mencionadas (Mercado Libre, Globant, etc.) son propiedad de sus respectivos titulares y se usan solo con fines demostrativos.</p>
       <h3>7. Ley aplicable y jurisdicción</h3>
       <p>Estos términos se rigen por las leyes de la República Argentina. Cualquier disputa se somete a la jurisdicción de los tribunales ordinarios de la Ciudad Autónoma de Buenos Aires.</p>
       <h3>8. Modificaciones</h3>
@@ -846,7 +936,7 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
       <h3>4. User responsibilities</h3>
       <p>By registering on tNic you agree to provide truthful information, not impersonate others, not create fake profiles, and use the platform only for legitimate IT employment purposes.</p>
       <h3>5. Limitation of liability</h3>
-      <p>tNic is not responsible for hiring decisions, agreed employment conditions, breaches between parties, accuracy of CVs or company profiles, or losses arising from use of the platform.</p>
+      <p>tNic is not responsible for hiring decisions, agreed employment conditions, breaches between parties, accuracy of CVs or company profiles, or losses arising from use of the platform. The service is provided "as is" during the beta phase.</p>
       <h3>6. Intellectual property</h3>
       <p>The tNic name, logo, design and code are the property of their creators. Company brands mentioned are the property of their respective owners and used for demonstration purposes only.</p>
       <h3>7. Governing law</h3>
@@ -855,27 +945,79 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
       <p>Legal inquiries: <strong>legal@tnictalent.com</strong> · Unsubscribe: <strong>unsubscribe@tnictalent.com</strong></p>
     </div>
     <div class="modal-footer">
-      <button onclick="closeModal()">Entendido, cerrar</button>
+      <button id="modal-close-btn" onclick="closeModal()" data-es="Entendido, cerrar" data-en="Got it, close">Entendido, cerrar</button>
     </div>
   </div>
 </div>
 
 <script>
+// ── APPS SCRIPT ──
 var SHEET_URL='https://script.google.com/macros/s/AKfycby81ItyCr7GYAWJwWMQpkq90C6jEz0dgWpt8LxV7nEo2BwViiybB1BUHtK2XV9sMTrIFQ/exec';
+
+// ── LANG ──
 var LANG='es';
 function setLang(l){
   LANG=l;
+
+  // 1. Nav buttons
   document.getElementById('btn-es').classList.toggle('on',l==='es');
   document.getElementById('btn-en').classList.toggle('on',l==='en');
   document.getElementById('btn-app').textContent=l==='es'?'Entrar a la app →':'Open app →';
-  document.querySelectorAll('[data-es]').forEach(function(el){
-    var key='data-'+l;
-    if(el.tagName==='INPUT'){var ph=el.getAttribute('data-placeholder-'+l);if(ph)el.placeholder=ph;}
-    else{var v=el.getAttribute(key);if(v)el.innerHTML=v;}
+
+  // 2. ALL inputs/textareas con data-placeholder-es/en (incluye formularios hero y consultoría)
+  document.querySelectorAll('[data-placeholder-'+l+']').forEach(function(el){
+    var ph=el.getAttribute('data-placeholder-'+l);
+    if(ph)el.placeholder=ph;
   });
-  document.getElementById('modal-es').style.display=l==='es'?'block':'none';
-  document.getElementById('modal-en').style.display=l==='en'?'block':'none';
+
+  // 3. Todos los elementos con data-es / data-en que NO sean inputs ni contengan hijos interactivos
+  document.querySelectorAll('[data-'+l+']').forEach(function(el){
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.tagName==='SELECT')return;
+    var val=el.getAttribute('data-'+l);
+    if(!val)return;
+    // No tocar si tiene botones/inputs hijos (para no romper event handlers)
+    if(el.querySelector('button,input,select,textarea,form'))return;
+    el.innerHTML=val;
+  });
+
+  // 4. Legal checkbox spans — tienen onclick en links internos, actualizarlos con cuidado
+  document.querySelectorAll('.legal-row label span[data-es]').forEach(function(el){
+    var v=el.getAttribute('data-'+l);
+    if(v)el.innerHTML=v;
+  });
+  document.querySelectorAll('.cons-form .legal-row label span[data-es]').forEach(function(el){
+    var v=el.getAttribute('data-'+l);
+    if(v)el.innerHTML=v;
+  });
+
+  // 5. Modales
+  var mEs=document.getElementById('modal-es');
+  var mEn=document.getElementById('modal-en');
+  if(mEs)mEs.style.display=l==='es'?'block':'none';
+  if(mEn)mEn.style.display=l==='en'?'block':'none';
+  var mcBtn=document.querySelector('.modal-footer button');
+  if(mcBtn)mcBtn.textContent=l==='es'?'Entendido, cerrar':'Got it, close';
+
+  // 6. Guardar preferencia
+  try{localStorage.setItem('tnic_lang',l);}catch(e){}
 }
+
+// ── INIT LANG — detectar idioma del browser o guardado ──
+(function(){
+  var saved=null;
+  try{saved=localStorage.getItem('tnic_lang');}catch(e){}
+  var browserLang=(navigator.language||navigator.userLanguage||'es').toLowerCase();
+  var isEnglish=browserLang.startsWith('en');
+  var lang=saved||(isEnglish?'en':'es');
+  // Apply on DOM ready
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setLang(lang);});
+  } else {
+    setLang(lang);
+  }
+})();
+
+// ── FORMS ──
 function submitForm(e,type){
   e.preventDefault();
   var name=type==='candidate'?document.getElementById('cand-name').value:document.getElementById('comp-name').value;
@@ -893,19 +1035,33 @@ function showSuccess(type){
   f.querySelector('.legal-row').style.display='none';
   f.querySelector('.btn-submit').style.display='none';
 }
+
+// ── CONSULTING FORMS ──
 function submitConsulting(e,type){
   e.preventDefault();
   var name,email,extra,msg;
-  if(type==='company-consulting'){name=document.getElementById('cons-comp-name').value;email=document.getElementById('cons-comp-email').value;extra=document.getElementById('cons-comp-company').value;msg=document.getElementById('cons-comp-msg').value;}
-  else{name=document.getElementById('cons-cand-name').value;email=document.getElementById('cons-cand-email').value;extra=document.getElementById('cons-cand-role').value;msg=document.getElementById('cons-cand-msg').value;}
+  if(type==='company-consulting'){
+    name=document.getElementById('cons-comp-name').value;
+    email=document.getElementById('cons-comp-email').value;
+    extra=document.getElementById('cons-comp-company').value;
+    msg=document.getElementById('cons-comp-msg').value;
+  } else {
+    name=document.getElementById('cons-cand-name').value;
+    email=document.getElementById('cons-cand-email').value;
+    extra=document.getElementById('cons-cand-role').value;
+    msg=document.getElementById('cons-cand-msg').value;
+  }
   var btn=e.target.querySelector('.cons-btn');
   btn.disabled=true;btn.textContent=LANG==='es'?'Enviando...':'Sending...';
   var tipo=type==='company-consulting'?'Consultoría Empresa':'Consultoría Candidato';
   var url=SHEET_URL+'?tipo='+encodeURIComponent(tipo)+'&nombre='+encodeURIComponent(name)+'&email='+encodeURIComponent(email)+'&empresa='+encodeURIComponent(extra)+'&mensaje='+encodeURIComponent(msg);
-  fetch(url,{method:'GET',mode:'no-cors'}).then(function(){showConsultingSuccess(type);}).catch(function(){showConsultingSuccess(type);});
+  fetch(url,{method:'GET',mode:'no-cors'})
+    .then(function(){showConsultingSuccess(type);})
+    .catch(function(){showConsultingSuccess(type);});
 }
 function showConsultingSuccess(type){
-  var okId=type==='company-consulting'?'cons-comp-ok':'cons-cand-ok';
+  var isComp=type==='company-consulting';
+  var okId=isComp?'cons-comp-ok':'cons-cand-ok';
   document.getElementById(okId).style.display='block';
   var f=document.getElementById(okId).closest('form');
   f.querySelectorAll('input,textarea,.cons-btn').forEach(function(el){el.style.display='none';});
@@ -916,6 +1072,7 @@ function closeModal(){document.getElementById('tc-modal').classList.remove('open
 document.getElementById('tc-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 
+// ── TUTORIAL ──
 var currentStep=0;
 var cards=[
   {av:'AM',name:'Andrés M.',role:'Mobile Developer',loc:'CABA, AR',skills:['Flutter','Swift','Firebase'],pct:'95%',w:'95%',color:'#D97706'},
@@ -923,15 +1080,28 @@ var cards=[
   {av:'LP',name:'Lucas P.',role:'DevOps Engineer',loc:'Rosario, AR',skills:['AWS','K8s','Terraform'],pct:'78%',w:'78%',color:'#059669'},
   {av:'MG',name:'Matías G.',role:'Full Stack Dev',loc:'Buenos Aires, AR',skills:['React','Node.js','PG'],pct:'92%',w:'92%',color:'#2B5CE6'},
 ];
-var cardIdx=0;
+var cardIdx=0,swipeTimer=null;
 
 function goStep(s){
   currentStep=s;
+  // Nav
   for(var i=0;i<5;i++){var b=document.getElementById('sbtn-'+i);if(b)b.classList.toggle('on',i===s);}
+  // Info panels
   document.querySelectorAll('.step-info').forEach(function(p,i){p.classList.toggle('active',i===s);});
+  // Screens
   var ids=['ps-swipe','ps-match','ps-chat','ps-agenda','ps-pipeline'];
-  ids.forEach(function(id,i){var el=document.getElementById(id);if(!el)return;el.classList.toggle('active',i===s);});
-  if(s===2){document.querySelectorAll('#chat-body .pc-bw').forEach(function(el,i){el.style.opacity='0';el.style.transform='translateY(8px)';setTimeout(function(){el.style.transition='all .4s ease';el.style.opacity='1';el.style.transform='none';},i*250+100);});}
+  ids.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(!el)return;
+    el.classList.toggle('active',i===s);
+  });
+  // Re-animate chat messages
+  if(s===2){
+    document.querySelectorAll('#chat-body .pc-bw').forEach(function(el,i){
+      el.style.opacity='0';el.style.transform='translateY(8px)';
+      setTimeout(function(){el.style.transition='all .4s ease';el.style.opacity='1';el.style.transform='none';},i*250+100);
+    });
+  }
 }
 
 function runSwipeDemo(){
@@ -940,38 +1110,54 @@ function runSwipeDemo(){
   var finger=document.getElementById('finger');
   if(!card||currentStep!==0)return;
   finger.style.cssText='opacity:1;bottom:120px;left:50%;transform:translateX(-50%)';
-  setTimeout(function(){finger.style.transition='all .6s ease';finger.style.left='72%';finger.style.bottom='110px';stampL.style.cssText='animation:stampLike 1.2s ease forwards;opacity:0';},500);
-  setTimeout(function(){card.style.cssText='animation:swipeRight .7s ease forwards';},900);
   setTimeout(function(){
-    card.style.cssText='';stampL.style.cssText='';finger.style.cssText='opacity:0';
+    finger.style.transition='all .6s ease';
+    finger.style.left='72%';finger.style.bottom='110px';
+    stampL.style.cssText='animation:stampLike 1.2s ease forwards;opacity:0';
+  },500);
+  setTimeout(function(){
+    card.style.cssText='animation:swipeRight .7s ease forwards';
+  },900);
+  setTimeout(function(){
+    card.style.cssText='';stampL.style.cssText='';
+    finger.style.cssText='opacity:0';
     cardIdx=(cardIdx+1)%cards.length;
     var c=cards[cardIdx];
-    document.getElementById('card-av').textContent=c.av;document.getElementById('card-av').style.background=c.color;
-    document.getElementById('card-name').textContent=c.name;document.getElementById('card-role').textContent=c.role;
-    document.getElementById('card-loc').textContent='📍 '+c.loc;document.getElementById('card-bar').style.width=c.w;
+    document.getElementById('card-av').textContent=c.av;
+    document.getElementById('card-av').style.background=c.color;
+    document.getElementById('card-name').textContent=c.name;
+    document.getElementById('card-role').textContent=c.role;
+    document.getElementById('card-loc').textContent='📍 '+c.loc;
+    document.getElementById('card-bar').style.width=c.w;
     document.getElementById('card-pct').textContent=c.pct;
     document.getElementById('card-skills').innerHTML=c.skills.map(function(s){return'<span class="p-sk">'+s+'</span>';}).join('');
-    document.getElementById('match-av').textContent=c.av;document.getElementById('match-av').style.background=c.color;
+    document.getElementById('match-av').textContent=c.av;
+    document.getElementById('match-av').style.background=c.color;
     document.getElementById('match-sub').textContent=c.name+' y vos tienen Mutual Interest';
   },1700);
 }
 
 function doLike(){runSwipeDemo();if(currentStep===0)setTimeout(function(){goStep(1);},2200);}
 function doPass(){
-  var card=document.getElementById('swipe-card');
+  var card=document.getElementById('card');var stamp=document.getElementById('stamp-pass');
   if(card)card.style.cssText='animation:swipeLeft .7s ease forwards';
-  setTimeout(function(){if(card)card.style.cssText='';},1800);
+  if(stamp)stamp.style.cssText='animation:stampPass 1.2s ease forwards';
+  setTimeout(function(){if(card)card.style.cssText='';if(stamp)stamp.style.cssText='';},1800);
 }
 
+// CSS keyframes for pass
 var s=document.createElement('style');
-s.textContent='@keyframes swipeLeft{0%{transform:translateX(0) rotate(0);opacity:1}100%{transform:translateX(-300px) rotate(-18deg);opacity:0}}';
+s.textContent='@keyframes swipeLeft{0%{transform:translateX(0) rotate(0);opacity:1}100%{transform:translateX(-300px) rotate(-18deg);opacity:0}}@keyframes stampPass{0%{opacity:0}30%{opacity:1}70%{opacity:1}100%{opacity:0}}';
 document.head.appendChild(s);
 
-setInterval(function(){if(currentStep===0)runSwipeDemo();},3500);
+// Auto demo loop
+swipeTimer=setInterval(function(){if(currentStep===0)runSwipeDemo();},3500);
 
+// ── SCROLL ANIMATIONS ──
 var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.12});
 document.querySelectorAll('.fade-in').forEach(function(el){obs.observe(el);});
 
+// Init
 goStep(0);
 </script>
 </body>

@@ -6,6 +6,25 @@
 <title>tNic</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if(typeof pdfjsLib!=="undefined"){pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";}</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script>
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyC1ghOPC8pWKIGK5aR0T94diYwGorzn7V0",
+  authDomain: "tnic-app.firebaseapp.com",
+  databaseURL: "https://tnic-app-default-rtdb.firebaseio.com",
+  projectId: "tnic-app",
+  storageBucket: "tnic-app.firebasestorage.app",
+  messagingSenderId: "572865213602",
+  appId: "1:572865213602:web:af9ab8deebdc20767c53fb"
+};
+firebase.initializeApp(firebaseConfig);
+var auth = firebase.auth();
+var db   = firebase.firestore();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -296,6 +315,27 @@ input.cv-in{display:none}
 .lopt-native{font-size:11px;color:rgba(255,255,255,.5);text-align:left;margin-top:1px}
 .lopt-check{margin-left:auto;font-size:16px;color:#fff;opacity:0}.lopt.sel .lopt-check{opacity:1}
 .lbtn{background:#fff;color:#1B4FD8;border:none;border-radius:var(--rp);padding:14px 0;font-size:15px;font-weight:700;cursor:pointer;width:100%;max-width:280px;font-family:'Syne',sans-serif}
+/* ── LOGIN SCREEN ── */
+#login-scr{background:linear-gradient(160deg,#0F172A 0%,#1B4FD8 100%);align-items:center;justify-content:center;gap:24px;padding:40px 28px;text-align:center}
+.login-logo{display:flex;flex-direction:column;align-items:center;gap:8px}
+.login-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:4px 14px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:1px;text-transform:uppercase}
+.login-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2}
+.login-sub{font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;max-width:260px}
+.login-btn-google{display:flex;align-items:center;justify-content:center;gap:12px;background:#fff;color:#18181B;border:none;border-radius:100px;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;width:100%;max-width:280px;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.login-btn-google:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.login-btn-google img{width:20px;height:20px}
+.login-divider{display:flex;align-items:center;gap:12px;width:100%;max-width:280px}
+.login-divider-line{flex:1;height:1px;background:rgba(255,255,255,.15)}
+.login-divider-text{font-size:11px;color:rgba(255,255,255,.4)}
+.login-btn-guest{background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:12px 24px;font-size:13px;font-weight:600;cursor:pointer;width:100%;max-width:280px;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.login-btn-guest:hover{background:rgba(255,255,255,.08)}
+.login-terms{font-size:10px;color:rgba(255,255,255,.3);max-width:240px;line-height:1.5}
+.login-terms a{color:rgba(255,255,255,.5);text-decoration:underline}
+.login-loading{display:none;flex-direction:column;align-items:center;gap:12px}
+.login-spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.login-loading-text{font-size:13px;color:rgba(255,255,255,.6)}
+
 #onboard-scr{background:linear-gradient(160deg,#0F172A 0%,#1B4FD8 100%);align-items:center;justify-content:center;gap:20px;padding:36px 28px;text-align:center}
 
 /* ── WELCOME SCREEN ── */
@@ -535,6 +575,48 @@ input[type=range]{width:100%;accent-color:var(--b)}
     <div class="lopt" id="lopt-en" onclick="pickLang('en')"><span class="lopt-flag">🇺🇸</span><div><div class="lopt-name">English</div><div class="lopt-native">American English</div></div><span class="lopt-check">✓</span></div>
   </div>
   <button class="lbtn" id="lbtn" onclick="startApp()">Continuar →</button>
+</div>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="login-scr" class="scr">
+  <div class="login-logo">
+    <div class="login-badge">Beta · LATAM</div>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 65' style='height:50px;width:auto'>
+      <circle cx='8' cy='14' r='5' fill='#6091FF'/>
+      <circle cx='8' cy='32' r='5' fill='#6091FF'/>
+      <circle cx='8' cy='50' r='5' fill='#6091FF'/>
+      <line x1='8' y1='14' x2='22' y2='23' stroke='#6091FF' stroke-width='2'/>
+      <line x1='8' y1='32' x2='22' y2='23' stroke='#6091FF' stroke-width='2'/>
+      <line x1='8' y1='32' x2='22' y2='41' stroke='#6091FF' stroke-width='2'/>
+      <line x1='8' y1='50' x2='22' y2='41' stroke='#6091FF' stroke-width='2'/>
+      <text x='28' y='56' font-family='Arial Black' font-weight='900' font-size='56' fill='#2B5CE6'>t</text>
+      <text x='65' y='56' font-family='Arial Black' font-weight='900' font-size='56' fill='white'>Nic</text>
+    </svg>
+  </div>
+  <div class="login-title">Conectá tu talento<br>con el futuro</div>
+  <div class="login-sub">La plataforma IT que conecta talento con empresas líderes de LATAM.</div>
+
+  <div id="login-loading" class="login-loading">
+    <div class="login-spinner"></div>
+    <div class="login-loading-text">Iniciando sesión...</div>
+  </div>
+
+  <div id="login-buttons">
+    <button class="login-btn-google" onclick="loginConGoogle()">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuar con Google
+    </button>
+    <div class="login-divider">
+      <div class="login-divider-line"></div>
+      <div class="login-divider-text">o</div>
+      <div class="login-divider-line"></div>
+    </div>
+    <button class="login-btn-guest" onclick="loginComoInvitado()">Explorar como invitado</button>
+  </div>
+
+  <div class="login-terms">
+    Al continuar aceptás los <a href="#" onclick="openAppTC(event)">Términos y Condiciones</a> y la Política de Privacidad de tNic.
+  </div>
 </div>
 
 <!-- ══ WELCOME SCREEN ══ -->
@@ -1128,6 +1210,8 @@ var copData={name:'',tagline:'',industry:'',size:'',location:'',web:'',founded:'
 
 function persistAll(){
   try{localStorage.setItem('tnic_v2',JSON.stringify({cpData:cpData,copData:copData,agendaInterviews:agendaInterviews,pipeline:pipeline,matches:matches,chats:chats,notifs:notifs,USER_ROLE:USER_ROLE,LANG:LANG}));}catch(e){}
+  // Sync con Firestore si hay usuario logueado
+  saveToFirestore();
 }
 function loadAll(){
   try{
@@ -1243,15 +1327,17 @@ function swipe(dir){
 function pickLang(lang){LANG=lang;['es','en'].forEach(function(l){var o=G('lopt-'+l);if(o)o.classList.toggle('sel',l===lang);});var b=G('lbtn');if(b)b.textContent=lang==='en'?'Continue →':'Continuar →';}
 
 function startApp(){
-  var has=loadAll();
-  if(has&&USER_ROLE){applyRoleUI();go('swipe-scr');sortDataSetByMatch();render();setTimeout(function(){initCardEvents();updateNdot();buildAgenda();},100);}
-  else{
-    // Si ya aceptó T&C, ir al onboarding de rol
-    var tcAccepted=false;
-    try{tcAccepted=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
-    if(tcAccepted){go('onboard-scr');}
-    else{go('welcome-scr');}
-  }
+  // Mostrar login screen primero
+  go('login-scr');
+  // Escuchar cambios de auth state
+  auth.onAuthStateChanged(function(user) {
+    if (user) {
+      // Usuario ya logueado — ir directo
+      currentUser = user;
+      onLoginSuccess(user);
+    }
+    // Si no hay usuario, quedarse en login-scr
+  });
 }
 function changeLang(){go('lang-scr');}
 
@@ -1666,6 +1752,86 @@ function saveCandidateProfile(){
 }
 
 // ── ROLE SYSTEM ──
+// ── FIREBASE AUTH ──
+var currentUser = null;
+
+function loginConGoogle() {
+  document.getElementById('login-buttons').style.display = 'none';
+  document.getElementById('login-loading').style.display = 'flex';
+  var provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then(function(result) {
+      currentUser = result.user;
+      onLoginSuccess(result.user);
+    })
+    .catch(function(error) {
+      console.log('Login error:', error);
+      document.getElementById('login-buttons').style.display = 'flex';
+      document.getElementById('login-loading').style.display = 'none';
+      alert('Error al iniciar sesión. Intentá de nuevo.');
+    });
+}
+
+function loginComoInvitado() {
+  onLoginSuccess(null, true);
+}
+
+function onLoginSuccess(user, isGuest) {
+  currentUser = user;
+  if (user && !user.isAnonymous) {
+    db.collection('users').doc(user.uid).get()
+      .then(function(doc) {
+        if (doc.exists) {
+          var data = doc.data();
+          if (data.cpData) Object.assign(cpData, data.cpData);
+          if (data.copData) Object.assign(copData, data.copData);
+          if (data.USER_ROLE) USER_ROLE = data.USER_ROLE;
+          if (data.matches) matches = data.matches;
+          if (data.chats) chats = data.chats;
+          if (user.photoURL && !cpData.photo) cpData.photo = user.photoURL;
+          if (user.displayName && !cpData.name) cpData.name = user.displayName;
+          save();
+          if (USER_ROLE) {
+            applyRoleUI(); go('swipe-scr'); sortDataSetByMatch(); render();
+            setTimeout(function(){initCardEvents();updateNdot();buildAgenda();}, 100);
+          } else {
+            var tc=false;try{tc=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
+            go(tc?'onboard-scr':'welcome-scr');
+          }
+        } else {
+          if (user.displayName) cpData.name = user.displayName;
+          if (user.photoURL) cpData.photo = user.photoURL;
+          if (user.email) cpData.email = user.email;
+          save();
+          var tc=false;try{tc=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
+          go(tc?'onboard-scr':'welcome-scr');
+        }
+      }).catch(function() {
+        var tc=false;try{tc=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
+        go(tc?'onboard-scr':'welcome-scr');
+      });
+  } else {
+    var has=loadAll();
+    if (has&&USER_ROLE) {
+      applyRoleUI(); go('swipe-scr'); sortDataSetByMatch(); render();
+      setTimeout(function(){initCardEvents();updateNdot();buildAgenda();}, 100);
+    } else {
+      var tc=false;try{tc=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
+      go(tc?'onboard-scr':'welcome-scr');
+    }
+  }
+}
+
+function saveToFirestore() {
+  if (currentUser && !currentUser.isAnonymous) {
+    db.collection('users').doc(currentUser.uid).set({
+      cpData:cpData, copData:copData, USER_ROLE:USER_ROLE,
+      matches:matches, chats:chats,
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    }, {merge:true}).catch(function(e){console.log('Firestore error:',e);});
+  }
+}
+
 // ── WELCOME SCREEN ──
 function toggleWelcomeBtn(){
   var cb=document.getElementById('welcome-tc-check');

@@ -952,7 +952,9 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
 
 <script>
 // ── APPS SCRIPT ──
-var SHEET_URL='https://script.google.com/macros/s/AKfycbwzTJNJlJgeukYnCooHMYLc75vLYnkr_xeMWm9WWLacZTXspsLJwGgTysuidoEY-tWoZA/exec';
+var SENDGRID_KEY='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';
+var SHEET_URL='https://script.google.com/macros/s/AKfycby2sBFTj1R38RrphOrqi1mc3eeRtXFZ-uNUQWVHPcfRPpyVPnbpbulOfjP6BSKHuqCD/exec';
+var FORMSPREE_URL='https://formspree.io/f/mbdqaygw';
 
 // ── LANG ──
 var LANG='es';
@@ -1022,9 +1024,10 @@ function submitForm(e,type){
   e.preventDefault();
   var name=type==='candidate'?document.getElementById('cand-name').value:document.getElementById('comp-name').value;
   var email=type==='candidate'?document.getElementById('cand-email').value:document.getElementById('comp-email').value;
+  var tipo=type==='candidate'?'Candidato':'Empresa';
   var btn=e.target.querySelector('.btn-submit');
   btn.disabled=true;btn.textContent=LANG==='es'?'Enviando...':'Sending...';
-  var url=SHEET_URL+'?tipo='+(type==='candidate'?'Candidato':'Empresa')+'&nombre='+encodeURIComponent(name)+'&email='+encodeURIComponent(email);
+  var url=SHEET_URL+'?tipo='+encodeURIComponent(tipo)+'&nombre='+encodeURIComponent(name)+'&email='+encodeURIComponent(email);
   fetch(url,{method:'GET',mode:'no-cors'}).then(function(){showSuccess(type);}).catch(function(){showSuccess(type);});
 }
 function showSuccess(type){

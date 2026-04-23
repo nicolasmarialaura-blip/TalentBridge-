@@ -952,37 +952,26 @@ footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);backgro
 
 <script>
 // ── APPS SCRIPT ──
-var SENDGRID_KEY='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';
-var SHEET_URL='https://script.google.com/macros/s/AKfycby2sBFTj1R38RrphOrqi1mc3eeRtXFZ-uNUQWVHPcfRPpyVPnbpbulOfjP6BSKHuqCD/exec';
-var FORMSPREE_URL='https://formspree.io/f/mbdqaygw';
+var SHEET_URL='https://script.google.com/macros/s/AKfycbwyrTlcE0qS-qxtpMGsH4MAKKgZEQ-0RCewKRqLU7S_lS7MgkJOAvq_DEtFNa3wESutlg/exec';
 
 // ── LANG ──
 var LANG='es';
 function setLang(l){
   LANG=l;
-
-  // 1. Nav buttons
   document.getElementById('btn-es').classList.toggle('on',l==='es');
   document.getElementById('btn-en').classList.toggle('on',l==='en');
   document.getElementById('btn-app').textContent=l==='es'?'Entrar a la app →':'Open app →';
-
-  // 2. ALL inputs/textareas con data-placeholder-es/en (incluye formularios hero y consultoría)
   document.querySelectorAll('[data-placeholder-'+l+']').forEach(function(el){
     var ph=el.getAttribute('data-placeholder-'+l);
     if(ph)el.placeholder=ph;
   });
-
-  // 3. Todos los elementos con data-es / data-en que NO sean inputs ni contengan hijos interactivos
   document.querySelectorAll('[data-'+l+']').forEach(function(el){
     if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.tagName==='SELECT')return;
     var val=el.getAttribute('data-'+l);
     if(!val)return;
-    // No tocar si tiene botones/inputs hijos (para no romper event handlers)
     if(el.querySelector('button,input,select,textarea,form'))return;
     el.innerHTML=val;
   });
-
-  // 4. Legal checkbox spans — tienen onclick en links internos, actualizarlos con cuidado
   document.querySelectorAll('.legal-row label span[data-es]').forEach(function(el){
     var v=el.getAttribute('data-'+l);
     if(v)el.innerHTML=v;
@@ -991,27 +980,22 @@ function setLang(l){
     var v=el.getAttribute('data-'+l);
     if(v)el.innerHTML=v;
   });
-
-  // 5. Modales
   var mEs=document.getElementById('modal-es');
   var mEn=document.getElementById('modal-en');
   if(mEs)mEs.style.display=l==='es'?'block':'none';
   if(mEn)mEn.style.display=l==='en'?'block':'none';
   var mcBtn=document.querySelector('.modal-footer button');
   if(mcBtn)mcBtn.textContent=l==='es'?'Entendido, cerrar':'Got it, close';
-
-  // 6. Guardar preferencia
   try{localStorage.setItem('tnic_lang',l);}catch(e){}
 }
 
-// ── INIT LANG — detectar idioma del browser o guardado ──
+// ── INIT LANG ──
 (function(){
   var saved=null;
   try{saved=localStorage.getItem('tnic_lang');}catch(e){}
   var browserLang=(navigator.language||navigator.userLanguage||'es').toLowerCase();
   var isEnglish=browserLang.startsWith('en');
   var lang=saved||(isEnglish?'en':'es');
-  // Apply on DOM ready
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded',function(){setLang(lang);});
   } else {
@@ -1019,16 +1003,23 @@ function setLang(l){
   }
 })();
 
-// ── FORMS ──
+// ── FORM WAITLIST (candidato / empresa) ──
 function submitForm(e,type){
   e.preventDefault();
   var name=type==='candidate'?document.getElementById('cand-name').value:document.getElementById('comp-name').value;
   var email=type==='candidate'?document.getElementById('cand-email').value:document.getElementById('comp-email').value;
-  var tipo=type==='candidate'?'Candidato':'Empresa';
+  var tipo=type==='candidate'?'candidato':'empresa';
   var btn=e.target.querySelector('.btn-submit');
-  btn.disabled=true;btn.textContent=LANG==='es'?'Enviando...':'Sending...';
-  var url=SHEET_URL+'?tipo='+encodeURIComponent(tipo)+'&nombre='+encodeURIComponent(name)+'&email='+encodeURIComponent(email);
-  fetch(url,{method:'GET',mode:'no-cors'}).then(function(){showSuccess(type);}).catch(function(){showSuccess(type);});
+  btn.disabled=true;
+  btn.textContent=LANG==='es'?'Enviando...':'Sending...';
+  fetch(SHEET_URL,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({nombre:name,email:email,tipo:tipo})
+  })
+  .then(function(){showSuccess(type);})
+  .catch(function(){showSuccess(type);});
 }
 function showSuccess(type){
   var okId=type==='candidate'?'cand-ok':'comp-ok';
@@ -1039,7 +1030,7 @@ function showSuccess(type){
   f.querySelector('.btn-submit').style.display='none';
 }
 
-// ── CONSULTING FORMS ──
+// ── FORM CONSULTORÍA ──
 function submitConsulting(e,type){
   e.preventDefault();
   var name,email,extra,msg;
@@ -1055,12 +1046,20 @@ function submitConsulting(e,type){
     msg=document.getElementById('cons-cand-msg').value;
   }
   var btn=e.target.querySelector('.cons-btn');
-  btn.disabled=true;btn.textContent=LANG==='es'?'Enviando...':'Sending...';
-  var tipo=type==='company-consulting'?'Consultoría Empresa':'Consultoría Candidato';
-  var url=SHEET_URL+'?tipo='+encodeURIComponent(tipo)+'&nombre='+encodeURIComponent(name)+'&email='+encodeURIComponent(email)+'&empresa='+encodeURIComponent(extra)+'&mensaje='+encodeURIComponent(msg);
-  fetch(url,{method:'GET',mode:'no-cors'})
-    .then(function(){showConsultingSuccess(type);})
-    .catch(function(){showConsultingSuccess(type);});
+  btn.disabled=true;
+  btn.textContent=LANG==='es'?'Enviando...':'Sending...';
+  var tipo=type==='company-consulting'?'consultoria-empresa':'consultoria-candidato';
+  var payload={nombre:name,email:email,tipo:tipo,mensaje:msg};
+  if(type==='company-consulting') payload.empresa=extra;
+  else payload.rol=extra;
+  fetch(SHEET_URL,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(payload)
+  })
+  .then(function(){showConsultingSuccess(type);})
+  .catch(function(){showConsultingSuccess(type);});
 }
 function showConsultingSuccess(type){
   var isComp=type==='company-consulting';
@@ -1070,6 +1069,8 @@ function showConsultingSuccess(type){
   f.querySelectorAll('input,textarea,.cons-btn').forEach(function(el){el.style.display='none';});
   f.querySelector('.legal-row').style.display='none';
 }
+
+// ── MODAL ──
 function openModal(e){if(e)e.preventDefault();document.getElementById('tc-modal').classList.add('open');document.body.style.overflow='hidden';}
 function closeModal(){document.getElementById('tc-modal').classList.remove('open');document.body.style.overflow='';}
 document.getElementById('tc-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
@@ -1087,18 +1088,14 @@ var cardIdx=0,swipeTimer=null;
 
 function goStep(s){
   currentStep=s;
-  // Nav
   for(var i=0;i<5;i++){var b=document.getElementById('sbtn-'+i);if(b)b.classList.toggle('on',i===s);}
-  // Info panels
   document.querySelectorAll('.step-info').forEach(function(p,i){p.classList.toggle('active',i===s);});
-  // Screens
   var ids=['ps-swipe','ps-match','ps-chat','ps-agenda','ps-pipeline'];
   ids.forEach(function(id,i){
     var el=document.getElementById(id);
     if(!el)return;
     el.classList.toggle('active',i===s);
   });
-  // Re-animate chat messages
   if(s===2){
     document.querySelectorAll('#chat-body .pc-bw').forEach(function(el,i){
       el.style.opacity='0';el.style.transform='translateY(8px)';
@@ -1148,19 +1145,15 @@ function doPass(){
   setTimeout(function(){if(card)card.style.cssText='';if(stamp)stamp.style.cssText='';},1800);
 }
 
-// CSS keyframes for pass
 var s=document.createElement('style');
 s.textContent='@keyframes swipeLeft{0%{transform:translateX(0) rotate(0);opacity:1}100%{transform:translateX(-300px) rotate(-18deg);opacity:0}}@keyframes stampPass{0%{opacity:0}30%{opacity:1}70%{opacity:1}100%{opacity:0}}';
 document.head.appendChild(s);
 
-// Auto demo loop
 swipeTimer=setInterval(function(){if(currentStep===0)runSwipeDemo();},3500);
 
-// ── SCROLL ANIMATIONS ──
 var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.12});
 document.querySelectorAll('.fade-in').forEach(function(el){obs.observe(el);});
 
-// Init
 goStep(0);
 </script>
 </body>

@@ -1,0 +1,48 @@
+rules_version = '2';
+
+// tNic / TalentBridge — Storage Security Rules
+//
+// Estructura de paths:
+//   /cvs/{uid}/{filename}      - PDF de CV (solo dueño lee/escribe; empresas con match acceden vía signed URL desde Cloud Function)
+//   /avatars/{uid}/{filename}  - foto de candidato (lectura signed-in, escritura solo dueño)
+//   /logos/{uid}/{filename}    - logo de empresa (lectura signed-in, escritura solo dueño)
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // CVs — solo el dueño. Empresas con match acceden vía signed URL emitido por Cloud Function.
+    match /cvs/{uid}/{filename} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if request.auth != null
+                   && request.auth.uid == uid
+                   && request.resource.size < 10 * 1024 * 1024
+                   && request.resource.contentType == 'application/pdf';
+      allow delete: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Avatars — lectura para cualquier signed-in (necesario para mostrar en swipe), escritura solo dueño
+    match /avatars/{uid}/{filename} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+                   && request.auth.uid == uid
+                   && request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+      allow delete: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Logos de empresa — mismo criterio que avatars
+    match /logos/{uid}/{filename} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+                   && request.auth.uid == uid
+                   && request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+      allow delete: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Default deny — cualquier otra ruta bloqueada
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

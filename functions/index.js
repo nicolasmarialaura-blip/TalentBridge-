@@ -1,32 +1,75 @@
 /**
- * Import function triggers from their respective submodules:
+ * tNic / TalentBridge — Cloud Functions
  *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ * onSwipeCreated: detecta match mutuo cuando un user crea un swipe de tipo
+ * "like" sobre otro user que ya le había dado like. Crea un doc en /matches
+ * con ID determinístico (uids ordenados unidos por "_") para evitar duplicados.
  */
 
-const {setGlobalOptions} = require("firebase-functions");
-const {onRequest} = require("firebase-functions/https");
+const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { setGlobalOptions } = require("firebase-functions/v2");
 const logger = require("firebase-functions/logger");
+const admin = require("firebase-admin");
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+admin.initializeApp();
+const db = admin.firestore();
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+// Co-localizamos las funciones con Firestore (southamerica-east1) para
+// minimizar latencia y costos de egress. maxInstances limita el costo
+// ante picos inesperados de tráfico.
+setGlobalOptions({
+  region: "southamerica-east1",
+  maxInstances: 10,
+});
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+/**
+ * Trigger: cada vez que se crea un doc en /swipes.
+ *
+ * Si el swipe es un "like" y la otra persona ya había dado "like" en el
+ * sentido inverso, creamos /matches/{matchId} donde matchId = uids
+ * ordenados unidos por "_". Usamos merge:true para que la operación sea
+ * idempotente (si ambos usuarios likean al mismo tiempo, ambas
+ * invocaciones terminan en el mismo doc final).
+ */
+exports.onSwipeCreated = onDocumentCreated("swipes/{swipeId}", async (event) => {
+  const snap = event.data;
+  if (!snap) return;
+  const swipe = snap.data();
+
+  // Validación defensiva.
+  if (!swipe || !swipe.from || !swipe.to) {
+    logger.warn("Swipe inválido — falta from o to", { swipeId: event.params.swipeId });
+    return;
+  }
+  if (swipe.kind !== "like") return; // pass: no hace nada
+  if (swipe.from === swipe.to) return; // self-swipe: ignorar
+
+  // ¿Existe un like recíproco?
+  const reciprocal = await db
+    .collection("swipes")
+    .where("from", "==", swipe.to)
+    .where("to", "==", swipe.from)
+    .where("kind", "==", "like")
+    .limit(1)
+    .get();
+
+  if (reciprocal.empty) {
+    logger.info(`Like de ${swipe.from} → ${swipe.to}: sin reciprocidad todavía`);
+    return;
+  }
+
+  // ¡Match! Crear doc determinístico.
+  const sortedUids = [swipe.from, swipe.to].sort();
+  const matchId = sortedUids.join("_");
+
+  await db.collection("matches").doc(matchId).set(
+    {
+      users: sortedUids,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      hasChat: false,
+    },
+    { merge: true }
+  );
+
+  logger.info(`Match creado: ${matchId}`);
+});

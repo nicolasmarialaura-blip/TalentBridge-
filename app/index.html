@@ -1362,10 +1362,17 @@ function toggleExtra(e){e.stopPropagation();G('extra').classList.toggle('on');G(
 
 function swipe(dir){
   var card=G('card');
+  var target=dataSet[idx];
   card.style.transition='transform .4s,opacity .4s';
   card.style.transform='translateX('+(dir==='right'?'500px':'-500px')+') rotate('+(dir==='right'?'18deg':'-18deg')+')';
   card.style.opacity='0';
-  setTimeout(function(){if(dir==='right'){stats.likes++;curMatch=dataSet[idx];showMI();}else{idx++;render();}},400);
+  setTimeout(function(){
+    // Persistir el swipe en Firestore (la Cloud Function detectará match mutuo)
+    if(dir==='right'){stats.likes++;writeSwipeToFirestore(target,'like');}
+    else{writeSwipeToFirestore(target,'pass');}
+    // El match se muestra cuando el listener de /matches dispara handleMatchDoc
+    idx++;render();
+  },400);
 }
 
 // ── LANG ──
@@ -1837,7 +1844,7 @@ function onLoginSuccess(user, isGuest) {
           if (user.displayName && !cpData.name) cpData.name = user.displayName;
           save();
           if (USER_ROLE) {
-            applyRoleUI(); go('swipe-scr'); sortDataSetByMatch(); render();
+            applyRoleUI(); listenForMatches(); go('swipe-scr'); sortDataSetByMatch(); render();
             setTimeout(function(){initCardEvents();updateNdot();buildAgenda();}, 100);
           } else {
             var tc=false;try{tc=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
@@ -1974,20 +1981,71 @@ function loadRealProfilesFromFirestore(callback) {
     });
 }
 
-// Guardar match en Firestore
-function saveMatchToFirestore(matchedProfile) {
+// ── SWIPES y MATCHES (Firestore) ──
+//
+// Flujo del matching real:
+//  1. swipe(dir) en la UI escribe un doc en /swipes con {from, to, kind}.
+//     ID determinístico ({from}_{to}) para evitar swipes duplicados.
+//  2. Cloud Function onSwipeCreated detecta likes recíprocos y crea un
+//     doc en /matches con users:[uidA,uidB] y ID determinístico.
+//  3. listenForMatches() en el cliente escucha /matches y, cuando llega
+//     un doc nuevo después de la carga inicial, muestra la pantalla
+//     "Mutual Interest" (showMI) con el perfil del otro usuario.
+
+var matchesUnsub = null;
+var matchesInitialized = false;
+
+function writeSwipeToFirestore(target, kind) {
   if (!currentUser || currentUser.isAnonymous) return;
-  var matchData = {
-    users: [currentUser.uid, matchedProfile.uid || matchedProfile.name],
-    profiles: [
-      {uid: currentUser.uid, name: USER_ROLE==='candidate'?cpData.name:copData.name, role: USER_ROLE},
-      {uid: matchedProfile.uid || matchedProfile.name, name: matchedProfile.name, role: matchedProfile.type}
-    ],
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    hasChat: false
-  };
-  db.collection('matches').add(matchData)
-    .catch(function(e) { console.log('Error guardando match:', e); });
+  if (!target || !target.uid) return;          // perfil demo sin uid: ignorar
+  if (target.uid === currentUser.uid) return;   // self-swipe: defensivo
+  var docId = currentUser.uid + '_' + target.uid;
+  db.collection('swipes').doc(docId).set({
+    from: currentUser.uid,
+    to: target.uid,
+    kind: kind, // 'like' | 'pass'
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).catch(function(e) { console.log('Swipe error:', e); });
+}
+
+function listenForMatches() {
+  if (!currentUser || currentUser.isAnonymous) return;
+  if (matchesUnsub) { matchesUnsub(); matchesUnsub = null; }
+  matchesInitialized = false;
+  matchesUnsub = db.collection('matches')
+    .where('users', 'array-contains', currentUser.uid)
+    .onSnapshot(function(snapshot) {
+      var firstSnapshot = !matchesInitialized;
+      matchesInitialized = true;
+      snapshot.docChanges().forEach(function(change) {
+        if (change.type === 'added') {
+          handleMatchDoc(change.doc, !firstSnapshot);
+        }
+      });
+    }, function(err) { console.log('Match listener error:', err); });
+}
+
+function handleMatchDoc(matchDoc, isNew) {
+  var data = matchDoc.data();
+  if (!data || !data.users) return;
+  var otherUid = data.users.find(function(u) { return u !== currentUser.uid; });
+  if (!otherUid) return;
+  // Si ya existe en matches local, no duplicar
+  if (matches.find(function(m) { return m.uid === otherUid; })) return;
+  // Cargar el perfil del otro usuario para poblar la UI
+  var collection = USER_ROLE === 'candidate' ? 'companies' : 'candidates';
+  db.collection(collection).doc(otherUid).get().then(function(doc) {
+    if (!doc.exists) return;
+    var profile = doc.data();
+    profile.matchId = matchDoc.id;
+    addMatch(profile, false);
+    persistAll();
+    if (isNew) {
+      curMatch = profile;
+      showMI();
+      addNotif('🎉', 'Mutual Interest con <strong>'+(profile.name||'usuario')+'</strong>', 'ahora');
+    }
+  }).catch(function(e) { console.log('Error cargando perfil de match:', e); });
 }
 
 function confirmRole(){
@@ -2010,6 +2068,8 @@ function finishSetup(){
   document.querySelectorAll('.setup-banner').forEach(function(b){b.remove();});
   // Publicar perfil en Firestore
   publishProfileToFirestore();
+  // Empezar a escuchar matches reales (creados por la Cloud Function)
+  listenForMatches();
   // Cargar perfiles reales para el swipe
   loadRealProfilesForSwipe();
 }

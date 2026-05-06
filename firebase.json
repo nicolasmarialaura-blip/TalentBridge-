@@ -17,9 +17,21 @@
     }
   ],
   "hosting": {
-    "public": "public",
+    "public": ".",
     "ignore": [
       "firebase.json",
+      ".firebaserc",
+      ".git/**",
+      ".github/**",
+      ".gitignore",
+      ".nojekyll",
+      "CNAME",
+      "README.md",
+      "firestore.rules",
+      "firestore.indexes.json",
+      "storage.rules",
+      "functions/**",
+      "public/**",
       "**/.*",
       "**/node_modules/**"
     ]

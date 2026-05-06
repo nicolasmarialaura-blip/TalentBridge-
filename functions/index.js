@@ -14,11 +14,12 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 const db = admin.firestore();
 
-// Co-localizamos las funciones con Firestore (southamerica-east1) para
-// minimizar latencia y costos de egress. maxInstances limita el costo
-// ante picos inesperados de tráfico.
+// La función debe correr en una región compatible con la ubicación de
+// Firestore. La base de datos de tNic está en `nam5` (multi-región US),
+// así que usamos `us-central1` que es la región canónica para triggers
+// de Firestore en nam5. maxInstances limita el costo ante picos.
 setGlobalOptions({
-  region: "southamerica-east1",
+  region: "us-central1",
   maxInstances: 10,
 });
 

@@ -1930,7 +1930,7 @@ function publishProfileToFirestore() {
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     };
     db.collection('candidates').doc(uid).set(profile, {merge: true})
-      .then(function() { Logger && Logger.log('Candidato publicado'); })
+      .then(function() { console.log('Candidato publicado'); })
       .catch(function(e) { console.log('Error publicando candidato:', e); });
   } else if (USER_ROLE === 'company') {
     var profile = {

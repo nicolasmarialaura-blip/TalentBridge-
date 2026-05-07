@@ -3,1158 +3,1638 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>tNic — Talent. Technology. Connection.</title>
-<meta name="description" content="La plataforma IT que conecta talento tech con empresas líderes en LATAM.">
+<meta name="description" content="tNic — Construyo áreas de talento IT que escalan. Consultoría estratégica para empresas tech en LATAM. Implementación de ATS, procesos de talento y Head of Talent fraccional.">
+<meta property="og:title" content="tNic — Construyo áreas de talento IT que escalan">
+<meta property="og:description" content="Consultoría estratégica de talento para empresas tech en LATAM.">
+<meta property="og:url" content="https://www.tnictalent.com">
+<meta property="og:type" content="website">
+<title>tNic — Construyo áreas de talento IT que escalan</title>
+
+<link rel="icon" type="image/png" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --b:#2B5CE6;--b2:#3B6EF8;--b3:#6091FF;
-  --blight:#EEF3FF;--bxlight:#F4F7FF;
-  --dark:#18181B;--mid:#3F3F46;--gray:#71717A;
-  --light:#FAFAFA;--w:#fff;--brd:#E4E4E7;
-  --green:#16A34A;--amber:#D97706;--red:#E53E3E;--purple:#7C3AED;
-  --r:12px;--rl:18px;--rxl:28px;
+:root {
+  --ink: #0a0e27;
+  --ink-soft: #1a1f3a;
+  --ink-mute: #5a6280;
+  --paper: #fbf9f4;
+  --paper-warm: #f5f1e8;
+  --line: #e8e3d6;
+  --accent: #2444ff;
+  --accent-soft: #eaedff;
+  --max-w: 1280px;
 }
-html{scroll-behavior:smooth}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(160deg,#EEF2FF 0%,#E8EEFF 35%,#F0F4FF 70%,#EEF2FF 100%);color:var(--dark);min-height:100vh;overflow-x:hidden}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1, h2, h3, h4 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 144;
+}
+h1 em, h2 em, h3 em { font-style: italic; font-weight: 400; color: var(--accent); }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; border: 0; background: 0; }
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 32px; }
+@media (max-width: 720px) { .container { padding: 0 24px; } body { font-size: 16px; } }
 
-/* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(43,92,230,.08);padding:0 clamp(20px,5vw,60px);height:64px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-mark{background:#0F172A;border-radius:10px;padding:4px 8px;height:36px;display:flex;align-items:center}
-.nav-logo-mark svg{height:26px;width:auto}
-.nav-tagline{font-size:11px;font-weight:600;color:var(--gray);letter-spacing:.5px}
-@media(min-width:700px){#nav-cons{display:inline-block !important}}
-.nav-actions{display:flex;align-items:center;gap:8px}
-.btn-lang{background:var(--bxlight);border:1.5px solid var(--brd);border-radius:var(--r);padding:6px 12px;font-size:12px;font-weight:600;color:var(--gray);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
-.btn-lang.on{background:var(--b);border-color:var(--b);color:#fff}
-.btn-app{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:var(--r);padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-block}
-.btn-app:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,92,230,.35)}
+/* NAV */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 18px 0;
+  background: rgba(251, 249, 244, 0.85);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
+}
+.nav.scrolled { border-bottom-color: var(--line); }
+.nav .container {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+}
+.logo {
+  font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600;
+  letter-spacing: -0.04em; display: flex; align-items: baseline; gap: 1px;
+  flex-shrink: 0;
+}
+.logo .t { color: var(--accent); font-weight: 700; font-style: italic; }
+.logo small {
+  font-family: 'Manrope', sans-serif; font-size: 11px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 500;
+  margin-left: 12px; display: inline-block;
+}
+.nav-right { display: flex; align-items: center; gap: 24px; }
+.nav-links {
+  display: flex; gap: 32px; align-items: center;
+  font-size: 14px; font-weight: 500;
+}
+.nav-links a:not(.btn) {
+  color: var(--ink-soft); transition: color 0.2s; position: relative;
+}
+.nav-links a:not(.btn)::after {
+  content: ''; position: absolute; bottom: -6px; left: 0;
+  width: 0; height: 1px; background: var(--accent);
+  transition: width 0.3s;
+}
+.nav-links a:not(.btn):hover { color: var(--accent); }
+.nav-links a:not(.btn):hover::after { width: 100%; }
 
-/* ── HERO ── */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px clamp(20px,6vw,80px) 60px;text-align:center;position:relative}
-.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.4;pointer-events:none}
-.blob-1{width:500px;height:500px;background:radial-gradient(circle,#C7D7FF,transparent);top:-100px;left:-150px}
-.blob-2{width:400px;height:400px;background:radial-gradient(circle,#DDE8FF,transparent);bottom:0;right:-100px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bxlight);border:1.5px solid rgba(43,92,230,.15);border-radius:100px;padding:6px 16px;font-size:11px;font-weight:700;color:var(--b);letter-spacing:.5px;text-transform:uppercase;margin-bottom:28px;animation:fadeUp .6s ease both}
-.badge-dot{width:6px;height:6px;background:var(--b3);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero-logo{margin-bottom:28px;animation:fadeUp .6s .1s ease both}
-.hero-logo svg{height:clamp(60px,10vw,90px);width:auto}
-h1{font-family:'Syne',sans-serif;font-size:clamp(32px,6vw,58px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;color:var(--dark);max-width:700px;margin-bottom:20px;animation:fadeUp .6s .15s ease both}
-h1 .accent{color:var(--b)}
-.hero-sub{font-size:clamp(15px,2.5vw,18px);color:var(--mid);line-height:1.65;max-width:520px;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
-.hero-forms{display:flex;flex-direction:column;gap:16px;width:100%;max-width:480px;animation:fadeUp .6s .25s ease both}
-.form-card{background:#fff;border:1.5px solid var(--brd);border-radius:var(--rxl);padding:24px;text-align:left;box-shadow:0 4px 24px rgba(43,92,230,.07);transition:box-shadow .2s}
-.form-card:hover{box-shadow:0 8px 32px rgba(43,92,230,.12)}
-.form-card-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.form-card-icon{font-size:22px;width:40px;height:40px;background:var(--bxlight);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.form-card-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--dark)}
-.form-card-sub{font-size:11px;color:var(--gray);margin-top:1px}
-.inp-row{display:flex;gap:8px;flex-wrap:wrap}
-.inp-row input{flex:1;min-width:130px}
-input[type=text],input[type=email]{width:100%;border:1.5px solid var(--brd);border-radius:10px;padding:10px 14px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--dark);background:var(--light);outline:none;transition:border-color .2s;margin-bottom:8px}
-input:focus{border-color:var(--b);background:#fff}
-input::placeholder{color:#aaa}
-.legal-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:12px}
-.legal-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--b);margin-top:2px;flex-shrink:0;cursor:pointer}
-.legal-row label{font-size:11px;color:var(--gray);line-height:1.5;cursor:pointer}
-.legal-row label a{color:var(--b);text-decoration:underline}
-.btn-submit{width:100%;background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:12px;padding:12px 0;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
-.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,92,230,.35)}
-.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-.success-msg{display:none;text-align:center;padding:12px;background:var(--bxlight);border-radius:12px;font-size:13px;font-weight:600;color:var(--b)}
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px; font-family: 'Manrope', sans-serif;
+  font-size: 14px; font-weight: 600; border-radius: 999px;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+  letter-spacing: 0.01em; white-space: nowrap;
+}
+.btn-primary { background: var(--ink); color: var(--paper) !important; }
+.btn-primary:hover {
+  background: var(--accent); color: var(--paper) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(36, 68, 255, 0.25);
+}
+.btn-secondary {
+  background: transparent; color: var(--ink); border: 1.5px solid var(--ink);
+}
+.btn-secondary:hover { background: var(--ink); color: var(--paper); }
+.btn .arrow { transition: transform 0.2s; }
+.btn:hover .arrow { transform: translateX(3px); }
 
-/* ── SOCIAL PROOF ── */
-.proof{background:#fff;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);padding:48px clamp(20px,6vw,80px)}
-.proof-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;justify-content:center}
-.proof-stat{text-align:center}
-.proof-num{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--b);line-height:1}
-.proof-lbl{font-size:12px;color:var(--gray);margin-top:4px;font-weight:500}
+.lang-switch {
+  display: inline-flex;
+  background: rgba(10, 14, 39, 0.06);
+  border-radius: 999px; padding: 3px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+}
+.lang-btn {
+  padding: 6px 12px; border-radius: 999px;
+  color: var(--ink-mute); transition: all 0.2s;
+  cursor: pointer; font-family: 'Manrope', sans-serif;
+}
+.lang-btn.active { background: var(--ink); color: var(--paper); }
 
-/* ── TUTORIAL ── */
-.tutorial-section{padding:80px clamp(20px,6vw,80px);max-width:1100px;margin:0 auto}
-.section-label{font-size:11px;font-weight:700;color:var(--b);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
-.section-title{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,40px);font-weight:800;color:var(--dark);letter-spacing:-.5px;margin-bottom:12px}
-.section-sub{font-size:15px;color:var(--mid);line-height:1.65;max-width:480px;margin-bottom:40px}
+.mobile-menu-btn { display: none; font-size: 24px; color: var(--ink); padding: 4px 8px; }
+@media (max-width: 980px) {
+  .nav-links { display: none; }
+  .mobile-menu-btn { display: block; }
+}
+@media (max-width: 480px) { .logo small { display: none; } }
 
-/* Step nav */
-.steps-nav{display:flex;justify-content:flex-start;gap:0;margin-bottom:40px;background:#fff;border:1.5px solid var(--brd);border-radius:16px;padding:4px;width:fit-content}
-.step-btn{padding:8px 18px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:none;color:var(--gray);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.step-btn.on{background:var(--b);color:#fff;box-shadow:0 2px 10px rgba(43,92,230,.3)}
-.step-num-circle{width:18px;height:18px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.2);font-weight:800}
-.step-btn:not(.on) .step-num-circle{background:var(--bxlight);color:var(--b)}
-@media(max-width:500px){.step-btn{padding:8px 12px;font-size:10px}}
+/* HERO */
+.hero { padding: 180px 0 120px; position: relative; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.hero-bg::before {
+  content: ''; position: absolute; top: 10%; right: -10%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(36, 68, 255, 0.08) 0%, transparent 60%);
+  filter: blur(40px);
+}
+.hero-bg::after {
+  content: ''; position: absolute; bottom: -10%; left: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(201, 169, 97, 0.06) 0%, transparent 60%);
+  filter: blur(40px);
+}
+.hero .container { position: relative; z-index: 1; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Manrope', sans-serif; font-size: 12px;
+  font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-mute); margin-bottom: 32px;
+}
+.eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--ink-mute); }
+.hero h1 {
+  font-size: clamp(48px, 7vw, 96px); margin-bottom: 32px;
+  max-width: 1100px; font-weight: 500; letter-spacing: -0.035em;
+}
+.hero h1 .accent { color: var(--accent); font-style: italic; font-weight: 400; }
+.hero-sub {
+  font-size: clamp(18px, 1.6vw, 22px); color: var(--ink-mute);
+  max-width: 680px; margin-bottom: 48px; line-height: 1.5; font-weight: 400;
+}
+.hero-cta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.hero-meta {
+  display: flex; gap: 48px; margin-top: 100px; padding-top: 32px;
+  border-top: 1px solid var(--line); flex-wrap: wrap;
+}
+.hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+.hero-meta-label {
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 600;
+}
+.hero-meta-value {
+  font-family: 'Fraunces', serif; font-size: 22px;
+  font-weight: 500; letter-spacing: -0.02em;
+}
 
-/* Tutorial layout */
-.tutorial-layout{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center}
-@media(max-width:768px){.tutorial-layout{grid-template-columns:1fr;}.phone-wrap{order:-1}}
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.2,0.8,0.2,1), transform 0.8s cubic-bezier(0.2,0.8,0.2,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-stagger-1 { transition-delay: 0.1s; }
+.reveal-stagger-2 { transition-delay: 0.2s; }
+.reveal-stagger-3 { transition-delay: 0.3s; }
+.reveal-stagger-4 { transition-delay: 0.4s; }
 
-/* Phone mockup */
-.phone-wrap{display:flex;justify-content:center}
-.phone{width:260px;height:520px;background:#fff;border-radius:38px;box-shadow:0 32px 80px rgba(43,92,230,.18),0 0 0 1px rgba(43,92,230,.08),inset 0 0 0 2px rgba(0,0,0,.06);overflow:hidden;position:relative;flex-shrink:0}
-.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:22px;background:#0F172A;border-radius:0 0 14px 14px;z-index:10}
+/* MARQUEE */
+.marquee {
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: 22px 0; overflow: hidden; background: var(--paper-warm);
+}
+.marquee-track {
+  display: flex; gap: 64px; white-space: nowrap;
+  animation: marquee 28s linear infinite;
+  font-family: 'Fraunces', serif; font-size: 18px; font-style: italic;
+  color: var(--ink-soft); font-weight: 400;
+}
+.marquee-track span { display: inline-flex; align-items: center; gap: 64px; }
+.marquee-track .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; display: inline-block; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* Screens */
-.pscreen{position:absolute;inset:0;display:none;flex-direction:column;background:#F4F7FF;border-radius:38px}
-.pscreen.active{display:flex}
+/* SECTION */
+section { padding: 120px 0; position: relative; }
+.section-header {
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 80px; margin-bottom: 80px; align-items: end;
+}
+@media (max-width: 880px) {
+  .section-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 56px; }
+}
+.section-num {
+  font-family: 'Fraunces', serif; font-size: 14px; font-weight: 500;
+  color: var(--ink-mute); display: flex; align-items: center; gap: 14px;
+  letter-spacing: 0.05em;
+}
+.section-num::before { content: ''; width: 60px; height: 1px; background: var(--ink-mute); }
+.section-title {
+  font-size: clamp(36px, 5vw, 60px); font-weight: 500;
+  letter-spacing: -0.025em; max-width: 780px;
+}
+.section-title em { color: var(--accent); font-weight: 400; }
+.section-desc {
+  font-size: 18px; color: var(--ink-mute);
+  max-width: 580px; margin-top: 24px; line-height: 1.55;
+}
 
-/* Topbar */
-.p-topbar{display:flex;align-items:center;justify-content:space-between;padding:28px 14px 10px;background:#fff;border-bottom:1px solid var(--brd);flex-shrink:0}
-.p-logo{background:#0F172A;border-radius:6px;padding:2px 6px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff}
-.p-logo span{color:var(--b)}
-.p-tabs{display:flex;background:var(--bxlight);border-radius:100px;padding:2px;gap:2px}
-.p-tab{font-size:9px;font-weight:600;padding:4px 8px;border-radius:100px;color:var(--gray)}
-.p-tab.on{background:var(--b);color:#fff}
+/* SERVICIOS */
+.services-empresa { background: var(--paper); }
+.service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+@media (max-width: 1080px) { .service-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 720px) { .service-grid { grid-template-columns: 1fr; gap: 16px; } }
+.service-card {
+  background: var(--paper-warm); border: 1px solid var(--line);
+  padding: 40px 32px 32px; border-radius: 4px;
+  display: flex; flex-direction: column; gap: 24px;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.3s, border-color 0.3s;
+}
+.service-card::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 3px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1);
+}
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px -20px rgba(10,14,39,0.18);
+  border-color: var(--ink-soft);
+}
+.service-card:hover::before { transform: scaleX(1); }
+.service-num { font-family: 'Fraunces', serif; font-size: 13px; color: var(--ink-mute); letter-spacing: 0.05em; }
+.service-name {
+  font-family: 'Fraunces', serif; font-size: 30px; font-weight: 500;
+  line-height: 1.1; letter-spacing: -0.02em;
+}
+.service-tagline { font-size: 15px; color: var(--ink-mute); line-height: 1.5; flex: 1; }
+.service-includes {
+  font-size: 13px; color: var(--ink-mute); list-style: none;
+  padding-top: 20px; border-top: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.service-includes li { display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+.service-includes li::before { content: '→'; color: var(--accent); font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+.service-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600; color: var(--ink);
+  margin-top: 4px; transition: gap 0.2s, color 0.2s;
+}
+.service-cta:hover { gap: 14px; color: var(--accent); }
 
-/* Card area */
-.p-card-area{flex:1;display:flex;align-items:center;justify-content:center;padding:10px;position:relative;overflow:hidden}
-.p-card{width:100%;background:#fff;border-radius:20px;box-shadow:0 4px 20px rgba(43,92,230,.12);padding:14px;display:flex;flex-direction:column;align-items:center;position:relative}
-.p-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;font-family:'Syne',sans-serif;margin-bottom:8px}
-.p-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--dark)}
-.p-role{font-size:10px;color:var(--b);font-weight:600;margin-top:2px}
-.p-loc{font-size:9px;color:var(--gray);margin-top:2px}
-.p-skills{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-top:8px}
-.p-sk{background:var(--bxlight);color:var(--b);border-radius:6px;padding:2px 7px;font-size:9px;font-weight:600}
-.p-score{display:flex;align-items:center;gap:6px;background:var(--bxlight);border-radius:100px;padding:3px 10px;margin-top:8px}
-.p-bar-bg{width:60px;height:4px;background:var(--brd);border-radius:10px;overflow:hidden}
-.p-bar-fill{height:100%;background:linear-gradient(90deg,var(--b),var(--b3));border-radius:10px}
-.p-pct{font-size:10px;font-weight:700;color:var(--b)}
-.p-stamp{position:absolute;top:12px;font-size:11px;font-weight:800;border:2.5px solid;border-radius:6px;padding:3px 8px;opacity:0;pointer-events:none}
-.p-stamp.like{left:10px;color:var(--b);border-color:var(--b);transform:rotate(-15deg)}
-.p-stamp.pass{right:10px;color:var(--red);border-color:var(--red);transform:rotate(15deg)}
+/* ABOUT */
+.about { background: var(--ink); color: var(--paper); position: relative; overflow: hidden; }
+.about::before {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 50%; height: 100%;
+  background: radial-gradient(circle at 100% 0%, rgba(36,68,255,0.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+.about .section-num { color: rgba(251,249,244,0.5); }
+.about .section-num::before { background: rgba(251,249,244,0.5); }
+.about-grid {
+  display: grid; grid-template-columns: 380px 1fr;
+  gap: 80px; align-items: start; position: relative;
+}
+@media (max-width: 1024px) { .about-grid { grid-template-columns: 1fr; gap: 56px; } }
+.about-photo { position: relative; }
+.about-photo-frame {
+  width: 100%; aspect-ratio: 4/5;
+  background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%);
+  border: 1px solid rgba(251,249,244,0.15);
+  border-radius: 4px; overflow: hidden; position: relative;
+}
+.about-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+.about-photo-caption {
+  margin-top: 16px; font-family: 'Fraunces', serif;
+  font-size: 16px; font-style: italic;
+  color: rgba(251,249,244,0.7); line-height: 1.4;
+}
+.about-photo-caption strong {
+  display: block; font-style: normal; font-weight: 500;
+  color: var(--paper); margin-bottom: 2px; font-size: 18px;
+}
+.about-content h2 {
+  font-size: clamp(40px, 5vw, 64px); margin-bottom: 32px;
+  font-weight: 500; letter-spacing: -0.025em; color: var(--paper);
+}
+.about-content h2 em { color: #6789ff; font-style: italic; }
+.about-text {
+  font-size: 18px; line-height: 1.65;
+  color: rgba(251,249,244,0.85); margin-bottom: 24px;
+}
+.about-text strong { color: var(--paper); font-weight: 600; }
+.about-credentials {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 24px; margin-top: 48px; padding-top: 40px;
+  border-top: 1px solid rgba(251,249,244,0.15);
+}
+.cred-item { display: flex; flex-direction: column; gap: 8px; }
+.cred-label {
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(251,249,244,0.5); font-weight: 600;
+}
+.cred-value {
+  font-family: 'Fraunces', serif; font-size: 18px;
+  color: var(--paper); line-height: 1.3; font-weight: 500;
+}
+.about-linkedin {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 32px; padding: 14px 24px;
+  border: 1px solid rgba(251,249,244,0.3);
+  border-radius: 999px; color: var(--paper);
+  font-size: 14px; font-weight: 600;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.about-linkedin:hover {
+  background: var(--paper); color: var(--ink);
+  border-color: var(--paper); transform: translateY(-2px);
+}
 
-/* Actions */
-.p-actions{display:flex;justify-content:center;align-items:center;gap:28px;padding:8px 0 10px;background:#fff;border-top:1px solid var(--brd);flex-shrink:0}
-.p-pass{width:42px;height:42px;border-radius:50%;background:#fff;border:2px solid var(--brd);font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer}
-.p-like{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--b),var(--b3));font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(43,92,230,.35);cursor:pointer}
+/* CASE */
+.case {
+  background: var(--paper-warm);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.case-content { max-width: 1000px; margin: 0 auto; text-align: center; }
+.case-quote {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(28px, 3.4vw, 42px); font-weight: 400;
+  font-style: italic; line-height: 1.3; letter-spacing: -0.015em;
+  margin-bottom: 32px; color: var(--ink);
+}
+.case-quote .accent { color: var(--accent); font-style: normal; font-weight: 500; }
+.case-attribution {
+  font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 600;
+}
 
-/* Bottom nav phone */
-.p-bnav{display:flex;justify-content:space-around;background:#fff;padding:8px 0 12px;border-top:1px solid var(--brd);flex-shrink:0}
-.p-ni{display:flex;flex-direction:column;align-items:center;gap:2px;opacity:.3;font-size:14px}
-.p-ni.on{opacity:1}
-.p-ni-lbl{font-size:8px;font-weight:700;color:var(--b)}
+/* CANDIDATOS */
+.services-candidatos { background: var(--paper); }
+.candidatos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+@media (max-width: 880px) { .candidatos-grid { grid-template-columns: 1fr; } }
+.candidato-card {
+  padding: 40px 32px; border: 1px solid var(--line);
+  border-radius: 4px; background: var(--paper);
+  display: flex; flex-direction: column; gap: 16px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.candidato-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+.candidato-name {
+  font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500;
+  letter-spacing: -0.02em; line-height: 1.15;
+}
+.candidato-desc { font-size: 15px; color: var(--ink-mute); line-height: 1.55; }
+.candidato-list {
+  list-style: none; display: flex; flex-direction: column;
+  gap: 6px; margin-top: 8px; font-size: 14px; color: var(--ink-soft);
+}
+.candidato-list li { display: flex; align-items: center; gap: 10px; }
+.candidato-list li::before { content: '·'; color: var(--accent); font-size: 24px; line-height: 0; }
+.candidato-cta {
+  margin-top: 20px; font-size: 14px; font-weight: 600;
+  color: var(--accent); display: inline-flex; align-items: center;
+  gap: 6px; transition: gap 0.2s;
+}
+.candidato-cta:hover { gap: 12px; }
 
-/* Screen MATCH */
-#ps-match{background:linear-gradient(160deg,#0F172A,#1B4FD8);align-items:center;justify-content:center;gap:10px;padding:28px 16px 16px;text-align:center}
-.pm-emoji{font-size:36px}.pm-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-1px}
-.pm-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);border-radius:100px;padding:3px 12px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.pm-sub{font-size:11px;color:rgba(255,255,255,.65);line-height:1.5}
-.pm-avs{display:flex;align-items:center;gap:10px;margin:4px 0}
-.pm-av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;box-shadow:0 0 0 3px #fff;font-family:'Syne',sans-serif}
-.pm-btn{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:100px;padding:10px 0;font-size:11px;font-weight:700;cursor:pointer;width:100%;max-width:200px;font-family:'Plus Jakarta Sans',sans-serif}
-.pm-ghost{background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:8px 0;font-size:10px;cursor:pointer;width:100%;max-width:200px;font-family:'Plus Jakarta Sans',sans-serif}
+/* APP */
+.app-section {
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 100%);
+  position: relative; overflow: hidden;
+}
+.app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+@media (max-width: 1024px) { .app-grid { grid-template-columns: 1fr; gap: 56px; } }
+.app-text .eyebrow { color: var(--accent); margin-bottom: 24px; }
+.app-text .eyebrow::before { background: var(--accent); }
+.app-text h2 {
+  font-size: clamp(38px, 5vw, 60px); margin-bottom: 24px;
+  font-weight: 500; letter-spacing: -0.025em;
+}
+.app-text h2 em { color: var(--accent); font-style: italic; font-weight: 400; }
+.app-desc {
+  font-size: 18px; color: var(--ink-mute);
+  margin-bottom: 32px; line-height: 1.6; max-width: 480px;
+}
+.app-features { display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
+.app-feature { display: flex; align-items: flex-start; gap: 16px; font-size: 15px; }
+.app-feature-icon {
+  flex-shrink: 0; width: 28px; height: 28px;
+  background: var(--accent-soft); color: var(--accent);
+  border-radius: 50%; display: grid; place-items: center;
+  font-weight: 700; font-size: 13px; font-family: 'Fraunces', serif;
+}
+.app-feature-text strong { display: block; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.app-feature-text span { color: var(--ink-mute); line-height: 1.5; }
 
-/* Screen CHAT */
-#ps-chat{background:#fff}
-.pc-header{display:flex;align-items:center;gap:8px;padding:28px 12px 10px;background:#fff;border-bottom:1px solid var(--brd);flex-shrink:0}
-.pc-back{font-size:16px;color:var(--b);cursor:pointer;background:none;border:none}
-.pc-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;font-family:'Syne',sans-serif}
-.pc-name{font-size:12px;font-weight:700;color:var(--dark)}.pc-role{font-size:9px;color:var(--gray)}
-.pc-online{margin-left:auto;font-size:9px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:3px}
-.pc-dot{width:5px;height:5px;background:var(--green);border-radius:50%}
-.pc-body{flex:1;display:flex;flex-direction:column;gap:8px;padding:10px 12px;overflow:hidden}
-.pc-bw{display:flex;flex-direction:column}.pc-bw.me{align-items:flex-end}.pc-bw.them{align-items:flex-start}
-.pc-bub{max-width:80%;border-radius:12px;padding:6px 10px;font-size:10px;line-height:1.4}
-.pc-bub.them{background:#F4F7FF;color:var(--dark)}.pc-bub.me{background:var(--b);color:#fff}
-.pc-bt{font-size:8px;color:#bbb;margin-top:2px}
-.pc-input-row{display:flex;gap:6px;padding:6px 10px 14px;background:#fff;border-top:1px solid var(--brd);flex-shrink:0}
-.pc-inp{flex:1;border:1.5px solid var(--brd);border-radius:100px;padding:7px 12px;font-size:10px;outline:none;background:var(--bxlight)}
-.pc-send{width:30px;height:30px;border-radius:50%;background:var(--b);color:#fff;border:none;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.app-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+.phone-mockup {
+  width: 320px; aspect-ratio: 9/19;
+  background: linear-gradient(160deg, #1a36d4 0%, #2444ff 100%);
+  border-radius: 36px; padding: 12px;
+  box-shadow: 0 30px 60px -20px rgba(36,68,255,0.4), 0 18px 36px -18px rgba(10,14,39,0.3);
+  position: relative; transform: rotate(-3deg);
+  transition: transform 0.6s cubic-bezier(0.2,0.8,0.2,1);
+}
+.phone-mockup:hover { transform: rotate(0deg) scale(1.02); }
+.phone-screen {
+  width: 100%; height: 100%;
+  background: linear-gradient(180deg, #0a0e27 0%, #1a1f3a 100%);
+  border-radius: 26px; padding: 32px 24px;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.phone-status {
+  font-size: 11px; color: rgba(255,255,255,0.5);
+  margin-bottom: 24px; display: flex; justify-content: space-between;
+}
+.phone-card {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+  padding: 20px; border-radius: 18px; margin-bottom: 16px;
+  flex: 1; display: flex; flex-direction: column; gap: 12px;
+}
+.phone-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #6789ff, #2444ff); margin-bottom: 8px; }
+.phone-name { color: white; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; }
+.phone-role { color: rgba(255,255,255,0.6); font-size: 13px; }
+.phone-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.phone-skill { background: rgba(255,255,255,0.1); color: white; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; }
+.phone-actions { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
+.phone-action {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 24px; font-weight: 700;
+  border: 2px solid rgba(255,255,255,0.2);
+  color: white; background: rgba(255,255,255,0.05);
+}
+.phone-action.like { background: var(--accent); border-color: var(--accent); }
 
-/* Screen AGENDA */
-#ps-agenda{background:var(--bxlight)}
-.pa-header{padding:28px 14px 12px;background:#fff;border-bottom:1px solid var(--brd);flex-shrink:0}
-.pa-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--dark)}
-.pa-sub{font-size:10px;color:var(--gray);margin-top:2px}
-.pa-tabs{display:flex;background:var(--bxlight);border-radius:100px;padding:2px;gap:2px;margin-top:8px}
-.pa-tab{flex:1;font-size:9px;font-weight:600;padding:5px 0;border-radius:100px;color:var(--gray);text-align:center}
-.pa-tab.on{background:var(--b);color:#fff}
-.pa-body{flex:1;overflow:hidden;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
-.pa-card{background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 1px 6px rgba(0,0,0,.05);border-left:3px solid var(--green)}
-.pa-header2{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.pa-cav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;font-family:'Syne',sans-serif}
-.pa-cname{font-size:11px;font-weight:700;color:var(--dark)}.pa-crole{font-size:9px;color:var(--gray)}
-.pa-status{margin-left:auto;font-size:8px;font-weight:700;background:#D1FAE5;color:#065F46;border-radius:6px;padding:2px 7px}
-.pa-details{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
-.pa-dr{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--mid)}
-.pa-icon{font-size:11px;width:14px;text-align:center}
-.pa-actions{display:flex;gap:5px}
-.pa-btn{flex:1;border:none;border-radius:7px;padding:6px;font-size:9px;font-weight:600;cursor:pointer}
-.pa-btn-meet{background:#1B7F4F;color:#fff}.pa-btn-edit{background:var(--bxlight);color:var(--b)}
+.app-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; background: var(--accent-soft);
+  color: var(--accent); border-radius: 999px;
+  font-size: 13px; font-weight: 600; margin-bottom: 16px;
+}
+.app-badge .pulse {
+  width: 8px; height: 8px; background: var(--accent);
+  border-radius: 50%; animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
 
-/* Screen PIPELINE */
-#ps-pipeline{background:var(--bxlight)}
-.pk-header{padding:28px 14px 12px;background:#fff;border-bottom:1px solid var(--brd);flex-shrink:0}
-.pk-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--dark)}
-.pk-body{flex:1;display:flex;gap:0;overflow-x:auto;padding:8px 6px}
-.pk-col{min-width:76px;flex:1;display:flex;flex-direction:column;gap:6px;padding:0 4px}
-.pk-col-h{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 6px;border-radius:6px;margin-bottom:2px;text-align:center}
-.pk-col-h.nuevo{background:#DBEAFE;color:#1D4ED8}.pk-col-h.entrevista{background:#FEF3C7;color:#92400E}
-.pk-col-h.oferta{background:#D1FAE5;color:#065F46}.pk-col-h.contratado{background:#EDE9FE;color:#5B21B6}
-.pk-card{background:#fff;border-radius:8px;padding:6px 8px;box-shadow:0 1px 4px rgba(0,0,0,.05);border-left:2px solid var(--b)}
-.pk-card.entrevista{border-left-color:var(--amber)}.pk-card.oferta{border-left-color:var(--green)}.pk-card.contratado{border-left-color:var(--purple)}
-.pk-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;font-family:'Syne',sans-serif;margin-bottom:3px}
-.pk-name{font-size:9px;font-weight:700;color:var(--dark)}.pk-role{font-size:8px;color:var(--gray)}
+/* FINAL CTA */
+.final-cta {
+  background: var(--ink); color: var(--paper);
+  text-align: center; position: relative; overflow: hidden;
+}
+.final-cta::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(36,68,255,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(201,169,97,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+.final-cta .container { position: relative; z-index: 1; }
+.final-cta h2 {
+  font-size: clamp(44px, 6vw, 84px); font-weight: 500;
+  letter-spacing: -0.03em; margin-bottom: 32px;
+  line-height: 1.05; color: var(--paper);
+}
+.final-cta h2 em { color: #6789ff; font-style: italic; font-weight: 400; }
+.final-cta p {
+  font-size: 19px; color: rgba(251,249,244,0.7);
+  max-width: 580px; margin: 0 auto 56px; line-height: 1.55;
+}
+.final-cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-light { background: var(--paper); color: var(--ink); }
+.btn-light:hover {
+  background: var(--accent); color: var(--paper);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(36,68,255,0.4);
+}
+.btn-outline-light {
+  background: transparent; color: var(--paper);
+  border: 1.5px solid rgba(251,249,244,0.3);
+}
+.btn-outline-light:hover {
+  border-color: var(--paper);
+  background: rgba(251,249,244,0.08);
+}
 
-/* Finger */
-.finger{position:absolute;font-size:22px;pointer-events:none;z-index:50;opacity:0;transition:opacity .3s}
-.finger.show{opacity:1}
+/* FOOTER */
+.footer {
+  background: var(--ink); color: rgba(251,249,244,0.7);
+  padding: 60px 0 32px; border-top: 1px solid rgba(251,249,244,0.1);
+  font-size: 14px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: 56px; margin-bottom: 56px;
+}
+@media (max-width: 720px) { .footer-grid { grid-template-columns: 1fr; gap: 40px; } }
+.footer-brand .logo { color: var(--paper); margin-bottom: 16px; }
+.footer-brand .logo small { color: rgba(251,249,244,0.5); }
+.footer-brand p { max-width: 360px; line-height: 1.55; font-size: 14px; }
+.footer-col h4 {
+  font-family: 'Manrope', sans-serif; font-size: 11px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(251,249,244,0.5); font-weight: 600; margin-bottom: 16px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col a { color: rgba(251,249,244,0.8); transition: color 0.2s; }
+.footer-col a:hover { color: var(--paper); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 32px; border-top: 1px solid rgba(251,249,244,0.1);
+  font-size: 13px; color: rgba(251,249,244,0.5);
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-tm { display: inline-flex; align-items: center; gap: 8px; }
+.footer-tm-badge {
+  display: inline-block; padding: 4px 10px;
+  background: rgba(201,169,97,0.15); color: #d4b774;
+  border-radius: 999px; font-size: 11px;
+  font-weight: 600; letter-spacing: 0.05em;
+}
 
-/* Animations */
-@keyframes swipeRight{0%{transform:translateX(0) rotate(0);opacity:1}100%{transform:translateX(300px) rotate(18deg);opacity:0}}
-@keyframes stampLike{0%{opacity:0}30%{opacity:1}70%{opacity:1}100%{opacity:0}}
-@keyframes msgAppear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media (max-width: 720px) {
+  .hero { padding: 140px 0 80px; }
+  section { padding: 80px 0; }
+  .hero-meta { gap: 24px; margin-top: 60px; }
+  .hero-cta { flex-direction: column; align-items: stretch; }
+  .hero-cta .btn { justify-content: center; }
+  .about-credentials { grid-template-columns: 1fr; gap: 20px; }
+  .phone-mockup { width: 260px; }
+}
 
-/* Info panel */
-.info-panel .step-info{display:none}
-.info-panel .step-info.active{display:flex;flex-direction:column;gap:16px;animation:fadeIn .4s ease}
-.step-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bxlight);border:1.5px solid rgba(43,92,230,.15);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--b);width:fit-content}
-.step-num-big{width:22px;height:22px;background:var(--b);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
-.step-title{font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,28px);font-weight:800;color:var(--dark);letter-spacing:-.5px;line-height:1.2}
-.step-desc{font-size:14px;color:var(--mid);line-height:1.7}
-.step-tips{display:flex;flex-direction:column;gap:8px}
-.tip{display:flex;align-items:flex-start;gap:10px;background:#fff;border:1.5px solid var(--brd);border-radius:12px;padding:12px 14px}
-.tip-icon{font-size:18px;flex-shrink:0;margin-top:1px}
-.tip-text{font-size:13px;color:var(--mid);line-height:1.5}
-.tip-text strong{color:var(--dark)}
-.step-nav{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
-.btn-prev,.btn-next{padding:10px 22px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;border:none}
-.btn-prev{background:var(--bxlight);color:var(--b)}.btn-prev:hover{background:var(--blight)}
-.btn-next{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;box-shadow:0 4px 14px rgba(43,92,230,.3)}
-.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,92,230,.4)}
+/* App CTAs row */
+.app-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.app-cta-row .btn { justify-content: center; }
+@media (max-width: 480px) {
+  .app-cta-row { flex-direction: column; align-items: stretch; }
+}
 
-/* ── FEATURES ── */
-.features{padding:80px clamp(20px,6vw,80px);max-width:1100px;margin:0 auto}
-.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-.feat-card{background:#fff;border:1.5px solid var(--brd);border-radius:var(--rxl);padding:24px;transition:all .2s}
-.feat-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(43,92,230,.1);border-color:rgba(43,92,230,.2)}
-.feat-icon{font-size:28px;margin-bottom:14px;display:block}
-.feat-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--dark);margin-bottom:6px}
-.feat-desc{font-size:13px;color:var(--gray);line-height:1.6}
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(10, 14, 39, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.open { display: flex; opacity: 1; }
 
-/* ── LEGAL ── */
-.legal-section{background:linear-gradient(135deg,#F8FAFF,#EEF3FF);border-top:1px solid var(--brd);padding:60px clamp(20px,6vw,80px)}
-.legal-inner{max-width:900px;margin:0 auto}
-.legal-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
-.legal-icon{font-size:28px;width:48px;height:48px;background:var(--bxlight);border:1.5px solid rgba(43,92,230,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.legal-header-text h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--dark)}
-.legal-header-text p{font-size:12px;color:var(--gray);margin-top:2px}
-.legal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px}
-.legal-card{background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:18px 20px}
-.legal-card-title{font-size:12px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.legal-card p{font-size:12px;color:var(--gray);line-height:1.65}
-.legal-card a{color:var(--b);text-decoration:underline}
-.legal-disclaimer{background:rgba(43,92,230,.04);border:1.5px solid rgba(43,92,230,.12);border-radius:var(--rl);padding:16px 20px;font-size:12px;color:var(--mid);line-height:1.7}
-.legal-disclaimer strong{color:var(--dark)}
+.modal {
+  background: var(--paper);
+  border-radius: 8px;
+  width: 100%; max-width: 520px;
+  padding: 40px 36px 36px;
+  position: relative;
+  box-shadow: 0 24px 80px -20px rgba(10, 14, 39, 0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.modal-overlay.open .modal { transform: translateY(0); }
 
-/* ── MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:20px}
-.modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:var(--rxl);max-width:640px;width:100%;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.2)}
-.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--brd);flex-shrink:0}
-.modal-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--dark)}
-.modal-close{background:none;border:none;font-size:22px;color:var(--gray);cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
-.modal-close:hover{background:var(--bxlight)}
-.modal-body{flex:1;overflow-y:auto;padding:24px}
-.modal-body h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--dark);margin-top:20px;margin-bottom:8px}
-.modal-body h3:first-child{margin-top:0}
-.modal-body p{font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px}
-.modal-body ul{padding-left:18px;margin-bottom:10px}
-.modal-body li{font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:4px}
-.modal-body .highlight{background:var(--bxlight);border-left:3px solid var(--b);padding:12px 16px;border-radius:0 8px 8px 0;font-size:12px;color:var(--mid);line-height:1.65;margin:12px 0}
-.modal-footer{padding:16px 24px;border-top:1px solid var(--brd);flex-shrink:0}
-.modal-footer button{width:100%;background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:12px;padding:12px 0;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 22px;
+  color: var(--ink-mute);
+  background: transparent;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.modal-close:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
 
-/* ── FOOTER ── */
-footer{padding:40px clamp(20px,6vw,80px);border-top:1px solid var(--brd);background:#fff}
-.footer-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
-.footer-logo{display:flex;align-items:center;gap:8px}
-.footer-logo-mark{background:#0F172A;border-radius:8px;padding:3px 7px;display:flex;align-items:center}
-.footer-logo-mark svg{height:20px;width:auto}
-.footer-tagline{font-size:11px;color:var(--gray)}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap}
-.footer-links a{font-size:12px;color:var(--gray);text-decoration:none;transition:color .2s}
-.footer-links a:hover{color:var(--b)}
-.footer-copy{font-size:11px;color:#bbb;width:100%}
+.modal h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.modal h3 em { color: var(--accent); font-style: italic; font-weight: 400; }
 
-/* ── CONSULTORÍA ── */
-.consulting-section{padding:80px clamp(20px,6vw,80px);background:#fff;border-top:1px solid var(--brd)}
-.consulting-inner{max-width:1100px;margin:0 auto}
-.consulting-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
-@media(max-width:768px){.consulting-grid{grid-template-columns:1fr}}
+.modal-desc {
+  font-size: 15px;
+  color: var(--ink-mute);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
 
-.cons-card{border-radius:var(--rxl);overflow:hidden;box-shadow:0 4px 24px rgba(43,92,230,.08);transition:all .25s}
-.cons-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(43,92,230,.14)}
-.cons-card-hero{padding:32px 28px 28px;position:relative;overflow:hidden}
-.cons-card-hero.company{background:linear-gradient(135deg,#0F172A 0%,#1B4FD8 60%,#2B5CE6 100%)}
-.cons-card-hero.candidate{background:linear-gradient(135deg,#1a0533 0%,#5B21B6 60%,#7C3AED 100%)}
-.cons-deco{position:absolute;right:-20px;top:-20px;font-size:100px;opacity:.07;line-height:1}
-.cons-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
-.cons-card-icon{font-size:36px;margin-bottom:12px;display:block}
-.cons-card-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px;letter-spacing:-.3px}
-.cons-card-sub{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:20px}
-.cons-pills{display:flex;flex-wrap:wrap;gap:6px}
-.cons-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:600}
+/* Form */
+.form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.form-label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.form-input {
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper-warm);
+  color: var(--ink);
+  transition: border-color 0.2s, background 0.2s;
+  width: 100%;
+}
+.form-input:focus {
+  outline: 0;
+  border-color: var(--accent);
+  background: var(--paper);
+}
 
-.cons-card-body{background:#fff;padding:24px 28px}
-.cons-benefit{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
-.cons-benefit:last-of-type{margin-bottom:20px}
-.cons-benefit-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px}
-.cons-benefit-icon.blue{background:var(--bxlight)}
-.cons-benefit-icon.purple{background:#F3F0FF}
-.cons-benefit-text strong{font-size:13px;color:var(--dark);display:block;margin-bottom:1px}
-.cons-benefit-text span{font-size:12px;color:var(--gray);line-height:1.5}
+/* Type radio buttons */
+.form-radios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.form-radio {
+  position: relative;
+  cursor: pointer;
+}
+.form-radio input { position: absolute; opacity: 0; pointer-events: none; }
+.form-radio-card {
+  padding: 16px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper-warm);
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink-soft);
+  transition: all 0.2s;
+}
+.form-radio input:checked ~ .form-radio-card {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
 
-.cons-form{border-top:1px solid var(--brd);padding-top:16px}
-.cons-form-label{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:block}
-.cons-inp{width:100%;border:1.5px solid var(--brd);border-radius:10px;padding:10px 14px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--dark);background:var(--light);outline:none;transition:border-color .2s;margin-bottom:8px}
-.cons-inp:focus{border-color:var(--b);background:#fff}
-.cons-inp.purple:focus{border-color:var(--purple)}
-.cons-textarea{width:100%;border:1.5px solid var(--brd);border-radius:10px;padding:10px 14px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--dark);background:var(--light);outline:none;resize:none;min-height:70px;transition:border-color .2s;margin-bottom:8px}
-.cons-textarea:focus{border-color:var(--b)}
-.cons-textarea.purple:focus{border-color:var(--purple)}
-.cons-btn{width:100%;border:none;border-radius:12px;padding:12px 0;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
-.cons-btn.blue{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff}
-.cons-btn.purple{background:linear-gradient(135deg,#7C3AED,#9333EA);color:#fff}
-.cons-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
-.cons-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-.cons-success{display:none;text-align:center;padding:12px;border-radius:10px;font-size:13px;font-weight:600}
-.cons-success.blue{background:var(--bxlight);color:var(--b)}
-.cons-success.purple{background:#F3F0FF;color:var(--purple)}
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-mute);
+  margin-bottom: 24px;
+}
+.form-checkbox input {
+  margin-top: 3px;
+  width: 16px; height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.form-checkbox a { color: var(--accent); font-weight: 600; text-decoration: underline; }
 
-.consulting-cta{margin-top:32px;background:linear-gradient(135deg,#EEF3FF,#F3F0FF);border:1.5px solid rgba(43,92,230,.1);border-radius:var(--rxl);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.consulting-cta-text h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--dark);margin-bottom:4px}
-.consulting-cta-text p{font-size:13px;color:var(--mid)}
-.consulting-cta a{background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:12px;padding:12px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;text-decoration:none;display:inline-block;transition:all .2s;white-space:nowrap}
-.consulting-cta a:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,92,230,.35)}
+.form-submit {
+  width: 100%;
+  justify-content: center;
+  padding: 14px 24px;
+  font-size: 15px;
+}
+.form-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
 
-/* Fade in on scroll */
-.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
-.fade-in.visible{opacity:1;transform:none}
+.form-message {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+  display: none;
+}
+.form-message.success {
+  display: block;
+  background: rgba(45, 125, 79, 0.1);
+  color: #1f5e3a;
+  border: 1px solid rgba(45, 125, 79, 0.2);
+}
+.form-message.error {
+  display: block;
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+#fieldEmpresa { display: none; }
+#fieldEmpresa.show { display: flex; }
+
+@media (max-width: 480px) {
+  .modal { padding: 32px 24px 28px; }
+  .modal h3 { font-size: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <a class="nav-logo" href="/">
-    <div class="nav-logo-mark">
-      <svg viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg">
-        <text x="4" y="42" font-family="Arial Black,sans-serif" font-weight="900" font-size="46" fill="#2B5CE6">t</text>
-        <text x="36" y="42" font-family="Arial Black,sans-serif" font-weight="900" font-size="46" fill="white">Nic</text>
-      </svg>
+<nav class="nav" id="nav">
+  <div class="container">
+    <a href="#top" class="logo">
+      <span class="t">t</span>Nic
+      <small>Talent · Technology · Connection</small>
+    </a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#servicios" data-i18n="nav.services">Servicios</a>
+        <a href="#sobre" data-i18n="nav.about">Sobre mí</a>
+        <a href="#app" data-i18n="nav.app">App</a>
+        <a href="#contacto" data-i18n="nav.contact">Contacto</a>
+        <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" class="btn btn-primary">
+          <span data-i18n="nav.cta">Agendar llamada</span> <span class="arrow">→</span>
+        </a>
+      </div>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button class="lang-btn active" data-lang="es" type="button">ES</button>
+        <button class="lang-btn" data-lang="en" type="button">EN</button>
+      </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menú">☰</button>
     </div>
-    <span class="nav-tagline">Talent · Technology · Connection</span>
-  </a>
-  <div class="nav-actions">
-    <button class="btn-lang on" id="btn-es" onclick="setLang('es')">ES</button>
-    <button class="btn-lang" id="btn-en" onclick="setLang('en')">EN</button>
-    <a href="#consultoria" style="font-size:12px;font-weight:600;color:var(--b);text-decoration:none;display:none" id="nav-cons" class="nav-tagline" data-es="Consultoría" data-en="Consulting">Consultoría</a>
-    <a class="btn-app" id="btn-app" href="/app" target="_blank" rel="noopener">Entrar a la app →</a>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="hero-badge">
-    <span class="badge-dot"></span>
-    <span data-es="Beta abierta · LATAM" data-en="Open Beta · LATAM">Beta abierta · LATAM</span>
+<header class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="eyebrow reveal" data-i18n="hero.eyebrow">Consultoría estratégica de talento IT · LATAM</div>
+    <h1 class="reveal reveal-stagger-1" data-i18n="hero.title" data-i18n-html="true">
+      Construyo <span class="accent">áreas de talento IT</span> que escalan.
+    </h1>
+    <p class="hero-sub reveal reveal-stagger-2" data-i18n="hero.sub">
+      Implemento ATS, diseño procesos y armo equipos de RRHH que funcionan sin depender de agencias. Para startups y empresas tech que necesitan crecer en serio.
+    </p>
+    <div class="hero-cta reveal reveal-stagger-3">
+      <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" class="btn btn-primary">
+        <span data-i18n="hero.ctaPrimary">Agendar llamada</span> <span class="arrow">→</span>
+      </a>
+      <a href="#servicios" class="btn btn-secondary" data-i18n="hero.ctaSecondary">Ver servicios</a>
+    </div>
+    <div class="hero-meta reveal reveal-stagger-4">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label" data-i18n="hero.metaExpLabel">Experiencia</span>
+        <span class="hero-meta-value" data-i18n="hero.metaExpValue">10+ años en talento IT</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label" data-i18n="hero.metaCovLabel">Cobertura</span>
+        <span class="hero-meta-value" data-i18n="hero.metaCovValue">LATAM · Remoto</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label" data-i18n="hero.metaSpecLabel">Especialidad</span>
+        <span class="hero-meta-value" data-i18n="hero.metaSpecValue">Talent Operations · ATS · Procesos</span>
+      </div>
+    </div>
   </div>
-  <div class="hero-logo">
-    <svg viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
-      <text x="8" y="70" font-family="Arial Black,sans-serif" font-weight="900" font-size="76" fill="#2B5CE6">t</text>
-      <text x="62" y="70" font-family="Arial Black,sans-serif" font-weight="900" font-size="76" fill="#18181B">Nic</text>
-      <circle cx="6" cy="14" r="4" fill="#6091FF"/>
-      <circle cx="6" cy="28" r="4" fill="#6091FF"/>
-      <circle cx="6" cy="42" r="4" fill="#6091FF"/>
-      <line x1="6" y1="14" x2="20" y2="22" stroke="#6091FF" stroke-width="2"/>
-      <line x1="6" y1="28" x2="20" y2="28" stroke="#6091FF" stroke-width="2"/>
-      <line x1="6" y1="42" x2="20" y2="22" stroke="#6091FF" stroke-width="2"/>
-    </svg>
-  </div>
-  <h1>
-    <span data-es='El match perfecto entre <span class="accent">talento IT</span> y <span class="accent">empresas</span> de LATAM' data-en='The perfect match between <span class="accent">IT talent</span> and <span class="accent">companies</span> in LATAM'>
-      El match perfecto entre <span class="accent">talento IT</span> y <span class="accent">empresas</span> de LATAM
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span data-i18n="marquee" data-i18n-html="true">
+      Implementación de ATS con IA <span class="dot"></span>
+      Procesos escalables <span class="dot"></span>
+      Employer branding <span class="dot"></span>
+      Hiring para startups tech <span class="dot"></span>
+      Fractional Head of Talent <span class="dot"></span>
+      LATAM <span class="dot"></span>
     </span>
-  </h1>
-  <p class="hero-sub" data-es="Conectamos desarrolladores, diseñadores y tech leads con las mejores oportunidades. Swipe, match, y empezá a hablar." data-en="We connect developers, designers and tech leads with the best opportunities. Swipe, match, and start talking.">
-    Conectamos desarrolladores, diseñadores y tech leads con las mejores oportunidades. Swipe, match, y empezá a hablar.
-  </p>
-
-  <div class="hero-forms">
-    <!-- CANDIDATO -->
-    <div class="form-card">
-      <div class="form-card-header">
-        <div class="form-card-icon">🧑‍💼</div>
-        <div>
-          <div class="form-card-title" data-es="Soy Candidato IT" data-en="I'm an IT Candidate">Soy Candidato IT</div>
-          <div class="form-card-sub" data-es="Anotate y accedé cuando lancemos 🚀" data-en="Join the waitlist and get access at launch 🚀">Anotate y accedé cuando lancemos 🚀</div>
-        </div>
-      </div>
-      <form onsubmit="submitForm(event,'candidate')">
-        <div class="inp-row">
-          <input type="text" id="cand-name" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" placeholder="Tu nombre" required autocomplete="off" name="cand-name-tnic">
-          <input type="email" id="cand-email" data-placeholder-es="Tu email" data-placeholder-en="Your email" placeholder="Tu email" required autocomplete="off" name="cand-email-tnic">
-        </div>
-        <div class="legal-row">
-          <input type="checkbox" id="cand-legal" required>
-          <label for="cand-legal">
-            <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and <a href="#" onclick="openModal(event)">Privacy Policy</a>. I understand tNic is in beta phase.'>
-              Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta.
-            </span>
-          </label>
-        </div>
-        <button type="submit" class="btn-submit" data-es="Quiero mi acceso anticipado 🚀" data-en="Get early access 🚀">Quiero mi acceso anticipado 🚀</button>
-        <div class="success-msg" id="cand-ok"><span data-es="✅ ¡Listo! Cuando la app esté disponible te enviamos un mail con tu acceso." data-en="✅ Done! When the app launches we'll send you an email with your access.">✅ ¡Listo! Cuando la app esté disponible te enviamos un mail con tu acceso.</span></div>
-      </form>
-    </div>
-
-    <!-- EMPRESA -->
-    <div class="form-card">
-      <div class="form-card-header">
-        <div class="form-card-icon">🏢</div>
-        <div>
-          <div class="form-card-title" data-es="Soy Empresa / Recruiter" data-en="I'm a Company / Recruiter">Soy Empresa / Recruiter</div>
-          <div class="form-card-sub" data-es="Anotate y accedé cuando lancemos 🚀" data-en="Join the waitlist and get access at launch 🚀">Anotate y accedé cuando lancemos 🚀</div>
-        </div>
-      </div>
-      <form onsubmit="submitForm(event,'company')">
-        <div class="inp-row">
-          <input type="text" id="comp-name" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" placeholder="Tu nombre" required autocomplete="off" name="comp-name-tnic">
-          <input type="email" id="comp-email" data-placeholder-es="Email corporativo" data-placeholder-en="Corporate email" placeholder="Email corporativo" required autocomplete="off" name="comp-email-tnic">
-        </div>
-        <div class="legal-row">
-          <input type="checkbox" id="comp-legal" required>
-          <label for="comp-legal">
-            <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and <a href="#" onclick="openModal(event)">Privacy Policy</a>. I understand tNic is in beta phase.'>
-              Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y la <a href="#" onclick="openModal(event)">Política de Privacidad</a>. Entiendo que tNic está en fase beta.
-            </span>
-          </label>
-        </div>
-        <button type="submit" class="btn-submit" data-es="Quiero mi acceso anticipado 🏢" data-en="Get early access 🏢">Quiero mi acceso anticipado 🏢</button>
-        <div class="success-msg" id="comp-ok"><span data-es="✅ ¡Listo! Cuando la app esté disponible te enviamos un mail con tu acceso." data-en="✅ Done! When the app launches we'll send you an email with your access.">✅ ¡Listo! Cuando la app esté disponible te enviamos un mail con tu acceso.</span></div>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- SOCIAL PROOF -->
-<div class="proof">
-  <div class="proof-inner">
-    <div class="proof-stat fade-in"><div class="proof-num">100+</div><div class="proof-lbl" data-es="Candidatos esperados" data-en="Expected candidates">Candidatos esperados</div></div>
-    <div class="proof-stat fade-in"><div class="proof-num">20+</div><div class="proof-lbl" data-es="Empresas en lista" data-en="Companies waitlisted">Empresas en lista</div></div>
-    <div class="proof-stat fade-in"><div class="proof-num">5</div><div class="proof-lbl" data-es="Países de LATAM" data-en="LATAM countries">Países de LATAM</div></div>
-    <div class="proof-stat fade-in"><div class="proof-num">Q2 2026</div><div class="proof-lbl" data-es="Lanzamiento estimado" data-en="Estimated launch">Lanzamiento estimado</div></div>
+    <span data-i18n="marquee" data-i18n-html="true">
+      Implementación de ATS con IA <span class="dot"></span>
+      Procesos escalables <span class="dot"></span>
+      Employer branding <span class="dot"></span>
+      Hiring para startups tech <span class="dot"></span>
+      Fractional Head of Talent <span class="dot"></span>
+      LATAM <span class="dot"></span>
+    </span>
   </div>
 </div>
 
-<!-- TUTORIAL -->
-<section style="background:#fff;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);padding:80px clamp(20px,6vw,80px)">
-  <div class="tutorial-section" style="padding:0">
-    <div class="section-label fade-in" data-es="Tutorial" data-en="Tutorial">Tutorial</div>
-    <h2 class="section-title fade-in" data-es="¿Cómo funciona tNic?" data-en="How does tNic work?">¿Cómo funciona tNic?</h2>
-    <p class="section-sub fade-in" data-es="Cuatro pasos para conectar con tu próxima oportunidad o tu próximo talento." data-en="Four steps to connect with your next opportunity or your next talent.">Cuatro pasos para conectar con tu próxima oportunidad o tu próximo talento.</p>
-
-    <div class="steps-nav fade-in">
-      <button class="step-btn on" id="sbtn-0" onclick="goStep(0)"><div class="step-num-circle">1</div><span data-es="Swipe" data-en="Swipe">Swipe</span></button>
-      <button class="step-btn" id="sbtn-1" onclick="goStep(1)"><div class="step-num-circle">2</div><span data-es="Match" data-en="Match">Match</span></button>
-      <button class="step-btn" id="sbtn-2" onclick="goStep(2)"><div class="step-num-circle">3</div><span data-es="Chat" data-en="Chat">Chat</span></button>
-      <button class="step-btn" id="sbtn-3" onclick="goStep(3)"><div class="step-num-circle">4</div><span data-es="Agenda" data-en="Schedule">Agenda</span></button>
-      <button class="step-btn" id="sbtn-4" onclick="goStep(4)"><div class="step-num-circle">5</div><span data-es="Pipeline" data-en="Pipeline">Pipeline</span></button>
-    </div>
-
-    <div class="tutorial-layout">
-      <!-- PHONE -->
-      <div class="phone-wrap">
-        <div class="phone">
-
-          <!-- SCREEN 1: SWIPE -->
-          <div class="pscreen active" id="ps-swipe">
-            <div class="p-topbar">
-              <div class="p-logo"><span>t</span>Nic</div>
-              <div class="p-tabs"><div class="p-tab on">👤</div><div class="p-tab">🏢</div></div>
-              <div style="font-size:14px;opacity:.4">🔔</div>
-            </div>
-            <div class="p-card-area">
-              <div class="p-card" id="swipe-card">
-                <div class="p-stamp like" id="stamp-like">LIKE 💙</div>
-                <div class="p-stamp pass" id="stamp-pass">PASS ✖</div>
-                <div class="p-av" id="card-av" style="background:#D97706">AM</div>
-                <div class="p-name" id="card-name">Andrés M.</div>
-                <div class="p-role" id="card-role">Mobile Developer</div>
-                <div class="p-loc" id="card-loc">📍 CABA, AR</div>
-                <div class="p-skills" id="card-skills">
-                  <span class="p-sk">Flutter</span><span class="p-sk">Swift</span><span class="p-sk">Firebase</span>
-                </div>
-                <div class="p-score">
-                  <div class="p-bar-bg"><div class="p-bar-fill" id="card-bar" style="width:95%"></div></div>
-                  <div class="p-pct" id="card-pct">95%</div>
-                </div>
-              </div>
-              <div class="finger" id="finger">👆</div>
-            </div>
-            <div class="p-actions">
-              <div class="p-pass" onclick="doPass()">✖</div>
-              <div class="p-like" id="like-btn" onclick="doLike()">💙</div>
-            </div>
-            <div class="p-bnav">
-              <div class="p-ni on"><div>🃏</div><div class="p-ni-lbl">Explorar</div></div>
-              <div class="p-ni"><div>💬</div></div><div class="p-ni"><div>📋</div></div>
-              <div class="p-ni"><div>📅</div></div><div class="p-ni"><div>👤</div></div>
-            </div>
-          </div>
-
-          <!-- SCREEN 2: MATCH -->
-          <div class="pscreen" id="ps-match">
-            <div class="pm-emoji">🎉</div>
-            <div class="pm-title">Mutual Interest</div>
-            <div class="pm-badge">New Connection</div>
-            <div class="pm-sub" id="match-sub">Andrés M. y vos tienen Mutual Interest</div>
-            <div class="pm-avs">
-              <div class="pm-av" style="background:#0F172A;font-size:11px"><span style="color:#6091FF">t</span><span style="color:#fff">N</span></div>
-              <div style="font-size:20px">💙</div>
-              <div class="pm-av" id="match-av" style="background:#D97706">AM</div>
-            </div>
-            <button class="pm-btn" onclick="goStep(2)">💬 Iniciar Chat</button>
-            <button class="pm-ghost" onclick="goStep(0)">Seguir viendo</button>
-          </div>
-
-          <!-- SCREEN 3: CHAT -->
-          <div class="pscreen" id="ps-chat">
-            <div class="pc-header">
-              <button class="pc-back" onclick="goStep(1)">←</button>
-              <div class="pc-av" style="background:#D97706">AM</div>
-              <div><div class="pc-name">Andrés M.</div><div class="pc-role">Mobile Dev · Candidato</div></div>
-              <div class="pc-online"><div class="pc-dot"></div>Online</div>
-            </div>
-            <div class="pc-body" id="chat-body">
-              <div class="pc-bw me"><div class="pc-bub me">¡Hola Andrés! Vi tu perfil, me interesa tu experiencia con Flutter.</div><div class="pc-bt">10:32</div></div>
-              <div class="pc-bw them"><div class="pc-bub them">¡Hola! Claro, con mucho gusto. ¿De qué empresa son?</div><div class="pc-bt">10:33</div></div>
-              <div class="pc-bw me"><div class="pc-bub me">Somos Globant, buscamos Flutter Senior. ¿Te interesa una entrevista?</div><div class="pc-bt">10:34</div></div>
-              <div class="pc-bw them"><div class="pc-bub them">¡Perfecto! ¿El jueves a las 15hs te viene bien? 🙌</div><div class="pc-bt">10:35</div></div>
-            </div>
-            <div class="pc-input-row">
-              <input class="pc-inp" placeholder="Escribí un mensaje...">
-              <div class="pc-send">➤</div>
-            </div>
-          </div>
-
-          <!-- SCREEN 4: AGENDA -->
-          <div class="pscreen" id="ps-agenda">
-            <div class="pa-header">
-              <div class="pa-title">📅 Agenda</div>
-              <div class="pa-sub">1 entrevista agendada</div>
-              <div class="pa-tabs">
-                <div class="pa-tab on">Todas</div>
-                <div class="pa-tab">Pendientes</div>
-                <div class="pa-tab">Confirmadas</div>
-              </div>
-            </div>
-            <div class="pa-body">
-              <div class="pa-card">
-                <div class="pa-header2">
-                  <div class="pa-cav" style="background:#D97706">AM</div>
-                  <div><div class="pa-cname">Andrés M.</div><div class="pa-crole">Mobile Developer</div></div>
-                  <div class="pa-status">✓ Confirmada</div>
-                </div>
-                <div class="pa-details">
-                  <div class="pa-dr"><span class="pa-icon">📅</span>Jueves 24 · 15:00</div>
-                  <div class="pa-dr"><span class="pa-icon">⏱</span>45 minutos</div>
-                  <div class="pa-dr"><span class="pa-icon">🎥</span>Google Meet</div>
-                  <div class="pa-dr"><span class="pa-icon">📝</span>Entrevista técnica Flutter</div>
-                </div>
-                <div class="pa-actions">
-                  <button class="pa-btn pa-btn-meet">🎥 Unirse</button>
-                  <button class="pa-btn pa-btn-edit">✏️ Editar</button>
-                </div>
-              </div>
-            </div>
-            <div class="p-bnav">
-              <div class="p-ni"><div>🃏</div></div><div class="p-ni"><div>💬</div></div>
-              <div class="p-ni"><div>📋</div></div>
-              <div class="p-ni on"><div>📅</div><div class="p-ni-lbl">Agenda</div></div>
-              <div class="p-ni"><div>👤</div></div>
-            </div>
-          </div>
-
-          <!-- SCREEN 5: PIPELINE -->
-          <div class="pscreen" id="ps-pipeline">
-            <div class="pk-header">
-              <div class="pk-title">📋 Pipeline</div>
-            </div>
-            <div class="pa-body" style="flex-direction:row;gap:0;padding:8px 4px;overflow-x:auto;flex:1">
-              <div class="pk-col">
-                <div class="pk-col-h nuevo">Nuevo</div>
-                <div class="pk-card"><div class="pk-av" style="background:#2B5CE6">MG</div><div class="pk-name">Matías G.</div><div class="pk-role">Full Stack</div></div>
-              </div>
-              <div class="pk-col">
-                <div class="pk-col-h entrevista">Entrevista</div>
-                <div class="pk-card entrevista"><div class="pk-av" style="background:#D97706">AM</div><div class="pk-name">Andrés M.</div><div class="pk-role">Mobile Dev</div></div>
-              </div>
-              <div class="pk-col">
-                <div class="pk-col-h oferta">Oferta</div>
-                <div class="pk-card oferta"><div class="pk-av" style="background:#7C3AED">VR</div><div class="pk-name">Valentina R.</div><div class="pk-role">Data Eng.</div></div>
-              </div>
-              <div class="pk-col">
-                <div class="pk-col-h contratado">Cont.</div>
-                <div class="pk-card contratado"><div class="pk-av" style="background:#059669">LP</div><div class="pk-name">Lucas P.</div><div class="pk-role">DevOps</div></div>
-              </div>
-            </div>
-            <div class="p-bnav">
-              <div class="p-ni"><div>🃏</div></div><div class="p-ni"><div>💬</div></div>
-              <div class="p-ni on"><div>📋</div><div class="p-ni-lbl">Pipeline</div></div>
-              <div class="p-ni"><div>📅</div></div><div class="p-ni"><div>👤</div></div>
-            </div>
-          </div>
-
-        </div><!-- /phone -->
+<!-- SERVICIOS EMPRESAS -->
+<section class="services-empresa" id="servicios">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-num" data-i18n="services.num">01 / Empresas</div>
+      <div>
+        <h2 class="section-title" data-i18n="services.title" data-i18n-html="true">
+          Tres formas de <em>escalar tu equipo IT</em>.
+        </h2>
+        <p class="section-desc" data-i18n="services.desc">
+          Desde un diagnóstico puntual hasta un Head of Talent fraccional. Elegí el formato que necesite tu empresa hoy.
+        </p>
       </div>
-
-      <!-- INFO PANEL -->
-      <div class="info-panel">
-        <!-- Step 0 -->
-        <div class="step-info active" id="info-0">
-          <div class="step-badge"><div class="step-num-big">1</div><span data-es="Explorá perfiles" data-en="Explore profiles">Explorá perfiles</span></div>
-          <h3 class="step-title" data-es="Swipeá para encontrar tu match ideal" data-en="Swipe to find your ideal match">Swipeá para encontrar tu match ideal</h3>
-          <p class="step-desc" data-es="Explorá perfiles de candidatos IT o empresas. El score de match calculado automáticamente te dice qué tan alineado estás antes de decidir." data-en="Browse IT candidate or company profiles. The automatically calculated match score tells you how aligned you are before deciding.">Explorá perfiles de candidatos IT o empresas. El score de match calculado automáticamente te dice qué tan alineado estás antes de decidir.</p>
-          <div class="step-tips">
-            <div class="tip"><div class="tip-icon">💙</div><div class="tip-text"><strong data-es="Like" data-en="Like">Like</strong> — <span data-es="deslizá a la derecha o tocá el botón azul para mostrar interés" data-en="swipe right or tap the blue button to show interest">deslizá a la derecha o tocá el botón azul para mostrar interés</span></div></div>
-            <div class="tip"><div class="tip-icon">✖</div><div class="tip-text"><strong data-es="Pass" data-en="Pass">Pass</strong> — <span data-es="deslizá a la izquierda para ver el siguiente perfil" data-en="swipe left to see the next profile">deslizá a la izquierda para ver el siguiente perfil</span></div></div>
-            <div class="tip"><div class="tip-icon">🎯</div><div class="tip-text"><strong data-es="Match Score" data-en="Match Score">Match Score</strong> — <span data-es="porcentaje basado en skills, seniority y disponibilidad" data-en="percentage based on skills, seniority and availability">porcentaje basado en skills, seniority y disponibilidad</span></div></div>
-          </div>
-          <div class="step-nav"><button class="btn-next" onclick="goStep(1)" data-es="Siguiente: Match →" data-en="Next: Match →">Siguiente: Match →</button></div>
-        </div>
-
-        <!-- Step 1 -->
-        <div class="step-info" id="info-1">
-          <div class="step-badge"><div class="step-num-big">2</div><span data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</span></div>
-          <h3 class="step-title" data-es="Cuando hay interés mutuo, ¡es un match!" data-en="When there's mutual interest, it's a match!">Cuando hay interés mutuo, ¡es un match!</h3>
-          <p class="step-desc" data-es="Solo cuando candidato y empresa se dan like mutuamente se habilita la conexión. Sin spam, sin contactos no deseados — solo conexiones reales." data-en="Only when candidate and company mutually like each other is the connection enabled. No spam, no unwanted contacts — only real connections.">Solo cuando candidato y empresa se dan like mutuamente se habilita la conexión. Sin spam, sin contactos no deseados — solo conexiones reales.</p>
-          <div class="step-tips">
-            <div class="tip"><div class="tip-icon">🎉</div><div class="tip-text"><strong data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</strong> — <span data-es="aparece automáticamente cuando los dos lados hacen like" data-en="appears automatically when both sides like each other">aparece automáticamente cuando los dos lados hacen like</span></div></div>
-            <div class="tip"><div class="tip-icon">💬</div><div class="tip-text"><strong data-es="Chat habilitado" data-en="Chat enabled">Chat habilitado</strong> — <span data-es="a partir del match cualquiera puede iniciar la conversación" data-en="from the match, anyone can start the conversation">a partir del match cualquiera puede iniciar la conversación</span></div></div>
-          </div>
-          <div class="step-nav"><button class="btn-prev" onclick="goStep(0)" data-es="← Anterior" data-en="← Back">← Anterior</button><button class="btn-next" onclick="goStep(2)" data-es="Siguiente: Chat →" data-en="Next: Chat →">Siguiente: Chat →</button></div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="step-info" id="info-2">
-          <div class="step-badge"><div class="step-num-big">3</div><span data-es="Chat bidireccional" data-en="Two-way Chat">Chat bidireccional</span></div>
-          <h3 class="step-title" data-es="Hablá directamente con quien te interesa" data-en="Talk directly with who interests you">Hablá directamente con quien te interesa</h3>
-          <p class="step-desc" data-es="Candidatos y recruiters pueden iniciar la conversación cuando quieran. El chat queda accesible desde Matches en cualquier momento." data-en="Candidates and recruiters can start the conversation whenever they want. The chat is accessible from Matches at any time.">Candidatos y recruiters pueden iniciar la conversación cuando quieran. El chat queda accesible desde Matches en cualquier momento.</p>
-          <div class="step-tips">
-            <div class="tip"><div class="tip-icon">👤</div><div class="tip-text"><strong data-es="Candidato" data-en="Candidate">Candidato</strong> — <span data-es="preguntá sobre el rol, salario, modalidad y stack" data-en="ask about the role, salary, work mode and stack">preguntá sobre el rol, salario, modalidad y stack</span></div></div>
-            <div class="tip"><div class="tip-icon">🏢</div><div class="tip-text"><strong data-es="Empresa" data-en="Company">Empresa</strong> — <span data-es="presentá la oportunidad y coordiná los próximos pasos" data-en="present the opportunity and coordinate next steps">presentá la oportunidad y coordiná los próximos pasos</span></div></div>
-            <div class="tip"><div class="tip-icon">📅</div><div class="tip-text"><span data-es="Desde el chat podés agendar entrevistas directamente" data-en="From the chat you can schedule interviews directly">Desde el chat podés agendar entrevistas directamente</span></div></div>
-          </div>
-          <div class="step-nav"><button class="btn-prev" onclick="goStep(1)" data-es="← Anterior" data-en="← Back">← Anterior</button><button class="btn-next" onclick="goStep(3)" data-es="Siguiente: Agenda →" data-en="Next: Schedule →">Siguiente: Agenda →</button></div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="step-info" id="info-3">
-          <div class="step-badge"><div class="step-num-big">4</div><span data-es="Agenda integrada" data-en="Integrated Schedule">Agenda integrada</span></div>
-          <h3 class="step-title" data-es="Agendá entrevistas con un toque" data-en="Schedule interviews with one tap">Agendá entrevistas con un toque</h3>
-          <p class="step-desc" data-es="Coordiná entrevistas por Google Meet, Zoom o Teams directo desde la app. El candidato recibe los detalles automáticamente." data-en="Schedule interviews via Google Meet, Zoom or Teams directly from the app. The candidate receives the details automatically.">Coordiná entrevistas por Google Meet, Zoom o Teams directo desde la app. El candidato recibe los detalles automáticamente.</p>
-          <div class="step-tips">
-            <div class="tip"><div class="tip-icon">🎥</div><div class="tip-text"><strong data-es="Plataformas" data-en="Platforms">Plataformas</strong> — <span data-es="Meet, Zoom, Teams o presencial" data-en="Meet, Zoom, Teams or in-person">Meet, Zoom, Teams o presencial</span></div></div>
-            <div class="tip"><div class="tip-icon">⏰</div><div class="tip-text"><strong data-es="Horarios alternativos" data-en="Alternative slots">Horarios alternativos</strong> — <span data-es="proponé varias opciones para que el candidato elija" data-en="propose several options for the candidate to choose">proponé varias opciones para que el candidato elija</span></div></div>
-          </div>
-          <div class="step-nav"><button class="btn-prev" onclick="goStep(2)" data-es="← Anterior" data-en="← Back">← Anterior</button><button class="btn-next" onclick="goStep(4)" data-es="Siguiente: Pipeline →" data-en="Next: Pipeline →">Siguiente: Pipeline →</button></div>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="step-info" id="info-4">
-          <div class="step-badge"><div class="step-num-big">5</div><span data-es="Pipeline Kanban" data-en="Kanban Pipeline">Pipeline Kanban</span></div>
-          <h3 class="step-title" data-es="Gestioná todo el proceso desde un lugar" data-en="Manage the entire process from one place">Gestioná todo el proceso desde un lugar</h3>
-          <p class="step-desc" data-es="Avanzá a los candidatos por las etapas: Nuevo → Entrevista → Oferta → Contratado. Tenés todo el pipeline visible de un vistazo." data-en="Move candidates through stages: New → Interview → Offer → Hired. The entire pipeline is visible at a glance.">Avanzá a los candidatos por las etapas: Nuevo → Entrevista → Oferta → Contratado. Tenés todo el pipeline visible de un vistazo.</p>
-          <div class="step-tips">
-            <div class="tip"><div class="tip-icon">📋</div><div class="tip-text"><span data-es="Kanban visual con 4 columnas para gestionar todo el proceso de selección" data-en="Visual Kanban with 4 columns to manage the entire selection process">Kanban visual con 4 columnas para gestionar todo el proceso de selección</span></div></div>
-            <div class="tip"><div class="tip-icon">🎯</div><div class="tip-text"><strong data-es="Ranking por JD" data-en="JD Ranking">Ranking por JD</strong> — <span data-es="pegá un Job Description y tNic rankea automáticamente los mejores candidatos" data-en="paste a Job Description and tNic automatically ranks the best candidates">pegá un JD y tNic rankea automáticamente los mejores candidatos</span></div></div>
-          </div>
-          <div class="step-nav">
-            <button class="btn-prev" onclick="goStep(3)" data-es="← Anterior" data-en="← Back">← Anterior</button>
-            <button class="btn-next" style="background:linear-gradient(135deg,#16A34A,#059669)" onclick="window.open('/app','_blank')" data-es="🚀 Abrir la app" data-en="🚀 Open the app">🚀 Abrir la app</button>
-          </div>
-        </div>
-      </div><!-- /info-panel -->
+    </div>
+    <div class="service-grid">
+      <article class="service-card reveal">
+        <div class="service-num">/ 01</div>
+        <h3 class="service-name" data-i18n="services.s1.name">Hiring Process Audit</h3>
+        <p class="service-tagline" data-i18n="services.s1.desc">
+          Diagnóstico de tu proceso de talento actual. Identifico cuellos de botella y diseño un plan concreto de mejora con quick wins.
+        </p>
+        <ul class="service-includes">
+          <li data-i18n="services.s1.i1">Análisis de funnel: time-to-hire, conversión, dropout</li>
+          <li data-i18n="services.s1.i2">Reporte ejecutivo de 15-25 páginas</li>
+          <li data-i18n="services.s1.i3">Roadmap de mejoras priorizadas</li>
+          <li data-i18n="services.s1.i4">Presentación a stakeholders</li>
+        </ul>
+        <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" class="service-cta">
+          <span data-i18n="services.cta">Conversemos sobre tu caso</span> <span class="arrow">→</span>
+        </a>
+      </article>
+      <article class="service-card reveal reveal-stagger-1">
+        <div class="service-num">/ 02</div>
+        <h3 class="service-name" data-i18n="services.s2.name">Talent Operations Setup</h3>
+        <p class="service-tagline" data-i18n="services.s2.desc">
+          Implementación completa de ATS y procesos. Tu equipo sale operando con autonomía, sin depender de mí ni de agencias.
+        </p>
+        <ul class="service-includes">
+          <li data-i18n="services.s2.i1">Selección e implementación de ATS</li>
+          <li data-i18n="services.s2.i2">Diseño de procesos: sourcing, screening, evaluación</li>
+          <li data-i18n="services.s2.i3">Scorecards e interview kits</li>
+          <li data-i18n="services.s2.i4">Capacitación al equipo interno</li>
+          <li data-i18n="services.s2.i5">Dashboards de métricas</li>
+        </ul>
+        <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" class="service-cta">
+          <span data-i18n="services.cta">Conversemos sobre tu caso</span> <span class="arrow">→</span>
+        </a>
+      </article>
+      <article class="service-card reveal reveal-stagger-2">
+        <div class="service-num">/ 03</div>
+        <h3 class="service-name" data-i18n="services.s3.name">Fractional Head of Talent</h3>
+        <p class="service-tagline" data-i18n="services.s3.desc">
+          15-25 horas mensuales dedicadas a tu empresa. Estrategia, decisiones de hiring senior y mentoring del equipo de RRHH interno.
+        </p>
+        <ul class="service-includes">
+          <li data-i18n="services.s3.i1">Estrategia de talento ejecutiva</li>
+          <li data-i18n="services.s3.i2">Supervisión y mejora continua</li>
+          <li data-i18n="services.s3.i3">Decisiones de hiring senior</li>
+          <li data-i18n="services.s3.i4">Mentoring al equipo interno</li>
+          <li data-i18n="services.s3.i5">Compromiso mínimo: 3 meses</li>
+        </ul>
+        <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" class="service-cta">
+          <span data-i18n="services.cta">Conversemos sobre tu caso</span> <span class="arrow">→</span>
+        </a>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features">
-  <div class="section-label fade-in" data-es="Características" data-en="Features">Características</div>
-  <h2 class="section-title fade-in" data-es="Todo lo que necesitás para conectar talento" data-en="Everything you need to connect talent">Todo lo que necesitás para conectar talento</h2>
-  <div class="feat-grid">
-    <div class="feat-card fade-in"><span class="feat-icon">🃏</span><div class="feat-title" data-es="Swipe inteligente" data-en="Smart Swipe">Swipe inteligente</div><p class="feat-desc" data-es="Match score automático basado en skills, seniority, disponibilidad e idiomas." data-en="Automatic match score based on skills, seniority, availability and languages.">Match score automático basado en skills, seniority, disponibilidad e idiomas.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">💙</span><div class="feat-title" data-es="Mutual Interest" data-en="Mutual Interest">Mutual Interest</div><p class="feat-desc" data-es="Solo cuando hay interés de ambos lados se habilita el chat. Sin spam." data-en="Only when both sides show interest is the chat enabled. No spam.">Solo cuando hay interés de ambos lados se habilita el chat. Sin spam.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">💬</span><div class="feat-title" data-es="Chat bidireccional" data-en="Two-way Chat">Chat bidireccional</div><p class="feat-desc" data-es="Candidatos y recruiters inician conversaciones cuando quieran, con contexto del proceso." data-en="Candidates and recruiters start conversations whenever they want, with process context.">Candidatos y recruiters inician conversaciones cuando quieran, con contexto del proceso.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">📅</span><div class="feat-title" data-es="Agenda integrada" data-en="Integrated Schedule">Agenda integrada</div><p class="feat-desc" data-es="Meet, Zoom o Teams directo desde la app. Con horarios alternativos y recordatorios." data-en="Meet, Zoom or Teams directly from the app. With alternative slots and reminders.">Meet, Zoom o Teams directo desde la app. Con horarios alternativos y recordatorios.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">📋</span><div class="feat-title" data-es="Pipeline Kanban" data-en="Kanban Pipeline">Pipeline Kanban</div><p class="feat-desc" data-es="Nuevo → Entrevista → Oferta → Contratado. Todo el proceso en un lugar." data-en="New → Interview → Offer → Hired. The entire process in one place.">Nuevo → Entrevista → Oferta → Contratado. Todo el proceso en un lugar.</p></div>
-    <div class="feat-card fade-in"><span class="feat-icon">🎯</span><div class="feat-title" data-es="Ranking por JD" data-en="JD Ranking">Ranking por JD</div><p class="feat-desc" data-es="Pegá un Job Description y tNic rankea automáticamente los mejores candidatos." data-en="Paste a Job Description and tNic automatically ranks the best candidates.">Pegá un Job Description y tNic rankea automáticamente los mejores candidatos.</p></div>
+<!-- ABOUT -->
+<section class="about" id="sobre">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-num" data-i18n="about.num">02 / Acerca de mí</div>
+      <div></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-photo reveal">
+        <div class="about-photo-frame">
+          <img src="lau.jpg" alt="Maria Laura Nicolas - Founder tNic" loading="lazy">
+        </div>
+        <div class="about-photo-caption">
+          <strong>Maria Laura Nicolas</strong>
+          <span data-i18n="about.role">Founder · Head of Talent</span>
+        </div>
+      </div>
+      <div class="about-content reveal reveal-stagger-1">
+        <h2 data-i18n="about.title" data-i18n-html="true">
+          Hace 10 años trabajo en <em>talento IT en LATAM</em>.
+        </h2>
+        <p class="about-text" data-i18n="about.p1" data-i18n-html="true">
+          Lideré equipos de recruiting y talent operations en empresas IT, empresas de desarrollo de software y staff augmentation. Conozco el ecosistema desde adentro: cómo piensan los developers, qué buscan las empresas tech, y dónde se rompen los procesos cuando escalan.
+        </p>
+        <p class="about-text" data-i18n="about.p2" data-i18n-html="true">
+          Mi <strong>caso más reciente</strong>: implementación completa de Lever (ATS) en una empresa tech LATAM, migrando procesos manuales a flujos automatizados con IA. Seis meses de trabajo, procesos definidos, equipo capacitado y métricas que finalmente significan algo.
+        </p>
+        <p class="about-text" data-i18n="about.p3" data-i18n-html="true">
+          Ahora lo replico para otras empresas — y, en paralelo, estoy construyendo <strong>tNic</strong>, la plataforma que conecta talento IT con empresas en LATAM de forma inteligente.
+        </p>
+        <div class="about-credentials">
+          <div class="cred-item">
+            <span class="cred-label" data-i18n="about.c1l">Especialización</span>
+            <span class="cred-value" data-i18n="about.c1v">Talent Operations &amp; ATS</span>
+          </div>
+          <div class="cred-item">
+            <span class="cred-label" data-i18n="about.c2l">Industrias</span>
+            <span class="cred-value" data-i18n="about.c2v">SaaS · Software · Staff Aug.</span>
+          </div>
+          <div class="cred-item">
+            <span class="cred-label" data-i18n="about.c3l">Herramientas</span>
+            <span class="cred-value" data-i18n="about.c3v">ATS con IA · Talent Operations</span>
+          </div>
+          <div class="cred-item">
+            <span class="cred-label" data-i18n="about.c4l">Idiomas</span>
+            <span class="cred-value" data-i18n="about.c4v">Español · English</span>
+          </div>
+        </div>
+        <a href="https://www.linkedin.com/company/tnictalent/" target="_blank" rel="noopener" class="about-linkedin">
+          <span data-i18n="about.linkedin">Conectá en LinkedIn</span> <span>→</span>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- LEGAL -->
-<section class="legal-section" id="legal">
-  <div class="legal-inner">
-    <div class="legal-header fade-in">
-      <div class="legal-icon">⚖️</div>
-      <div class="legal-header-text">
-        <h2 data-es="Información Legal y Aviso Importante" data-en="Legal Information and Important Notice">Información Legal y Aviso Importante</h2>
-        <p data-es="Leé esta información antes de usar la plataforma" data-en="Please read this information before using the platform">Leé esta información antes de usar la plataforma</p>
-      </div>
-    </div>
-    <div class="legal-grid fade-in">
-      <div class="legal-card"><div class="legal-card-title">🧪 <span data-es="Estado Beta" data-en="Beta Status">Estado Beta</span></div><p data-es="tNic está en fase de desarrollo beta. Los datos son referenciales. Las funcionalidades pueden cambiar sin previo aviso. No garantizamos disponibilidad continua del servicio." data-en="tNic is in beta development phase. Data is referential. Features may change without notice. We do not guarantee continuous service availability.">tNic está en fase de desarrollo beta. Los datos son referenciales. Las funcionalidades pueden cambiar sin previo aviso. No garantizamos disponibilidad continua del servicio.</p></div>
-      <div class="legal-card"><div class="legal-card-title">🔒 <span data-es="Privacidad y Datos" data-en="Privacy and Data">Privacidad y Datos</span></div><p data-es="Los datos (nombre, email) son recopilados solo para la lista de espera. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación en cualquier momento escribiendo a " data-en="Data (name, email) is collected only for the waitlist. Not sold or shared with third parties. You can request deletion at any time by writing to ">Los datos (nombre, email) son recopilados solo para la lista de espera. No son vendidos ni compartidos con terceros. Podés solicitar su eliminación a <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a></p></div>
-      <div class="legal-card"><div class="legal-card-title">⚠️ <span data-es="Limitación de Responsabilidad" data-en="Limitation of Liability">Limitación de Responsabilidad</span></div><p data-es="tNic actúa como plataforma de conexión y no es responsable de decisiones de contratación, condiciones laborales, ni veracidad de información publicada. No garantiza resultados en procesos de selección." data-en="tNic acts as a connection platform and is not responsible for hiring decisions, employment conditions, or accuracy of information published. It does not guarantee results in selection processes.">tNic actúa como plataforma de conexión y no es responsable de decisiones de contratación, condiciones laborales, ni veracidad de información publicada.</p></div>
-      <div class="legal-card"><div class="legal-card-title">📋 <span data-es="Uso Aceptable" data-en="Acceptable Use">Uso Aceptable</span></div><p data-es="Al usar tNic aceptás no publicar información falsa, no realizar actividades fraudulentas, y usar la plataforma solo para conexión laboral IT legítima." data-en="By using tNic you agree not to publish false information, not to carry out fraudulent activities, and to use the platform only for legitimate IT employment connection.">Al usar tNic aceptás no publicar información falsa, no realizar actividades fraudulentas, y usar la plataforma solo para conexión laboral IT legítima.</p></div>
-    </div>
-    <div class="legal-disclaimer fade-in">
-      <strong data-es="Aviso Legal — " data-en="Legal Notice — ">Aviso Legal — </strong>
-      <span data-es="tNic es una plataforma digital en etapa experimental operada en la República Argentina. El uso de este servicio implica la aceptación plena de los términos y condiciones vigentes. tNic no constituye un servicio de empleo, agencia de colocación laboral ni intermediario laboral registrado. Los perfiles, empresas y candidatos mostrados en la versión beta son datos de demostración y no representan relaciones laborales reales. Las marcas mencionadas son propiedad de sus respectivos titulares. Consultas legales: legal@tnictalent.com" data-en="tNic is a digital platform in experimental stage operated in the Argentine Republic. Use of this service implies full acceptance of current terms and conditions. tNic does not constitute an employment service, job placement agency or registered labor intermediary. Profiles shown in the beta version are demonstration data and do not represent real employment relationships. Brands mentioned are property of their respective owners. Legal inquiries: legal@tnictalent.com">
-        tNic es una plataforma digital en etapa experimental operada en la República Argentina. El uso de este servicio implica la aceptación plena de los términos y condiciones vigentes. tNic no constituye un servicio de empleo, agencia de colocación laboral ni intermediario laboral registrado. Los perfiles, empresas y candidatos mostrados en la versión beta son datos de demostración y no representan relaciones laborales reales. Las marcas mencionadas son propiedad de sus respectivos titulares. Consultas legales: <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a>
-      </span>
+<!-- CASE / QUOTE -->
+<section class="case">
+  <div class="container">
+    <div class="case-content reveal">
+      <div class="eyebrow" style="justify-content:center;" data-i18n="case.eyebrow">Lo que hago, en una idea</div>
+      <p class="case-quote" data-i18n="case.quote" data-i18n-html="true">
+        “Procesos escalables, automatización inteligente y <span class="accent">equipos de talento que funcionan con autonomía</span>.”
+      </p>
+      <p class="case-attribution" data-i18n="case.attr">— Maria Laura Nicolas · Founder tNic</p>
     </div>
   </div>
 </section>
 
-<!-- CONSULTORÍA -->
-<section class="consulting-section" id="consultoria">
-  <div class="consulting-inner">
-    <div class="section-label fade-in" data-es="Servicios de Consultoría" data-en="Consulting Services">Servicios de Consultoría</div>
-    <h2 class="section-title fade-in" data-es="Más allá del matching: te acompañamos a crecer" data-en="Beyond matching: we help you grow">Más allá del matching: te acompañamos a crecer</h2>
-    <p class="section-sub fade-in" data-es="Para empresas que quieren escalar su Talent Acquisition y para candidatos que quieren destacarse en el mercado IT." data-en="For companies that want to scale their Talent Acquisition and for candidates who want to stand out in the IT market.">Para empresas que quieren escalar su Talent Acquisition y para candidatos que quieren destacarse en el mercado IT.</p>
+<!-- CANDIDATOS -->
+<section class="services-candidatos" id="candidatos">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-num" data-i18n="cands.num">03 / Profesionales IT</div>
+      <div>
+        <h2 class="section-title" data-i18n="cands.title" data-i18n-html="true">
+          También trabajo con <em>quienes buscan</em> el próximo paso.
+        </h2>
+        <p class="section-desc" data-i18n="cands.desc">
+          Si sos developer, designer o tech lead y querés posicionarte mejor para conseguir el rol que querés, hay un camino acompañado.
+        </p>
+      </div>
+    </div>
+    <div class="candidatos-grid">
+      <article class="candidato-card reveal">
+        <h3 class="candidato-name" data-i18n="cands.c1.name">Personal Branding Sprint</h3>
+        <p class="candidato-desc" data-i18n="cands.c1.desc">
+          Reposicionate en 2-3 semanas. LinkedIn optimizado, CV reescrito y mentoría 1:1 para que se note tu valor real.
+        </p>
+        <ul class="candidato-list">
+          <li data-i18n="cands.c1.i1">LinkedIn completo (headline, about, experiencia)</li>
+          <li data-i18n="cands.c1.i2">CV + carta de presentación reescritos</li>
+          <li data-i18n="cands.c1.i3">Estrategia de posicionamiento</li>
+          <li data-i18n="cands.c1.i4">1 sesión de mentoría 1:1 (60 min)</li>
+        </ul>
+        <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" class="candidato-cta">
+          <span data-i18n="cands.cta">Conversemos</span> <span class="arrow">→</span>
+        </a>
+      </article>
+      <article class="candidato-card reveal reveal-stagger-1">
+        <h3 class="candidato-name" data-i18n="cands.c2.name">Career Acceleration Program</h3>
+        <p class="candidato-desc" data-i18n="cands.c2.desc">
+          Programa de 4-6 semanas para senior+ que buscan saltar a su próximo rol estratégico, no solo "el siguiente trabajo".
+        </p>
+        <ul class="candidato-list">
+          <li data-i18n="cands.c2.i1">Personal branding completo</li>
+          <li data-i18n="cands.c2.i2">4 sesiones de coaching de carrera</li>
+          <li data-i18n="cands.c2.i3">Simulacros de entrevistas con feedback</li>
+          <li data-i18n="cands.c2.i4">Conexiones del network cuando aplique</li>
+        </ul>
+        <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" class="candidato-cta">
+          <span data-i18n="cands.cta">Conversemos</span> <span class="arrow">→</span>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
 
-    <div class="consulting-grid">
-
-      <!-- CARD EMPRESAS -->
-      <div class="cons-card fade-in">
-        <div class="cons-card-hero company">
-          <div class="cons-deco">🏢</div>
-          <div class="cons-tag">🏢 <span data-es="Para Empresas" data-en="For Companies">Para Empresas</span></div>
-          <span class="cons-card-icon">🚀</span>
-          <div class="cons-card-title" data-es="Transformá tu Talent Acquisition con IA" data-en="Transform your Talent Acquisition with AI">Transformá tu Talent Acquisition con IA</div>
-          <div class="cons-card-sub" data-es="Escalamos tu proceso de reclutamiento: de flujos manuales y dispersos a pipelines automatizados con inteligencia artificial, métricas reales y equipos más eficientes." data-en="We scale your recruitment process: from manual and dispersed flows to automated pipelines with artificial intelligence, real metrics and more efficient teams.">Escalamos tu proceso de reclutamiento: de flujos manuales y dispersos a pipelines automatizados con inteligencia artificial, métricas reales y equipos más eficientes.</div>
-          <div class="cons-pills">
-            <span class="cons-pill" data-es="Automatización de procesos" data-en="Process automation">Automatización de procesos</span>
-            <span class="cons-pill" data-es="Screening con IA" data-en="AI Screening">Screening con IA</span>
-            <span class="cons-pill" data-es="Métricas de reclutamiento" data-en="Recruitment metrics">Métricas</span>
-            <span class="cons-pill" data-es="Employer Branding" data-en="Employer Branding">Employer Branding</span>
+<!-- APP -->
+<section class="app-section" id="app">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-num" data-i18n="app.num">04 / Producto</div>
+      <div></div>
+    </div>
+    <div class="app-grid">
+      <div class="app-text reveal">
+        <span class="app-badge">
+          <span class="pulse"></span>
+          <span data-i18n="app.badge">Beta abierta · LATAM</span>
+        </span>
+        <h2 data-i18n="app.title" data-i18n-html="true">
+          La plataforma <em>tNic</em>.
+        </h2>
+        <p class="app-desc" data-i18n="app.desc">
+          Mientras trabajo en consultoría, construyo el producto que viene a sistematizar todo esto: una plataforma de matching entre talento IT y empresas tech, hecha en LATAM y para LATAM.
+        </p>
+        <div class="app-features">
+          <div class="app-feature">
+            <span class="app-feature-icon">a</span>
+            <div class="app-feature-text">
+              <strong data-i18n="app.f1t">Matching inteligente</strong>
+              <span data-i18n="app.f1d">Conectamos perfiles y vacantes con criterio real, no por keywords.</span>
+            </div>
+          </div>
+          <div class="app-feature">
+            <span class="app-feature-icon">b</span>
+            <div class="app-feature-text">
+              <strong data-i18n="app.f2t">Mobile first</strong>
+              <span data-i18n="app.f2d">Diseñada para cómo realmente se busca trabajo hoy: desde el celular.</span>
+            </div>
+          </div>
+          <div class="app-feature">
+            <span class="app-feature-icon">c</span>
+            <div class="app-feature-text">
+              <strong data-i18n="app.f3t">Foco LATAM</strong>
+              <span data-i18n="app.f3d">Reglas locales, salarios en USD, modalidad remota como default.</span>
+            </div>
           </div>
         </div>
-        <div class="cons-card-body">
-          <div class="cons-benefit">
-            <div class="cons-benefit-icon blue">⚡</div>
-            <div class="cons-benefit-text">
-              <strong data-es="De manual a automatizado" data-en="From manual to automated">De manual a automatizado</strong>
-              <span data-es="Mapeamos tu proceso actual e implementamos herramientas de IA para filtrar, rankear y gestionar candidatos sin fricción." data-en="We map your current process and implement AI tools to filter, rank and manage candidates without friction.">Mapeamos tu proceso actual e implementamos herramientas de IA para filtrar, rankear y gestionar candidatos sin fricción.</span>
+        <div class="app-cta-row">
+          <a href="/app" target="_blank" rel="noopener" class="btn btn-secondary">
+            <span data-i18n="app.cta">Ver demo</span> <span class="arrow">→</span>
+          </a>
+          <button type="button" class="btn btn-primary" id="openWaitlistBtn">
+            <span data-i18n="app.waitlistBtn">Versión beta</span> <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+      <div class="app-visual reveal reveal-stagger-1">
+        <div class="phone-mockup">
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span>9:41</span>
+              <span>● ● ●</span>
             </div>
-          </div>
-          <div class="cons-benefit">
-            <div class="cons-benefit-icon blue">📊</div>
-            <div class="cons-benefit-text">
-              <strong data-es="Dashboards y métricas" data-en="Dashboards and metrics">Dashboards y métricas</strong>
-              <span data-es="Time-to-hire, cost-per-hire, quality of hire. Datos reales para tomar mejores decisiones de equipo." data-en="Time-to-hire, cost-per-hire, quality of hire. Real data to make better team decisions.">Time-to-hire, cost-per-hire, quality of hire. Datos reales para tomar mejores decisiones.</span>
-            </div>
-          </div>
-          <div class="cons-benefit">
-            <div class="cons-benefit-icon blue">🎯</div>
-            <div class="cons-benefit-text">
-              <strong data-es="Estrategia de Employer Branding" data-en="Employer Branding Strategy">Estrategia de Employer Branding</strong>
-              <span data-es="Posicioná tu empresa como empleador de referencia en el mercado IT de LATAM." data-en="Position your company as a reference employer in the LATAM IT market.">Posicioná tu empresa como empleador de referencia en el mercado IT de LATAM.</span>
-            </div>
-          </div>
-          <div class="cons-form">
-            <label class="cons-form-label" data-es="Consultá sin compromiso" data-en="Inquire with no commitment">Consultá sin compromiso</label>
-            <form onsubmit="submitConsulting(event,'company-consulting')">
-              <input class="cons-inp" type="text" id="cons-comp-name" placeholder="Tu nombre" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" required autocomplete="off" name="cons-comp-name-tnic">
-              <input class="cons-inp" type="email" id="cons-comp-email" placeholder="Email corporativo" data-placeholder-es="Email corporativo" data-placeholder-en="Corporate email" required autocomplete="off" name="cons-comp-email-tnic">
-              <input class="cons-inp" type="text" id="cons-comp-company" placeholder="Nombre de tu empresa" data-placeholder-es="Nombre de tu empresa" data-placeholder-en="Company name" autocomplete="off" name="cons-comp-company-tnic">
-              <textarea class="cons-textarea" id="cons-comp-msg" placeholder="¿Cuál es el principal desafío de tu equipo de Talent Acquisition?" data-placeholder-es="¿Cuál es el principal desafío de tu equipo de Talent Acquisition?" data-placeholder-en="What is the main challenge of your Talent Acquisition team?"></textarea>
-              <div class="legal-row" style="margin-bottom:12px">
-                <input type="checkbox" id="cons-comp-legal" required>
-                <label for="cons-comp-legal" style="font-size:11px;color:var(--gray)">
-                  <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and the processing of my contact data.'>Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.</span>
-                </label>
+            <div class="phone-card">
+              <div class="phone-avatar"></div>
+              <div class="phone-name" data-i18n="app.phoneName">Senior Backend Dev</div>
+              <div class="phone-role" data-i18n="app.phoneRole">Buenos Aires · Remoto · USD 5.5K</div>
+              <div class="phone-skills">
+                <span class="phone-skill">Node.js</span>
+                <span class="phone-skill">PostgreSQL</span>
+                <span class="phone-skill">AWS</span>
+                <span class="phone-skill">+3</span>
               </div>
-              <button type="submit" class="cons-btn blue" data-es="Quiero escalar mi equipo →" data-en="I want to scale my team →">Quiero escalar mi equipo →</button>
-              <div class="cons-success blue" id="cons-comp-ok">
-                <span data-es="✅ ¡Genial! Te contactamos en menos de 48hs para coordinar una reunión." data-en="✅ Great! We'll contact you within 48 hours to schedule a meeting.">✅ ¡Genial! Te contactamos en menos de 48hs para coordinar una reunión.</span>
-              </div>
-            </form>
+            </div>
+            <div class="phone-actions">
+              <div class="phone-action">×</div>
+              <div class="phone-action like">♥</div>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <!-- CARD CANDIDATOS -->
-      <div class="cons-card fade-in">
-        <div class="cons-card-hero candidate">
-          <div class="cons-deco">🧑‍💼</div>
-          <div class="cons-tag">🧑‍💼 <span data-es="Para Candidatos" data-en="For Candidates">Para Candidatos</span></div>
-          <span class="cons-card-icon">✨</span>
-          <div class="cons-card-title" data-es="Posicioná tu marca personal en el mercado IT" data-en="Position your personal brand in the IT market">Posicioná tu marca personal en el mercado IT</div>
-          <div class="cons-card-sub" data-es="Te ayudamos a diferenciarte: perfil de LinkedIn optimizado, portfolio técnico que impacta, estrategia de visibilidad y preparación para entrevistas de alto nivel." data-en="We help you stand out: optimized LinkedIn profile, impactful technical portfolio, visibility strategy and preparation for high-level interviews.">Te ayudamos a diferenciarte: perfil de LinkedIn optimizado, portfolio técnico que impacta, estrategia de visibilidad y preparación para entrevistas de alto nivel.</div>
-          <div class="cons-pills">
-            <span class="cons-pill" data-es="Personal Branding" data-en="Personal Branding">Personal Branding</span>
-            <span class="cons-pill" data-es="LinkedIn optimization" data-en="LinkedIn optimization">LinkedIn</span>
-            <span class="cons-pill" data-es="Prep entrevistas" data-en="Interview prep">Prep entrevistas</span>
-            <span class="cons-pill" data-es="Portfolio técnico" data-en="Technical portfolio">Portfolio</span>
-          </div>
-        </div>
-        <div class="cons-card-body">
-          <div class="cons-benefit">
-            <div class="cons-benefit-icon purple">🔮</div>
-            <div class="cons-benefit-text">
-              <strong data-es="Marca personal que abre puertas" data-en="Personal brand that opens doors">Marca personal que abre puertas</strong>
-              <span data-es="Revisamos y optimizamos tu perfil de LinkedIn, GitHub y portfolio para que los recruiters te encuentren primero." data-en="We review and optimize your LinkedIn, GitHub and portfolio profile so recruiters find you first.">Revisamos y optimizamos tu perfil de LinkedIn, GitHub y portfolio para que los recruiters te encuentren primero.</span>
-            </div>
-          </div>
-          <div class="cons-benefit">
-            <div class="cons-benefit-icon purple">🎯</div>
-            <div class="cons-benefit-text">
-              <strong data-es="Estrategia de búsqueda activa" data-en="Active job search strategy">Estrategia de búsqueda activa</strong>
-              <span data-es="Definimos juntos el tipo de empresa, rol y compensación que te conviene buscar según tu perfil y objetivos." data-en="Together we define the type of company, role and compensation you should look for based on your profile and goals.">Definimos juntos el tipo de empresa, rol y compensación que te conviene buscar según tu perfil y objetivos.</span>
-            </div>
-          </div>
-          <div class="cons-benefit">
-            <div class="cons-benefit-icon purple">💼</div>
-            <div class="cons-benefit-text">
-              <strong data-es="Preparación para entrevistas" data-en="Interview preparation">Preparación para entrevistas</strong>
-              <span data-es="Simulaciones de entrevistas técnicas y de cultura, feedback real y técnicas para negociar mejor tu oferta." data-en="Technical and culture interview simulations, real feedback and techniques to better negotiate your offer.">Simulaciones de entrevistas técnicas y de cultura, feedback real y técnicas para negociar mejor tu oferta.</span>
-            </div>
-          </div>
-          <div class="cons-form">
-            <label class="cons-form-label" data-es="Hablemos de tu carrera" data-en="Let's talk about your career">Hablemos de tu carrera</label>
-            <form onsubmit="submitConsulting(event,'candidate-consulting')">
-              <input class="cons-inp purple" type="text" id="cons-cand-name" placeholder="Tu nombre" data-placeholder-es="Tu nombre" data-placeholder-en="Your name" required autocomplete="off" name="cons-cand-name-tnic">
-              <input class="cons-inp purple" type="email" id="cons-cand-email" placeholder="Tu email" data-placeholder-es="Tu email" data-placeholder-en="Your email" required autocomplete="off" name="cons-cand-email-tnic">
-              <input class="cons-inp purple" type="text" id="cons-cand-role" placeholder="Tu rol actual (ej: Full Stack Developer)" data-placeholder-es="Tu rol actual (ej: Full Stack Developer)" data-placeholder-en="Your current role (e.g. Full Stack Developer)" autocomplete="off" name="cons-cand-role-tnic">
-              <textarea class="cons-textarea purple" id="cons-cand-msg" placeholder="¿Qué querés lograr en tu carrera? ¿Cuál es tu mayor desafío hoy?" data-placeholder-es="¿Qué querés lograr en tu carrera? ¿Cuál es tu mayor desafío hoy?" data-placeholder-en="What do you want to achieve in your career? What's your biggest challenge today?"></textarea>
-              <div class="legal-row" style="margin-bottom:12px">
-                <input type="checkbox" id="cons-cand-legal" required>
-                <label for="cons-cand-legal" style="font-size:11px;color:var(--gray)">
-                  <span data-es='Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.' data-en='I accept the <a href="#" onclick="openModal(event)">Terms and Conditions</a> and the processing of my contact data.'>Acepto los <a href="#" onclick="openModal(event)">Términos y Condiciones</a> y el tratamiento de mis datos de contacto.</span>
-                </label>
-              </div>
-              <button type="submit" class="cons-btn purple" data-es="Quiero potenciar mi carrera →" data-en="I want to boost my career →">Quiero potenciar mi carrera →</button>
-              <div class="cons-success purple" id="cons-cand-ok">
-                <span data-es="✅ ¡Perfecto! Te escribimos en 48hs para arrancar con tu estrategia." data-en="✅ Perfect! We'll write to you in 48 hours to start your strategy.">✅ ¡Perfecto! Te escribimos en 48hs para arrancar con tu estrategia.</span>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /consulting-grid -->
-
-    <!-- CTA bottom -->
-    <div class="consulting-cta fade-in">
-      <div class="consulting-cta-text">
-        <h3 data-es="¿No sabés por dónde empezar?" data-en="Not sure where to start?">¿No sabés por dónde empezar?</h3>
-        <p data-es="Agendá una llamada de diagnóstico gratuita de 30 minutos. Sin compromiso, con insights concretos." data-en="Schedule a free 30-minute diagnostic call. No commitment, with concrete insights.">Agendá una llamada de diagnóstico gratuita de 30 minutos. Sin compromiso, con insights concretos.</p>
-      </div>
-      <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" data-es="📞 Agendá una llamada gratis" data-en="📞 Schedule a free call">📞 Agendá una llamada gratis</a>
+<!-- FINAL CTA -->
+<section class="final-cta" id="contacto">
+  <div class="container">
+    <h2 class="reveal" data-i18n="cta.title" data-i18n-html="true">
+      Hablemos sobre <em>tu equipo de talento</em>.
+    </h2>
+    <p class="reveal reveal-stagger-1" data-i18n="cta.desc">
+      30 minutos por video, sin formularios eternos. Llegás con el contexto, salís con un primer plan claro.
+    </p>
+    <div class="final-cta-actions reveal reveal-stagger-2">
+      <a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" class="btn btn-light">
+        <span data-i18n="cta.btn1">Agendar llamada</span> <span class="arrow">→</span>
+      </a>
+      <a href="mailto:hola@tnictalent.com" class="btn btn-outline-light">
+        hola@tnictalent.com
+      </a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-logo">
-      <div class="footer-logo-mark">
-        <svg viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg">
-          <text x="4" y="42" font-family="Arial Black,sans-serif" font-weight="900" font-size="46" fill="#2B5CE6">t</text>
-          <text x="36" y="42" font-family="Arial Black,sans-serif" font-weight="900" font-size="46" fill="white">Nic</text>
-        </svg>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="t" style="color:#6789ff;">t</span><span style="color:var(--paper);">Nic</span>
+          <small>Talent · Technology · Connection</small>
+        </div>
+        <p data-i18n="footer.brandDesc">
+          Consultoría estratégica de talento IT para empresas tech en LATAM. Construyo áreas de talento que escalan.
+        </p>
       </div>
-      <div class="footer-tagline">Talent · Technology · Connection</div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.servicesTitle">Servicios</h4>
+        <ul>
+          <li><a href="#servicios" data-i18n="services.s1.name">Hiring Process Audit</a></li>
+          <li><a href="#servicios" data-i18n="services.s2.name">Talent Operations Setup</a></li>
+          <li><a href="#servicios" data-i18n="services.s3.name">Fractional Head of Talent</a></li>
+          <li><a href="#candidatos" data-i18n="cands.c1.name">Personal Branding Sprint</a></li>
+          <li><a href="#candidatos" data-i18n="cands.c2.name">Career Acceleration</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.connectTitle">Conectá</h4>
+        <ul>
+          <li><a href="https://calendly.com/laura-nicolas-tnictalent/30min" target="_blank" rel="noopener" data-i18n="footer.book">Agendar llamada</a></li>
+          <li><a href="mailto:hola@tnictalent.com">hola@tnictalent.com</a></li>
+          <li><a href="https://www.linkedin.com/company/tnictalent/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.instagram.com/tnictalent/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="/app" target="_blank" rel="noopener" data-i18n="footer.appLink">App (beta)</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="#consultoria" data-es="Consultoría" data-en="Consulting">Consultoría</a>
-      <a href="#legal" data-es="Legal" data-en="Legal">Legal</a>
-      <a href="#" onclick="openModal(event)" data-es="Términos y Condiciones" data-en="Terms & Conditions">Términos y Condiciones</a>
-      <a href="mailto:hola@tnictalent.com">hola@tnictalent.com</a>
-      <a href="mailto:legal@tnictalent.com">legal@tnictalent.com</a>
-      <a href="/app" target="_blank" rel="noopener" data-es="Abrir App →" data-en="Open App →">Abrir App →</a>
+    <div class="footer-bottom">
+      <span>© 2026 tNic · Maria Laura Nicolas</span>
+      <span class="footer-tm">
+        <span class="footer-tm-badge">tNic ™</span>
+        <span data-i18n="footer.tm">Marca en trámite — INPI Argentina · Expediente N° 3823071</span>
+      </span>
     </div>
-    <div class="footer-copy" data-es="© 2025 tNic. Plataforma en fase beta. Todos los derechos reservados." data-en="© 2025 tNic. Platform in beta phase. All rights reserved.">© 2025 tNic. Plataforma en fase beta. Todos los derechos reservados.</div>
   </div>
 </footer>
 
-<!-- MODAL T&C -->
-<div class="modal-overlay" id="tc-modal">
+<!-- WAITLIST MODAL -->
+<div class="modal-overlay" id="waitlistModal" role="dialog" aria-modal="true" aria-labelledby="waitlistTitle">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" data-es="Términos y Condiciones — tNic" data-en="Terms and Conditions — tNic">Términos y Condiciones — tNic</div>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-    <div class="modal-body" id="modal-es">
-      <div class="highlight">⚠️ tNic es una plataforma en fase beta. Todo el contenido es experimental y referencial. Al usar la plataforma aceptás estos términos en su totalidad.</div>
-      <h3>1. Objeto y naturaleza del servicio</h3>
-      <p>tNic es una plataforma digital de conexión entre candidatos del sector tecnológico y empresas que buscan talento IT. tNic actúa exclusivamente como intermediario tecnológico y no es parte de ninguna relación laboral que pueda surgir entre sus usuarios. tNic no es una agencia de empleo, bolsa de trabajo registrada, ni empresa de colocación laboral bajo las leyes de la República Argentina (Ley N° 24.013 y modificatorias).</p>
-      <h3>2. Estado beta y limitaciones</h3>
-      <p>La plataforma se encuentra en desarrollo activo. Los perfiles, empresas y estadísticas mostradas pueden ser datos de demostración. No garantizamos la disponibilidad continua, exactitud de los datos, ni el resultado de los procesos de selección iniciados a través de tNic.</p>
-      <h3>3. Datos personales y privacidad</h3>
-      <p>Los datos recopilados (nombre, email) son tratados conforme a la Ley N° 25.326 de Protección de Datos Personales de Argentina. Son utilizados únicamente para comunicaciones de tNic y la gestión de la lista de espera. No son vendidos ni cedidos a terceros sin consentimiento expreso.</p>
-      <ul>
-        <li>Derecho de acceso, rectificación y supresión: escribir a <strong>legal@tnictalent.com</strong></li>
-        <li>Período de retención: hasta que solicites la baja o 2 años desde el último acceso</li>
-        <li>Base legal del tratamiento: consentimiento explícito del usuario</li>
-      </ul>
-      <h3>4. Responsabilidades del usuario</h3>
-      <p>Al registrarte en tNic aceptás: proporcionar información veraz, no suplantar identidades, no crear perfiles falsos, no usar la plataforma para fines distintos al empleo IT, y respetar la privacidad de otros usuarios.</p>
-      <h3>5. Limitación de responsabilidad</h3>
-      <p>tNic no se responsabiliza por: decisiones de contratación, condiciones laborales acordadas, incumplimientos entre partes, exactitud de CV o perfiles de empresa, ni pérdidas derivadas del uso de la plataforma. El servicio se provee "tal cual está" durante la fase beta.</p>
-      <h3>6. Propiedad intelectual</h3>
-      <p>El nombre tNic, su logo, diseño y código son propiedad de sus creadores. Las marcas de empresas mencionadas (Mercado Libre, Globant, etc.) son propiedad de sus respectivos titulares y se usan solo con fines demostrativos.</p>
-      <h3>7. Ley aplicable y jurisdicción</h3>
-      <p>Estos términos se rigen por las leyes de la República Argentina. Cualquier disputa se somete a la jurisdicción de los tribunales ordinarios de la Ciudad Autónoma de Buenos Aires.</p>
-      <h3>8. Modificaciones</h3>
-      <p>tNic puede modificar estos términos en cualquier momento. Los cambios se notificarán por email a los usuarios registrados. El uso continuado implica aceptación de los nuevos términos.</p>
-      <h3>9. Contacto</h3>
-      <p>Consultas legales: <strong>legal@tnictalent.com</strong> · Cancelar comunicaciones: <strong>unsubscribe@tnictalent.com</strong></p>
-    </div>
-    <div class="modal-body" id="modal-en" style="display:none">
-      <div class="highlight">⚠️ tNic is a platform in beta phase. All content is experimental and referential. By using the platform you accept these terms in their entirety.</div>
-      <h3>1. Purpose and nature of the service</h3>
-      <p>tNic is a digital connection platform between candidates in the technology sector and companies looking for IT talent. tNic acts exclusively as a technological intermediary and is not party to any employment relationship that may arise between its users.</p>
-      <h3>2. Beta status and limitations</h3>
-      <p>The platform is under active development. Profiles, companies and statistics shown may be demonstration data. We do not guarantee continuous availability, data accuracy, or the outcome of any selection processes.</p>
-      <h3>3. Personal data and privacy</h3>
-      <p>Data collected (name, email) is used solely for tNic communications and waitlist management. It is not sold or transferred to third parties without express consent. Right of access, rectification and deletion: write to <strong>legal@tnictalent.com</strong></p>
-      <h3>4. User responsibilities</h3>
-      <p>By registering on tNic you agree to provide truthful information, not impersonate others, not create fake profiles, and use the platform only for legitimate IT employment purposes.</p>
-      <h3>5. Limitation of liability</h3>
-      <p>tNic is not responsible for hiring decisions, agreed employment conditions, breaches between parties, accuracy of CVs or company profiles, or losses arising from use of the platform. The service is provided "as is" during the beta phase.</p>
-      <h3>6. Intellectual property</h3>
-      <p>The tNic name, logo, design and code are the property of their creators. Company brands mentioned are the property of their respective owners and used for demonstration purposes only.</p>
-      <h3>7. Governing law</h3>
-      <p>These terms are governed by Argentine law. Disputes are subject to the courts of the Autonomous City of Buenos Aires.</p>
-      <h3>8. Contact</h3>
-      <p>Legal inquiries: <strong>legal@tnictalent.com</strong> · Unsubscribe: <strong>unsubscribe@tnictalent.com</strong></p>
-    </div>
-    <div class="modal-footer">
-      <button id="modal-close-btn" onclick="closeModal()" data-es="Entendido, cerrar" data-en="Got it, close">Entendido, cerrar</button>
-    </div>
+    <button type="button" class="modal-close" id="closeWaitlistBtn" aria-label="Cerrar">×</button>
+    <h3 id="waitlistTitle" data-i18n="wl.title" data-i18n-html="true">
+      Anotate en la <em>beta de tNic</em>.
+    </h3>
+    <p class="modal-desc" data-i18n="wl.desc">
+      Cuando lancemos la versión completa, te avisamos por email para que seas de los primeros en probarla.
+    </p>
+
+    <form id="waitlistForm" novalidate>
+      <div class="form-group">
+        <span class="form-label" data-i18n="wl.typeLabel">Soy</span>
+        <div class="form-radios">
+          <label class="form-radio">
+            <input type="radio" name="tipo" value="candidato" required>
+            <div class="form-radio-card" data-i18n="wl.typeCand">Profesional IT</div>
+          </label>
+          <label class="form-radio">
+            <input type="radio" name="tipo" value="empresa" required>
+            <div class="form-radio-card" data-i18n="wl.typeComp">Empresa</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="wlNombre" data-i18n="wl.nameLabel">Nombre</label>
+        <input type="text" class="form-input" id="wlNombre" name="nombre" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="wlEmail" data-i18n="wl.emailLabel">Email</label>
+        <input type="email" class="form-input" id="wlEmail" name="email" required>
+      </div>
+
+      <div class="form-group" id="fieldEmpresa">
+        <label class="form-label" for="wlEmpresa" data-i18n="wl.companyLabel">Empresa</label>
+        <input type="text" class="form-input" id="wlEmpresa" name="empresa">
+      </div>
+
+      <label class="form-checkbox">
+        <input type="checkbox" id="wlTerms" required>
+        <span data-i18n="wl.terms" data-i18n-html="true">
+          Acepto recibir comunicaciones por email sobre el lanzamiento de la beta y novedades de tNic. Mis datos se usan únicamente para contactarme.
+        </span>
+      </label>
+
+      <button type="submit" class="btn btn-primary form-submit" id="wlSubmit">
+        <span data-i18n="wl.submit">Anotarme</span> <span class="arrow">→</span>
+      </button>
+
+      <div class="form-message" id="wlMessage"></div>
+    </form>
   </div>
 </div>
 
 <script>
-// ── APPS SCRIPT ──
-var SHEET_URL='https://script.google.com/macros/s/AKfycbwyrTlcE0qS-qxtpMGsH4MAKKgZEQ-0RCewKRqLU7S_lS7MgkJOAvq_DEtFNa3wESutlg/exec';
-
-// ── LANG ──
-var LANG='es';
-function setLang(l){
-  LANG=l;
-  document.getElementById('btn-es').classList.toggle('on',l==='es');
-  document.getElementById('btn-en').classList.toggle('on',l==='en');
-  document.getElementById('btn-app').textContent=l==='es'?'Entrar a la app →':'Open app →';
-  document.querySelectorAll('[data-placeholder-'+l+']').forEach(function(el){
-    var ph=el.getAttribute('data-placeholder-'+l);
-    if(ph)el.placeholder=ph;
-  });
-  document.querySelectorAll('[data-'+l+']').forEach(function(el){
-    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.tagName==='SELECT')return;
-    var val=el.getAttribute('data-'+l);
-    if(!val)return;
-    if(el.querySelector('button,input,select,textarea,form'))return;
-    el.innerHTML=val;
-  });
-  document.querySelectorAll('.legal-row label span[data-es]').forEach(function(el){
-    var v=el.getAttribute('data-'+l);
-    if(v)el.innerHTML=v;
-  });
-  document.querySelectorAll('.cons-form .legal-row label span[data-es]').forEach(function(el){
-    var v=el.getAttribute('data-'+l);
-    if(v)el.innerHTML=v;
-  });
-  var mEs=document.getElementById('modal-es');
-  var mEn=document.getElementById('modal-en');
-  if(mEs)mEs.style.display=l==='es'?'block':'none';
-  if(mEn)mEn.style.display=l==='en'?'block':'none';
-  var mcBtn=document.querySelector('.modal-footer button');
-  if(mcBtn)mcBtn.textContent=l==='es'?'Entendido, cerrar':'Got it, close';
-  try{localStorage.setItem('tnic_lang',l);}catch(e){}
-}
-
-// ── INIT LANG ──
-(function(){
-  var saved=null;
-  try{saved=localStorage.getItem('tnic_lang');}catch(e){}
-  var browserLang=(navigator.language||navigator.userLanguage||'es').toLowerCase();
-  var isEnglish=browserLang.startsWith('en');
-  var lang=saved||(isEnglish?'en':'es');
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',function(){setLang(lang);});
-  } else {
-    setLang(lang);
+const translations = {
+  es: {
+    "nav.services": "Servicios",
+    "nav.about": "Sobre mí",
+    "nav.app": "App",
+    "nav.contact": "Contacto",
+    "nav.cta": "Agendar llamada",
+    "hero.eyebrow": "Consultoría estratégica de talento IT · LATAM",
+    "hero.title": 'Construyo <span class="accent">áreas de talento IT</span> que escalan.',
+    "hero.sub": "Implemento ATS, diseño procesos y armo equipos de RRHH que funcionan sin depender de agencias. Para startups y empresas tech que necesitan crecer en serio.",
+    "hero.ctaPrimary": "Agendar llamada",
+    "hero.ctaSecondary": "Ver servicios",
+    "hero.metaExpLabel": "Experiencia",
+    "hero.metaExpValue": "10+ años en talento IT",
+    "hero.metaCovLabel": "Cobertura",
+    "hero.metaCovValue": "LATAM · Remoto",
+    "hero.metaSpecLabel": "Especialidad",
+    "hero.metaSpecValue": "Talent Operations · ATS · Procesos",
+    "marquee": 'Implementación de ATS con IA <span class="dot"></span> Procesos escalables <span class="dot"></span> Employer branding <span class="dot"></span> Hiring para startups tech <span class="dot"></span> Fractional Head of Talent <span class="dot"></span> LATAM <span class="dot"></span>',
+    "services.num": "01 / Empresas",
+    "services.title": "Tres formas de <em>escalar tu equipo IT</em>.",
+    "services.desc": "Desde un diagnóstico puntual hasta un Head of Talent fraccional. Elegí el formato que necesite tu empresa hoy.",
+    "services.cta": "Conversemos sobre tu caso",
+    "services.s1.name": "Hiring Process Audit",
+    "services.s1.desc": "Diagnóstico de tu proceso de talento actual. Identifico cuellos de botella y diseño un plan concreto de mejora con quick wins.",
+    "services.s1.i1": "Análisis de funnel: time-to-hire, conversión, dropout",
+    "services.s1.i2": "Reporte ejecutivo de 15-25 páginas",
+    "services.s1.i3": "Roadmap de mejoras priorizadas",
+    "services.s1.i4": "Presentación a stakeholders",
+    "services.s2.name": "Talent Operations Setup",
+    "services.s2.desc": "Implementación completa de ATS y procesos. Tu equipo sale operando con autonomía, sin depender de mí ni de agencias.",
+    "services.s2.i1": "Selección e implementación de ATS",
+    "services.s2.i2": "Diseño de procesos: sourcing, screening, evaluación",
+    "services.s2.i3": "Scorecards e interview kits",
+    "services.s2.i4": "Capacitación al equipo interno",
+    "services.s2.i5": "Dashboards de métricas",
+    "services.s3.name": "Fractional Head of Talent",
+    "services.s3.desc": "15-25 horas mensuales dedicadas a tu empresa. Estrategia, decisiones de hiring senior y mentoring del equipo de RRHH interno.",
+    "services.s3.i1": "Estrategia de talento ejecutiva",
+    "services.s3.i2": "Supervisión y mejora continua",
+    "services.s3.i3": "Decisiones de hiring senior",
+    "services.s3.i4": "Mentoring al equipo interno",
+    "services.s3.i5": "Compromiso mínimo: 3 meses",
+    "about.num": "02 / Acerca de mí",
+    "about.role": "Founder · Head of Talent",
+    "about.title": "Hace 10 años trabajo en <em>talento IT en LATAM</em>.",
+    "about.p1": "Lideré equipos de recruiting y talent operations en empresas IT, empresas de desarrollo de software y staff augmentation. Conozco el ecosistema desde adentro: cómo piensan los developers, qué buscan las empresas tech, y dónde se rompen los procesos cuando escalan.",
+    "about.p2": "Mi <strong>caso más reciente</strong>: implementación completa de Lever (ATS) en una empresa tech LATAM, migrando procesos manuales a flujos automatizados con IA. Seis meses de trabajo, procesos definidos, equipo capacitado y métricas que finalmente significan algo.",
+    "about.p3": "Ahora lo replico para otras empresas — y, en paralelo, estoy construyendo <strong>tNic</strong>, la plataforma que conecta talento IT con empresas en LATAM de forma inteligente.",
+    "about.c1l": "Especialización",
+    "about.c1v": "Talent Operations & ATS",
+    "about.c2l": "Industrias",
+    "about.c2v": "SaaS · Software · Staff Aug.",
+    "about.c3l": "Herramientas",
+    "about.c3v": "ATS con IA · Talent Operations",
+    "about.c4l": "Idiomas",
+    "about.c4v": "Español · English",
+    "about.linkedin": "Conectá en LinkedIn",
+    "case.eyebrow": "Lo que hago, en una idea",
+    "case.quote": '“Procesos escalables, automatización inteligente y <span class="accent">equipos de talento que funcionan con autonomía</span>.”',
+    "case.attr": "— Maria Laura Nicolas · Founder tNic",
+    "cands.num": "03 / Profesionales IT",
+    "cands.title": "También trabajo con <em>quienes buscan</em> el próximo paso.",
+    "cands.desc": "Si sos developer, designer o tech lead y querés posicionarte mejor para conseguir el rol que querés, hay un camino acompañado.",
+    "cands.cta": "Conversemos",
+    "cands.c1.name": "Personal Branding Sprint",
+    "cands.c1.desc": "Reposicionate en 2-3 semanas. LinkedIn optimizado, CV reescrito y mentoría 1:1 para que se note tu valor real.",
+    "cands.c1.i1": "LinkedIn completo (headline, about, experiencia)",
+    "cands.c1.i2": "CV + carta de presentación reescritos",
+    "cands.c1.i3": "Estrategia de posicionamiento",
+    "cands.c1.i4": "1 sesión de mentoría 1:1 (60 min)",
+    "cands.c2.name": "Career Acceleration Program",
+    "cands.c2.desc": "Programa de 4-6 semanas para senior+ que buscan saltar a su próximo rol estratégico, no solo \"el siguiente trabajo\".",
+    "cands.c2.i1": "Personal branding completo",
+    "cands.c2.i2": "4 sesiones de coaching de carrera",
+    "cands.c2.i3": "Simulacros de entrevistas con feedback",
+    "cands.c2.i4": "Conexiones del network cuando aplique",
+    "app.num": "04 / Producto",
+    "app.badge": "Beta abierta · LATAM",
+    "app.title": "La plataforma <em>tNic</em>.",
+    "app.desc": "Mientras trabajo en consultoría, construyo el producto que viene a sistematizar todo esto: una plataforma de matching entre talento IT y empresas tech, hecha en LATAM y para LATAM.",
+    "app.f1t": "Matching inteligente",
+    "app.f1d": "Conectamos perfiles y vacantes con criterio real, no por keywords.",
+    "app.f2t": "Mobile first",
+    "app.f2d": "Diseñada para cómo realmente se busca trabajo hoy: desde el celular.",
+    "app.f3t": "Foco LATAM",
+    "app.f3d": "Reglas locales, salarios en USD, modalidad remota como default.",
+    "app.cta": "Ver demo",
+    "app.waitlistBtn": "Versión beta",
+    "app.phoneName": "Senior Backend Dev",
+    "app.phoneRole": "Buenos Aires · Remoto · USD 5.5K",
+    "cta.title": "Hablemos sobre <em>tu equipo de talento</em>.",
+    "cta.desc": "30 minutos por video, sin formularios eternos. Llegás con el contexto, salís con un primer plan claro.",
+    "cta.btn1": "Agendar llamada",
+    "footer.brandDesc": "Consultoría estratégica de talento IT para empresas tech en LATAM. Construyo áreas de talento que escalan.",
+    "footer.servicesTitle": "Servicios",
+    "footer.connectTitle": "Conectá",
+    "footer.book": "Agendar llamada",
+    "footer.appLink": "App (beta)",
+    "footer.tm": "Marca en trámite — INPI Argentina · Expediente N° 3823071",
+    "wl.title": "Anotate en la <em>beta de tNic</em>.",
+    "wl.desc": "Cuando lancemos la versión completa, te avisamos por email para que seas de los primeros en probarla.",
+    "wl.typeLabel": "Soy",
+    "wl.typeCand": "Profesional IT",
+    "wl.typeComp": "Empresa",
+    "wl.nameLabel": "Nombre",
+    "wl.emailLabel": "Email",
+    "wl.companyLabel": "Empresa",
+    "wl.terms": "Acepto recibir comunicaciones por email sobre el lanzamiento de la beta y novedades de tNic. Mis datos se usan únicamente para contactarme.",
+    "wl.submit": "Anotarme",
+    "wl.success": "¡Listo! Te anotamos en la lista. Vas a recibir un mail de confirmación en breve.",
+    "wl.errorRequired": "Por favor completá todos los campos obligatorios.",
+    "wl.errorEmail": "Email inválido.",
+    "wl.errorTerms": "Tenés que aceptar los términos para continuar.",
+    "wl.errorGeneric": "Algo falló. Intentá de nuevo en unos segundos.",
+    "wl.sending": "Enviando..."
+  },
+  en: {
+    "nav.services": "Services",
+    "nav.about": "About me",
+    "nav.app": "App",
+    "nav.contact": "Contact",
+    "nav.cta": "Book a call",
+    "hero.eyebrow": "Strategic IT talent consulting · LATAM",
+    "hero.title": 'I build <span class="accent">IT talent functions</span> that scale.',
+    "hero.sub": "I implement ATS, design processes, and set up HR teams that work without relying on agencies. For startups and tech companies that need to grow seriously.",
+    "hero.ctaPrimary": "Book a call",
+    "hero.ctaSecondary": "View services",
+    "hero.metaExpLabel": "Experience",
+    "hero.metaExpValue": "10+ years in IT talent",
+    "hero.metaCovLabel": "Coverage",
+    "hero.metaCovValue": "LATAM · Remote",
+    "hero.metaSpecLabel": "Specialty",
+    "hero.metaSpecValue": "Talent Operations · ATS · Processes",
+    "marquee": 'AI-powered ATS implementation <span class="dot"></span> Scalable processes <span class="dot"></span> Employer branding <span class="dot"></span> Hiring for tech startups <span class="dot"></span> Fractional Head of Talent <span class="dot"></span> LATAM <span class="dot"></span>',
+    "services.num": "01 / Companies",
+    "services.title": "Three ways to <em>scale your IT team</em>.",
+    "services.desc": "From a one-off audit to a fractional Head of Talent. Pick the format your company needs today.",
+    "services.cta": "Let's talk about your case",
+    "services.s1.name": "Hiring Process Audit",
+    "services.s1.desc": "A diagnostic of your current talent process. I identify bottlenecks and design a concrete improvement plan with quick wins.",
+    "services.s1.i1": "Funnel analysis: time-to-hire, conversion, dropout",
+    "services.s1.i2": "15-25 page executive report",
+    "services.s1.i3": "Prioritized improvement roadmap",
+    "services.s1.i4": "Stakeholder presentation",
+    "services.s2.name": "Talent Operations Setup",
+    "services.s2.desc": "End-to-end ATS and process implementation. Your team operates autonomously, without depending on me or agencies.",
+    "services.s2.i1": "ATS selection and implementation",
+    "services.s2.i2": "Process design: sourcing, screening, evaluation",
+    "services.s2.i3": "Scorecards and interview kits",
+    "services.s2.i4": "Internal team training",
+    "services.s2.i5": "Metrics dashboards",
+    "services.s3.name": "Fractional Head of Talent",
+    "services.s3.desc": "15-25 hours per month dedicated to your company. Strategy, senior hiring decisions, and mentoring your internal HR team.",
+    "services.s3.i1": "Executive talent strategy",
+    "services.s3.i2": "Continuous oversight and improvement",
+    "services.s3.i3": "Senior hiring decisions",
+    "services.s3.i4": "Mentoring the internal team",
+    "services.s3.i5": "Minimum commitment: 3 months",
+    "about.num": "02 / About me",
+    "about.role": "Founder · Head of Talent",
+    "about.title": "I've been working in <em>IT talent in LATAM</em> for 10 years.",
+    "about.p1": "I led recruiting and talent operations teams at IT companies, software development firms, and staff augmentation businesses. I know the ecosystem from the inside: how developers think, what tech companies are looking for, and where processes break when they scale.",
+    "about.p2": "My <strong>most recent case</strong>: a complete Lever (ATS) implementation at a LATAM tech company, migrating manual processes to AI-automated workflows. Six months of work, defined processes, a trained team, and metrics that finally mean something.",
+    "about.p3": "Now I replicate this for other companies — and, in parallel, I'm building <strong>tNic</strong>, the platform that connects IT talent with companies in LATAM intelligently.",
+    "about.c1l": "Specialization",
+    "about.c1v": "Talent Operations & ATS",
+    "about.c2l": "Industries",
+    "about.c2v": "SaaS · Software · Staff Aug.",
+    "about.c3l": "Tools",
+    "about.c3v": "AI-powered ATS · Talent Operations",
+    "about.c4l": "Languages",
+    "about.c4v": "Spanish · English",
+    "about.linkedin": "Connect on LinkedIn",
+    "case.eyebrow": "What I do, in one idea",
+    "case.quote": '“Scalable processes, smart automation, and <span class="accent">talent teams that run with autonomy</span>.”',
+    "case.attr": "— Maria Laura Nicolas · Founder tNic",
+    "cands.num": "03 / IT Professionals",
+    "cands.title": "I also work with <em>those looking</em> for their next step.",
+    "cands.desc": "If you're a developer, designer, or tech lead and you want to position yourself better to land the role you want, there's a guided path for you.",
+    "cands.cta": "Let's talk",
+    "cands.c1.name": "Personal Branding Sprint",
+    "cands.c1.desc": "Reposition yourself in 2-3 weeks. Optimized LinkedIn, rewritten resume, and 1:1 mentoring so your real value gets noticed.",
+    "cands.c1.i1": "Complete LinkedIn (headline, about, experience)",
+    "cands.c1.i2": "Resume + cover letter rewritten",
+    "cands.c1.i3": "Positioning strategy",
+    "cands.c1.i4": "1 mentoring session 1:1 (60 min)",
+    "cands.c2.name": "Career Acceleration Program",
+    "cands.c2.desc": "A 4-6 week program for senior+ professionals looking to jump to their next strategic role, not just \"the next job\".",
+    "cands.c2.i1": "Complete personal branding",
+    "cands.c2.i2": "4 career coaching sessions",
+    "cands.c2.i3": "Mock interviews with feedback",
+    "cands.c2.i4": "Network introductions when applicable",
+    "app.num": "04 / Product",
+    "app.badge": "Open beta · LATAM",
+    "app.title": "The <em>tNic</em> platform.",
+    "app.desc": "While working on consulting, I'm building the product that systematizes all of this: a matching platform between IT talent and tech companies, made in LATAM and for LATAM.",
+    "app.f1t": "Smart matching",
+    "app.f1d": "We connect profiles and openings with real criteria, not just keywords.",
+    "app.f2t": "Mobile first",
+    "app.f2d": "Designed for how people actually look for jobs today: from their phone.",
+    "app.f3t": "LATAM focused",
+    "app.f3d": "Local rules, USD salaries, remote work as default.",
+    "app.cta": "View demo",
+    "app.waitlistBtn": "Beta version",
+    "app.phoneName": "Senior Backend Dev",
+    "app.phoneRole": "Buenos Aires · Remote · USD 5.5K",
+    "cta.title": "Let's talk about <em>your talent team</em>.",
+    "cta.desc": "30 minutes by video, no endless forms. You bring the context, you leave with a first clear plan.",
+    "cta.btn1": "Book a call",
+    "footer.brandDesc": "Strategic IT talent consulting for tech companies in LATAM. I build talent functions that scale.",
+    "footer.servicesTitle": "Services",
+    "footer.connectTitle": "Connect",
+    "footer.book": "Book a call",
+    "footer.appLink": "App (beta)",
+    "footer.tm": "Trademark pending — INPI Argentina · File N° 3823071",
+    "wl.title": "Join the <em>tNic beta</em>.",
+    "wl.desc": "When we launch the full version, we'll email you so you're among the first to try it.",
+    "wl.typeLabel": "I am a",
+    "wl.typeCand": "IT Professional",
+    "wl.typeComp": "Company",
+    "wl.nameLabel": "Name",
+    "wl.emailLabel": "Email",
+    "wl.companyLabel": "Company",
+    "wl.terms": "I agree to receive emails about the beta launch and tNic updates. My data is used solely to contact me.",
+    "wl.submit": "Sign me up",
+    "wl.success": "You're in! We've added you to the list. You'll get a confirmation email shortly.",
+    "wl.errorRequired": "Please fill in all required fields.",
+    "wl.errorEmail": "Invalid email.",
+    "wl.errorTerms": "You need to accept the terms to continue.",
+    "wl.errorGeneric": "Something went wrong. Please try again in a few seconds.",
+    "wl.sending": "Sending..."
   }
-})();
+};
 
-// ── FORM WAITLIST (candidato / empresa) ──
-function submitForm(e,type){
-  e.preventDefault();
-  var name=type==='candidate'?document.getElementById('cand-name').value:document.getElementById('comp-name').value;
-  var email=type==='candidate'?document.getElementById('cand-email').value:document.getElementById('comp-email').value;
-  var tipo=type==='candidate'?'candidato':'empresa';
-  var btn=e.target.querySelector('.btn-submit');
-  btn.disabled=true;
-  btn.textContent=LANG==='es'?'Enviando...':'Sending...';
-  fetch(SHEET_URL,{
-    method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({nombre:name,email:email,tipo:tipo})
-  })
-  .then(function(){showSuccess(type);})
-  .catch(function(){showSuccess(type);});
-}
-function showSuccess(type){
-  var okId=type==='candidate'?'cand-ok':'comp-ok';
-  document.getElementById(okId).style.display='block';
-  var f=document.getElementById(okId).closest('form');
-  f.querySelector('.inp-row').style.display='none';
-  f.querySelector('.legal-row').style.display='none';
-  f.querySelector('.btn-submit').style.display='none';
-}
-
-// ── FORM CONSULTORÍA ──
-function submitConsulting(e,type){
-  e.preventDefault();
-  var name,email,extra,msg;
-  if(type==='company-consulting'){
-    name=document.getElementById('cons-comp-name').value;
-    email=document.getElementById('cons-comp-email').value;
-    extra=document.getElementById('cons-comp-company').value;
-    msg=document.getElementById('cons-comp-msg').value;
-  } else {
-    name=document.getElementById('cons-cand-name').value;
-    email=document.getElementById('cons-cand-email').value;
-    extra=document.getElementById('cons-cand-role').value;
-    msg=document.getElementById('cons-cand-msg').value;
-  }
-  var btn=e.target.querySelector('.cons-btn');
-  btn.disabled=true;
-  btn.textContent=LANG==='es'?'Enviando...':'Sending...';
-  var tipo=type==='company-consulting'?'consultoria-empresa':'consultoria-candidato';
-  var payload={nombre:name,email:email,tipo:tipo,mensaje:msg};
-  if(type==='company-consulting') payload.empresa=extra;
-  else payload.rol=extra;
-  fetch(SHEET_URL,{
-    method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify(payload)
-  })
-  .then(function(){showConsultingSuccess(type);})
-  .catch(function(){showConsultingSuccess(type);});
-}
-function showConsultingSuccess(type){
-  var isComp=type==='company-consulting';
-  var okId=isComp?'cons-comp-ok':'cons-cand-ok';
-  document.getElementById(okId).style.display='block';
-  var f=document.getElementById(okId).closest('form');
-  f.querySelectorAll('input,textarea,.cons-btn').forEach(function(el){el.style.display='none';});
-  f.querySelector('.legal-row').style.display='none';
-}
-
-// ── MODAL ──
-function openModal(e){if(e)e.preventDefault();document.getElementById('tc-modal').classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(){document.getElementById('tc-modal').classList.remove('open');document.body.style.overflow='';}
-document.getElementById('tc-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
-
-// ── TUTORIAL ──
-var currentStep=0;
-var cards=[
-  {av:'AM',name:'Andrés M.',role:'Mobile Developer',loc:'CABA, AR',skills:['Flutter','Swift','Firebase'],pct:'95%',w:'95%',color:'#D97706'},
-  {av:'VR',name:'Valentina R.',role:'Data Engineer',loc:'Córdoba, AR',skills:['Python','Spark','dbt'],pct:'87%',w:'87%',color:'#7C3AED'},
-  {av:'LP',name:'Lucas P.',role:'DevOps Engineer',loc:'Rosario, AR',skills:['AWS','K8s','Terraform'],pct:'78%',w:'78%',color:'#059669'},
-  {av:'MG',name:'Matías G.',role:'Full Stack Dev',loc:'Buenos Aires, AR',skills:['React','Node.js','PG'],pct:'92%',w:'92%',color:'#2B5CE6'},
-];
-var cardIdx=0,swipeTimer=null;
-
-function goStep(s){
-  currentStep=s;
-  for(var i=0;i<5;i++){var b=document.getElementById('sbtn-'+i);if(b)b.classList.toggle('on',i===s);}
-  document.querySelectorAll('.step-info').forEach(function(p,i){p.classList.toggle('active',i===s);});
-  var ids=['ps-swipe','ps-match','ps-chat','ps-agenda','ps-pipeline'];
-  ids.forEach(function(id,i){
-    var el=document.getElementById(id);
-    if(!el)return;
-    el.classList.toggle('active',i===s);
+function setLanguage(lang) {
+  const dict = translations[lang];
+  if (!dict) return;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = dict[key];
+    if (val == null) return;
+    if (el.hasAttribute('data-i18n-html')) {
+      el.innerHTML = val;
+    } else {
+      el.textContent = val;
+    }
   });
-  if(s===2){
-    document.querySelectorAll('#chat-body .pc-bw').forEach(function(el,i){
-      el.style.opacity='0';el.style.transform='translateY(8px)';
-      setTimeout(function(){el.style.transition='all .4s ease';el.style.opacity='1';el.style.transform='none';},i*250+100);
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  try { localStorage.setItem('tnic_lang', lang); } catch(e) {}
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+});
+
+let initLang = 'es';
+try {
+  const saved = localStorage.getItem('tnic_lang');
+  if (saved === 'es' || saved === 'en') initLang = saved;
+  else if ((navigator.language || '').toLowerCase().startsWith('en')) initLang = 'en';
+} catch(e) {}
+setLanguage(initLang);
+
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+revealEls.forEach(el => io.observe(el));
+
+document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
+  const links = document.querySelector('.nav-links');
+  if (!links) return;
+  if (links.style.display === 'flex') {
+    links.style.display = '';
+  } else {
+    links.style.display = 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'fixed';
+    links.style.top = '64px';
+    links.style.right = '24px';
+    links.style.left = '24px';
+    links.style.background = 'var(--paper)';
+    links.style.padding = '24px';
+    links.style.borderRadius = '12px';
+    links.style.boxShadow = '0 12px 40px rgba(10,14,39,0.12)';
+    links.style.gap = '20px';
+  }
+});
+
+// ===== WAITLIST MODAL =====
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwyrTlcE0qS-qxtpMGsH4MAKKgZEQ-0RCewKRqLU7S_lS7MgkJOAvq_DEtFNa3wESutlg/exec';
+
+const modal = document.getElementById('waitlistModal');
+const openBtn = document.getElementById('openWaitlistBtn');
+const closeBtn = document.getElementById('closeWaitlistBtn');
+const form = document.getElementById('waitlistForm');
+const fieldEmpresa = document.getElementById('fieldEmpresa');
+const messageBox = document.getElementById('wlMessage');
+const submitBtn = document.getElementById('wlSubmit');
+
+function openModal() {
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('wlNombre')?.focus(), 300);
+}
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  messageBox.className = 'form-message';
+  messageBox.textContent = '';
+}
+
+openBtn?.addEventListener('click', openModal);
+closeBtn?.addEventListener('click', closeModal);
+modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+// Mostrar/ocultar campo "Empresa" según tipo seleccionado
+form?.querySelectorAll('input[name="tipo"]').forEach(r => {
+  r.addEventListener('change', () => {
+    if (r.value === 'empresa' && r.checked) {
+      fieldEmpresa.classList.add('show');
+      document.getElementById('wlEmpresa').setAttribute('required', '');
+    } else {
+      fieldEmpresa.classList.remove('show');
+      document.getElementById('wlEmpresa').removeAttribute('required');
+    }
+  });
+});
+
+// Submit del formulario
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const lang = document.documentElement.lang || 'es';
+  const dict = translations[lang];
+
+  const tipo = form.querySelector('input[name="tipo"]:checked')?.value;
+  const nombre = document.getElementById('wlNombre').value.trim();
+  const email = document.getElementById('wlEmail').value.trim();
+  const empresa = document.getElementById('wlEmpresa').value.trim();
+  const terms = document.getElementById('wlTerms').checked;
+
+  // Validación
+  if (!tipo || !nombre || !email) {
+    messageBox.className = 'form-message error';
+    messageBox.textContent = dict['wl.errorRequired'];
+    return;
+  }
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email)) {
+    messageBox.className = 'form-message error';
+    messageBox.textContent = dict['wl.errorEmail'];
+    return;
+  }
+  if (tipo === 'empresa' && !empresa) {
+    messageBox.className = 'form-message error';
+    messageBox.textContent = dict['wl.errorRequired'];
+    return;
+  }
+  if (!terms) {
+    messageBox.className = 'form-message error';
+    messageBox.textContent = dict['wl.errorTerms'];
+    return;
+  }
+
+  // Envío al Apps Script
+  submitBtn.disabled = true;
+  submitBtn.querySelector('span:first-child').textContent = dict['wl.sending'];
+  messageBox.className = 'form-message';
+  messageBox.textContent = '';
+
+  const payload = {
+    tipo: tipo,
+    nombre: nombre,
+    email: email,
+    empresa: tipo === 'empresa' ? empresa : '',
+    fuente: 'waitlist-app'
+  };
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
     });
+    // Con mode:'no-cors' no podemos leer la respuesta, asumimos éxito
+    messageBox.className = 'form-message success';
+    messageBox.textContent = dict['wl.success'];
+    form.reset();
+    fieldEmpresa.classList.remove('show');
+    setTimeout(() => { closeModal(); }, 3500);
+  } catch (err) {
+    messageBox.className = 'form-message error';
+    messageBox.textContent = dict['wl.errorGeneric'];
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.querySelector('span:first-child').textContent = dict['wl.submit'];
   }
-}
-
-function runSwipeDemo(){
-  var card=document.getElementById('swipe-card');
-  var stampL=document.getElementById('stamp-like');
-  var finger=document.getElementById('finger');
-  if(!card||currentStep!==0)return;
-  finger.style.cssText='opacity:1;bottom:120px;left:50%;transform:translateX(-50%)';
-  setTimeout(function(){
-    finger.style.transition='all .6s ease';
-    finger.style.left='72%';finger.style.bottom='110px';
-    stampL.style.cssText='animation:stampLike 1.2s ease forwards;opacity:0';
-  },500);
-  setTimeout(function(){
-    card.style.cssText='animation:swipeRight .7s ease forwards';
-  },900);
-  setTimeout(function(){
-    card.style.cssText='';stampL.style.cssText='';
-    finger.style.cssText='opacity:0';
-    cardIdx=(cardIdx+1)%cards.length;
-    var c=cards[cardIdx];
-    document.getElementById('card-av').textContent=c.av;
-    document.getElementById('card-av').style.background=c.color;
-    document.getElementById('card-name').textContent=c.name;
-    document.getElementById('card-role').textContent=c.role;
-    document.getElementById('card-loc').textContent='📍 '+c.loc;
-    document.getElementById('card-bar').style.width=c.w;
-    document.getElementById('card-pct').textContent=c.pct;
-    document.getElementById('card-skills').innerHTML=c.skills.map(function(s){return'<span class="p-sk">'+s+'</span>';}).join('');
-    document.getElementById('match-av').textContent=c.av;
-    document.getElementById('match-av').style.background=c.color;
-    document.getElementById('match-sub').textContent=c.name+' y vos tienen Mutual Interest';
-  },1700);
-}
-
-function doLike(){runSwipeDemo();if(currentStep===0)setTimeout(function(){goStep(1);},2200);}
-function doPass(){
-  var card=document.getElementById('card');var stamp=document.getElementById('stamp-pass');
-  if(card)card.style.cssText='animation:swipeLeft .7s ease forwards';
-  if(stamp)stamp.style.cssText='animation:stampPass 1.2s ease forwards';
-  setTimeout(function(){if(card)card.style.cssText='';if(stamp)stamp.style.cssText='';},1800);
-}
-
-var s=document.createElement('style');
-s.textContent='@keyframes swipeLeft{0%{transform:translateX(0) rotate(0);opacity:1}100%{transform:translateX(-300px) rotate(-18deg);opacity:0}}@keyframes stampPass{0%{opacity:0}30%{opacity:1}70%{opacity:1}100%{opacity:0}}';
-document.head.appendChild(s);
-
-swipeTimer=setInterval(function(){if(currentStep===0)runSwipeDemo();},3500);
-
-var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.12});
-document.querySelectorAll('.fade-in').forEach(function(el){obs.observe(el);});
-
-goStep(0);
+});
 </script>
 </body>
 </html>

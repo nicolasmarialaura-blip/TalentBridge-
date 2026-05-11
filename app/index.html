@@ -1233,6 +1233,9 @@ var COMPANIES=[
 var mode='candidates',dataSet=CANDIDATES,idx=0;
 var matches=[],chats={},curMatch=null,curChat=null;
 var currentChatUnsub=null;
+var pipelineUnsub=null, interviewsUnsub=null;
+var pipelineByUid={}; // uid -> stage (cache para reconciliar cuando los matches recién cargan)
+var pipelineMigrated=false;
 var chatPrev='swipe-scr',schedulePrev='swipe-scr',detailPrev='swipe-scr',cvViewerPrev='detail-scr';
 var stats={seen:0,likes:0,mc:0,interviews:0};
 var pipeline={},interviews=[],selectedInterview=null;
@@ -1438,6 +1441,98 @@ function fmtTs(ts){
 function unsubscribeFromChatMessages(){
   if(currentChatUnsub){try{currentChatUnsub();}catch(e){}currentChatUnsub=null;}
 }
+
+// ─────────────────────────────────────────────
+// PIPELINE — sync con pipelines/{companyUid}/items/{candidateUid}
+// Sólo empresas. Para candidatos demos (sin uid) queda local.
+// ─────────────────────────────────────────────
+function canSyncToFirestore(){ return !!(currentUser && !currentUser.isAnonymous); }
+function findMatchByName(name){ return matches.find(function(m){return m.name===name;}); }
+function findUidByName(name){ var m=findMatchByName(name); return m&&m.uid?m.uid:null; }
+function findNameByUid(uid){ var m=matches.find(function(x){return x.uid===uid;}); return m?m.name:null; }
+
+function reconcilePipelineFromUids(){
+  matches.forEach(function(m){
+    if(m.uid && pipelineByUid[m.uid]!==undefined){
+      pipeline[m.name]=pipelineByUid[m.uid];
+    }
+  });
+}
+
+function subscribeToPipeline(){
+  if(pipelineUnsub){try{pipelineUnsub();}catch(e){}pipelineUnsub=null;}
+  if(!canSyncToFirestore() || USER_ROLE!=='company') return;
+  pipelineUnsub=db.collection('pipelines').doc(currentUser.uid).collection('items')
+    .onSnapshot(function(snap){
+      // Migración 1-vez: si snapshot está vacío y hay pipeline en localStorage, subir.
+      if(!pipelineMigrated && snap.empty){
+        pipelineMigrated=true;
+        Object.keys(pipeline).forEach(function(name){
+          var uid=findUidByName(name);
+          if(uid && pipeline[name]>0){
+            db.collection('pipelines').doc(currentUser.uid).collection('items').doc(uid).set({
+              stage:pipeline[name],
+              updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+            }).catch(function(e){console.log('Pipeline migration error:',e);});
+          }
+        });
+        return; // listener se va a re-disparar con los items
+      }
+      pipelineMigrated=true;
+      snap.docs.forEach(function(doc){
+        var d=doc.data();
+        pipelineByUid[doc.id]=(typeof d.stage==='number')?d.stage:0;
+      });
+      reconcilePipelineFromUids();
+      persistAll();
+      var scr=G('pipeline-scr'); if(scr && scr.classList.contains('on')) buildKanban();
+    },function(err){console.log('Pipeline listener error:',err);});
+}
+
+function writePipelineStage(name, stage){
+  if(!canSyncToFirestore() || USER_ROLE!=='company') return;
+  var uid=findUidByName(name);
+  if(!uid) return; // demo: no sync
+  pipelineByUid[uid]=stage;
+  db.collection('pipelines').doc(currentUser.uid).collection('items').doc(uid).set({
+    stage:stage,
+    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  },{merge:true}).catch(function(e){console.log('Pipeline write error:',e);});
+}
+
+// ─────────────────────────────────────────────
+// INTERVIEWS — sync con interviews/{interviewId}
+// Empresa: write/update/delete. Candidato: solo lectura de las suyas.
+// ─────────────────────────────────────────────
+function subscribeToInterviews(){
+  if(interviewsUnsub){try{interviewsUnsub();}catch(e){}interviewsUnsub=null;}
+  if(!canSyncToFirestore()) return;
+  var field = USER_ROLE==='company' ? 'companyUid' : 'candidateUid';
+  interviewsUnsub=db.collection('interviews').where(field,'==',currentUser.uid)
+    .onSnapshot(function(snap){
+      // Mantener entradas locales sin interviewId (demos)
+      var localOnly = agendaInterviews.filter(function(iv){return !iv.interviewId;});
+      var fromFirestore = snap.docs.map(function(doc){
+        var d=doc.data(); d.interviewId=doc.id;
+        // Enriquecer con metadata visual desde matches si la tenemos
+        var m = matches.find(function(x){return x.uid===d.candidateUid;}) ||
+                matches.find(function(x){return x.uid===d.companyUid;});
+        if(m){ d.color=d.color||m.color; d.av=d.av||m.av; d.photo=d.photo||m.photo||null; d.role=d.role||m.role; }
+        // Para que el UI muestre el nombre de quien corresponda
+        d.candidate = USER_ROLE==='company' ? (d.candidateName||d.candidate||'') : (d.companyName||'');
+        return d;
+      });
+      agendaInterviews = fromFirestore.concat(localOnly);
+      persistAll();
+      var scr=G('agenda-scr'); if(scr && scr.classList.contains('on')) buildAgenda();
+    },function(err){console.log('Interviews listener error:',err);});
+}
+
+function unsubscribeFromPipelineAndInterviews(){
+  if(pipelineUnsub){try{pipelineUnsub();}catch(e){}pipelineUnsub=null;}
+  if(interviewsUnsub){try{interviewsUnsub();}catch(e){}interviewsUnsub=null;}
+  pipelineByUid={}; pipelineMigrated=false;
+}
 function subscribeToChatMessages(person){
   unsubscribeFromChatMessages();
   if(!isRealMatch(person))return;
@@ -1588,7 +1683,14 @@ function buildKanban(){
   }
   G('pipeline-sub').textContent=matches.length+' candidatos en pipeline';
 }
-function movePipeline(name,dir){if(pipeline[name]===undefined)pipeline[name]=0;pipeline[name]=Math.max(0,Math.min(3,pipeline[name]+dir));buildKanban();addNotif('📋','<strong>'+name+'</strong> → '+['Nuevo','Entrevista','Oferta','Contratado'][pipeline[name]],'ahora');}
+function movePipeline(name,dir){
+  if(pipeline[name]===undefined)pipeline[name]=0;
+  pipeline[name]=Math.max(0,Math.min(3,pipeline[name]+dir));
+  buildKanban();
+  addNotif('📋','<strong>'+name+'</strong> → '+['Nuevo','Entrevista','Oferta','Contratado'][pipeline[name]],'ahora');
+  writePipelineStage(name, pipeline[name]);
+  persistAll();
+}
 
 // ── SCHEDULE ──
 function buildSchedule(){
@@ -2121,6 +2223,8 @@ function handleMatchDoc(matchDoc, isNew) {
       profile.matchId = matchDoc.id;
       addMatch(profile, false);
       var added = matches.find(function(m) { return m.uid === otherUid; }) || profile;
+      // Si el pipeline ya tiene stage para este uid, aplicarlo al name
+      reconcilePipelineFromUids();
       persistAll();
       if (isNew) {
         curMatch = added;
@@ -2195,9 +2299,11 @@ function saveSilent(){
 }
 
 function applyRoleUI(){
-  // Safety net: cualquier transición de rol arranca el listener de matches.
-  if (currentUser && !currentUser.isAnonymous && !matchesUnsub) {
-    try { listenForMatches(); } catch(e) { console.log('applyRoleUI: listenForMatches falló', e); }
+  // Safety net: cualquier transición de rol arranca los listeners.
+  if (currentUser && !currentUser.isAnonymous) {
+    if (!matchesUnsub) { try { listenForMatches(); } catch(e) { console.log('applyRoleUI: listenForMatches falló', e); } }
+    if (!interviewsUnsub) { try { subscribeToInterviews(); } catch(e) { console.log('applyRoleUI: subscribeToInterviews falló', e); } }
+    if (USER_ROLE==='company' && !pipelineUnsub) { try { subscribeToPipeline(); } catch(e) { console.log('applyRoleUI: subscribeToPipeline falló', e); } }
   }
   var isC=USER_ROLE==='candidate';
   dataSet=isC?COMPANIES:CANDIDATES;idx=0;mode=isC?'companies':'candidates';
@@ -2258,13 +2364,58 @@ function saveScheduledInterview(){
   var duration=G('sm-duration').value,notes=G('sm-notes').value;
   var link=(G('sm-link')||{value:''}).value.trim();
   var match=matches.find(function(m){return m.name===candName;});
-  var iv={candidate:candName,candidateEmail:(match&&match.email)||'',recruiterEmail:copData.contactEmail||'',companyName:copData.name||'tNic',platform:selectedPlatform,date:date,time:time,duration:duration,notes:notes,link:link,status:'confirmed',altSlots:altSlots.filter(function(s){return s.date&&s.time;}),createdAt:new Date().toISOString()};
+  var iv={
+    candidate:candName,
+    candidateEmail:(match&&match.email)||'',
+    recruiterEmail:copData.contactEmail||'',
+    companyName:copData.name||'tNic',
+    platform:selectedPlatform,
+    date:date, time:time, duration:duration, notes:notes, link:link,
+    status:'confirmed',
+    altSlots:altSlots.filter(function(s){return s.date&&s.time;}),
+    createdAt:new Date().toISOString()
+  };
   if(match){iv.color=match.color;iv.av=match.av;iv.photo=match.photo||null;iv.role=match.role;}
-  if(editInterviewIdx!==null){agendaInterviews[editInterviewIdx]=iv;}else{agendaInterviews.push(iv);}
-  if(pipeline[candName]===undefined||pipeline[candName]===0)pipeline[candName]=1;
+
+  var realMatch = isRealMatch(match) && USER_ROLE==='company' && canSyncToFirestore();
+  var existing = (editInterviewIdx!==null) ? agendaInterviews[editInterviewIdx] : null;
+
+  if(realMatch){
+    // Construir payload sin campos de UI local
+    var payload = {
+      companyUid: currentUser.uid,
+      candidateUid: match.uid,
+      candidateName: candName,
+      companyName: copData.name||'',
+      candidateEmail: iv.candidateEmail,
+      recruiterEmail: iv.recruiterEmail,
+      platform: selectedPlatform,
+      date:date, time:time, duration:duration, notes:notes, link:link,
+      status:'confirmed',
+      altSlots: iv.altSlots,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    if(existing && existing.interviewId){
+      db.collection('interviews').doc(existing.interviewId).set(payload,{merge:true})
+        .catch(function(e){console.log('Interview update error:',e); alert('No se pudo actualizar la entrevista.');});
+    } else {
+      payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      db.collection('interviews').add(payload)
+        .catch(function(e){console.log('Interview create error:',e); alert('No se pudo crear la entrevista.');});
+    }
+    // El snapshot listener actualizará agendaInterviews; mostrar un toast por ahora.
+  } else {
+    // Camino demo / sin sync: mantener flujo local
+    if(editInterviewIdx!==null){agendaInterviews[editInterviewIdx]=iv;}else{agendaInterviews.push(iv);}
+  }
+
+  if(pipeline[candName]===undefined||pipeline[candName]===0){
+    pipeline[candName]=1;
+    writePipelineStage(candName, 1);
+  }
+
   var schedMsg='📅 Entrevista agendada: '+date+' a las '+time+'.'+(link?' Link: '+link:'')+(notes?' Nota: '+notes:'');
   if(isRealMatch(match)){
-    // Match real: escribir en Firestore. Snapshot pinta la burbuja si el chat está abierto.
     db.collection('matches').doc(match.matchId).collection('messages').add({
       from:currentUser.uid,
       text:schedMsg,
@@ -2277,22 +2428,65 @@ function saveScheduledInterview(){
   persistAll();closeScheduleModal();buildAgenda();
 }
 function buildAgenda(){
+  var isCandidate = USER_ROLE==='candidate';
+  // Título adaptado por rol
+  var titleEl=document.querySelector('#agenda-scr .agenda-title');
+  if(titleEl) titleEl.textContent = isCandidate ? '📅 Mis próximas entrevistas' : '📅 Agenda de entrevistas';
+  // Ocultar el botón "+ Nueva entrevista" para el candidato (no puede crear)
+  var newBtn=document.querySelector('#agenda-scr .add-job-btn');
+  if(newBtn) newBtn.style.display = isCandidate ? 'none' : '';
+
   var filtered=agendaInterviews.filter(function(iv){return agendaTab==='all'||iv.status===agendaTab;});
-  G('agenda-sub').textContent=agendaInterviews.length+' entrevistas agendadas';
+  G('agenda-sub').textContent=agendaInterviews.length+' entrevistas '+(isCandidate?'recibidas':'agendadas');
   var list=G('agenda-list');if(!list)return;
-  if(!filtered.length){list.innerHTML='<div style="text-align:center;padding:30px;color:var(--gray);font-size:13px"><div style="font-size:36px;margin-bottom:8px">📅</div><div>Sin entrevistas '+(agendaTab==='all'?'agendadas':'en este estado')+'</div></div>';return;}
+  if(!filtered.length){
+    var empty = isCandidate
+      ? 'Aún no tenés entrevistas. Cuando una empresa agende una contigo, va a aparecer acá.'
+      : 'Sin entrevistas '+(agendaTab==='all'?'agendadas':'en este estado');
+    list.innerHTML='<div style="text-align:center;padding:30px;color:var(--gray);font-size:13px"><div style="font-size:36px;margin-bottom:8px">📅</div><div>'+empty+'</div></div>';
+    return;
+  }
   list.innerHTML=filtered.map(function(iv,i){
     var av=iv.photo?'<img src="'+iv.photo+'">':iv.av||'?';
     var sc=iv.status==='confirmed'?'confirmed':iv.status==='proposed'?'proposed':'pending';
     var sl={confirmed:'✓ Confirmada',pending:'⏳ Pendiente',proposed:'💬 Propuesta'};
+    // El "candidate" en la card es el contraparte: candidato ve nombre de empresa, empresa ve nombre de candidato.
+    var displayName = isCandidate ? (iv.companyName||iv.candidate||'') : (iv.candidate||iv.candidateName||'');
     var linkHtml=iv.link?'<div class="iv-link"><span>'+getPlatformIcon(iv.platform)+'</span><a href="'+iv.link+'" target="_blank">'+iv.link+'</a><button class="iv-copy-btn" onclick="copyLink(\''+encodeURIComponent(iv.link)+'\')">Copiar</button></div>':'';
-    return'<div class="interview-card '+sc+'"><div class="iv-header"><div class="iv-avatar" style="background:'+(iv.color||'var(--b)')+'">'+av+'</div><div><div class="iv-name">'+iv.candidate+'</div><div class="iv-role">'+(iv.role||'')+'</div></div><div class="iv-status '+sc+'">'+sl[iv.status]+'</div></div><div class="iv-details"><div class="iv-detail-row"><span class="iv-detail-icon">📅</span>'+iv.date+' · '+iv.time+'</div><div class="iv-detail-row"><span class="iv-detail-icon">⏱</span>'+iv.duration+'</div><div class="iv-detail-row"><span class="iv-detail-icon">'+getPlatformIcon(iv.platform)+'</span>'+getPlatformName(iv.platform)+'</div>'+(iv.notes?'<div class="iv-detail-row"><span class="iv-detail-icon">📝</span>'+iv.notes+'</div>':'')+'</div>'+linkHtml+'<div class="iv-actions">'+(iv.link?'<button class="iv-btn '+getPlatformClass(iv.platform)+'" onclick="window.open(\''+iv.link+'\',\'_blank\')">'+getPlatformIcon(iv.platform)+' Unirse</button>':'')+'<button class="iv-btn iv-btn-ghost" onclick="openScheduleModal(\''+iv.candidate+'\')">✏️ Editar</button><button class="iv-btn iv-btn-danger" onclick="deleteInterview('+i+')">🗑</button></div></div>';
+    var joinBtn = iv.link?'<button class="iv-btn '+getPlatformClass(iv.platform)+'" onclick="window.open(\''+iv.link+'\',\'_blank\')">'+getPlatformIcon(iv.platform)+' Unirse</button>':'';
+    // Acciones de mutación sólo para empresa
+    var mutateActions = isCandidate ? '' :
+      '<button class="iv-btn iv-btn-ghost" onclick="openScheduleModal(\''+iv.candidate+'\')">✏️ Editar</button><button class="iv-btn iv-btn-danger" onclick="deleteInterview('+i+')">🗑</button>';
+    return'<div class="interview-card '+sc+'"><div class="iv-header"><div class="iv-avatar" style="background:'+(iv.color||'var(--b)')+'">'+av+'</div><div><div class="iv-name">'+displayName+'</div><div class="iv-role">'+(iv.role||'')+'</div></div><div class="iv-status '+sc+'">'+sl[iv.status]+'</div></div><div class="iv-details"><div class="iv-detail-row"><span class="iv-detail-icon">📅</span>'+iv.date+' · '+iv.time+'</div><div class="iv-detail-row"><span class="iv-detail-icon">⏱</span>'+iv.duration+'</div><div class="iv-detail-row"><span class="iv-detail-icon">'+getPlatformIcon(iv.platform)+'</span>'+getPlatformName(iv.platform)+'</div>'+(iv.notes?'<div class="iv-detail-row"><span class="iv-detail-icon">📝</span>'+iv.notes+'</div>':'')+'</div>'+linkHtml+'<div class="iv-actions">'+joinBtn+mutateActions+'</div></div>';
   }).join('');
 }
 function switchAgendaTab(tab){agendaTab=tab;['all','pending','confirmed','proposed'].forEach(function(t){var el=G('ag-tab-'+t);if(el)el.classList.toggle('on',t===tab);});buildAgenda();}
-function deleteInterview(i){if(confirm('¿Eliminar esta entrevista?')){agendaInterviews.splice(i,1);buildAgenda();}}
+function deleteInterview(i){
+  if(!confirm('¿Eliminar esta entrevista?')) return;
+  var iv=agendaInterviews[i];
+  if(iv && iv.interviewId && canSyncToFirestore() && USER_ROLE==='company'){
+    db.collection('interviews').doc(iv.interviewId).delete()
+      .catch(function(e){console.log('Interview delete error:',e); alert('No se pudo eliminar la entrevista.');});
+    // El snapshot listener removerá la entry local
+  } else {
+    agendaInterviews.splice(i,1); buildAgenda();
+  }
+}
 function copyLink(enc){var link=decodeURIComponent(enc);if(navigator.clipboard){navigator.clipboard.writeText(link).then(function(){addNotif('📋','Link copiado al portapapeles','ahora');});}}
-function acceptSlot(ivIdx,slotIdx){var iv=agendaInterviews[ivIdx];if(!iv)return;var s=iv.altSlots[slotIdx];iv.date=s.date;iv.time=s.time;iv.status='confirmed';iv.altSlots=[];buildAgenda();addNotif('✅','Horario confirmado con <strong>'+iv.candidate+'</strong>','ahora');}
+function acceptSlot(ivIdx,slotIdx){
+  var iv=agendaInterviews[ivIdx]; if(!iv) return;
+  var s=iv.altSlots[slotIdx]; if(!s) return;
+  iv.date=s.date; iv.time=s.time; iv.status='confirmed'; iv.altSlots=[];
+  if(iv.interviewId && canSyncToFirestore()){
+    db.collection('interviews').doc(iv.interviewId).set({
+      date:iv.date, time:iv.time, status:'confirmed', altSlots:[],
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    },{merge:true}).catch(function(e){console.log('acceptSlot write error:',e);});
+    // snapshot re-renderiza; mostrar update inmediato igual
+  }
+  buildAgenda();
+  addNotif('✅','Horario confirmado con <strong>'+iv.candidate+'</strong>','ahora');
+}
 
 // ── UTILS ──
 function goBackFromChat(){

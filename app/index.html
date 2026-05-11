@@ -2086,20 +2086,39 @@ function handleMatchDoc(matchDoc, isNew) {
   if (!data || !data.users) return;
   var otherUid = data.users.find(function(u) { return u !== currentUser.uid; });
   if (!otherUid) return;
-  // Si ya existe en matches local, no duplicar
-  if (matches.find(function(m) { return m.uid === otherUid; })) return;
-  // Cargar el perfil del otro usuario para poblar la UI
+
+  // Si ya existe en matches local, parcharle matchId (lo que habilita el chat real-time)
+  // y salir. Esto cubre el caso de matches viejos guardados sin matchId (de versiones
+  // anteriores) o matches agregados optimistamente por addMatch en swipes.
+  var existing = matches.find(function(m) { return m.uid === otherUid; });
+  if (existing) {
+    if (!existing.matchId) {
+      existing.matchId = matchDoc.id;
+      persistAll();
+    }
+    if (isNew) {
+      curMatch = existing;
+      showMI();
+      addNotif('🎉', 'Mutual Interest con <strong>'+(existing.name||'usuario')+'</strong>', 'ahora');
+    }
+    return;
+  }
+
+  // No existe local: cargar el perfil del otro usuario para poblar la UI
   var collection = USER_ROLE === 'candidate' ? 'companies' : 'candidates';
   db.collection(collection).doc(otherUid).get().then(function(doc) {
     if (!doc.exists) return;
     var profile = doc.data();
     profile.matchId = matchDoc.id;
     addMatch(profile, false);
+    // addMatch hace Object.assign({}, c) — el matchId se copia, pero buscamos
+    // la copia ya en `matches` para mantener una referencia estable.
+    var added = matches.find(function(m) { return m.uid === otherUid; }) || profile;
     persistAll();
     if (isNew) {
-      curMatch = profile;
+      curMatch = added;
       showMI();
-      addNotif('🎉', 'Mutual Interest con <strong>'+(profile.name||'usuario')+'</strong>', 'ahora');
+      addNotif('🎉', 'Mutual Interest con <strong>'+(added.name||'usuario')+'</strong>', 'ahora');
     }
   }).catch(function(e) { console.log('Error cargando perfil de match:', e); });
 }

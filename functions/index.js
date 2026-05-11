@@ -4,73 +4,56 @@
  * onSwipeCreated: detecta match mutuo cuando un user crea un swipe de tipo
  * "like" sobre otro user que ya le había dado like. Crea un doc en /matches
  * con ID determinístico (uids ordenados unidos por "_") para evitar duplicados.
+ *
+ * Implementación en Functions v1 — usa el trigger nativo de Firestore (no
+ * pasa por Eventarc). Más confiable en proyectos donde los Service Agents
+ * de Eventarc / Pub/Sub no se propagaron correctamente al crear la base.
  */
 
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
-const { setGlobalOptions } = require("firebase-functions/v2");
-const logger = require("firebase-functions/logger");
+const functions = require("firebase-functions/v1");
 const admin = require("firebase-admin");
 
 admin.initializeApp();
 const db = admin.firestore();
 
-// La función debe correr en una región compatible con la ubicación de
-// Firestore. La base de datos de tNic está en `nam5` (multi-región US),
-// así que usamos `us-central1` que es la región canónica para triggers
-// de Firestore en nam5. maxInstances limita el costo ante picos.
-setGlobalOptions({
-  region: "us-central1",
-  maxInstances: 10,
-});
+exports.matchOnSwipe = functions
+  .region("us-central1")
+  .firestore.document("swipes/{swipeId}")
+  .onCreate(async (snap, context) => {
+    const swipe = snap.data();
 
-/**
- * Trigger: cada vez que se crea un doc en /swipes.
- *
- * Si el swipe es un "like" y la otra persona ya había dado "like" en el
- * sentido inverso, creamos /matches/{matchId} donde matchId = uids
- * ordenados unidos por "_". Usamos merge:true para que la operación sea
- * idempotente (si ambos usuarios likean al mismo tiempo, ambas
- * invocaciones terminan en el mismo doc final).
- */
-exports.onSwipeCreated = onDocumentCreated("swipes/{swipeId}", async (event) => {
-  const snap = event.data;
-  if (!snap) return;
-  const swipe = snap.data();
+    if (!swipe || !swipe.from || !swipe.to) {
+      console.warn("Swipe inválido — falta from o to", context.params.swipeId);
+      return null;
+    }
+    if (swipe.kind !== "like") return null;
+    if (swipe.from === swipe.to) return null;
 
-  // Validación defensiva.
-  if (!swipe || !swipe.from || !swipe.to) {
-    logger.warn("Swipe inválido — falta from o to", { swipeId: event.params.swipeId });
-    return;
-  }
-  if (swipe.kind !== "like") return; // pass: no hace nada
-  if (swipe.from === swipe.to) return; // self-swipe: ignorar
+    const reciprocal = await db
+      .collection("swipes")
+      .where("from", "==", swipe.to)
+      .where("to", "==", swipe.from)
+      .where("kind", "==", "like")
+      .limit(1)
+      .get();
 
-  // ¿Existe un like recíproco?
-  const reciprocal = await db
-    .collection("swipes")
-    .where("from", "==", swipe.to)
-    .where("to", "==", swipe.from)
-    .where("kind", "==", "like")
-    .limit(1)
-    .get();
+    if (reciprocal.empty) {
+      console.log(`Like de ${swipe.from} → ${swipe.to}: sin reciprocidad todavía`);
+      return null;
+    }
 
-  if (reciprocal.empty) {
-    logger.info(`Like de ${swipe.from} → ${swipe.to}: sin reciprocidad todavía`);
-    return;
-  }
+    const sortedUids = [swipe.from, swipe.to].sort();
+    const matchId = sortedUids.join("_");
 
-  // ¡Match! Crear doc determinístico.
-  const sortedUids = [swipe.from, swipe.to].sort();
-  const matchId = sortedUids.join("_");
+    await db.collection("matches").doc(matchId).set(
+      {
+        users: sortedUids,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        hasChat: false,
+      },
+      { merge: true }
+    );
 
-  await db.collection("matches").doc(matchId).set(
-    {
-      users: sortedUids,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      hasChat: false,
-    },
-    { merge: true }
-  );
-
-  logger.info(`Match creado: ${matchId}`);
-});
+    console.log(`Match creado: ${matchId}`);
+    return null;
+  });

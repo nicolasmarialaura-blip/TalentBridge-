@@ -1232,6 +1232,7 @@ var COMPANIES=[
 
 var mode='candidates',dataSet=CANDIDATES,idx=0;
 var matches=[],chats={},curMatch=null,curChat=null;
+var currentChatUnsub=null;
 var chatPrev='swipe-scr',schedulePrev='swipe-scr',detailPrev='swipe-scr',cvViewerPrev='detail-scr';
 var stats={seen:0,likes:0,mc:0,interviews:0};
 var pipeline={},interviews=[],selectedInterview=null;
@@ -1417,29 +1418,68 @@ function addMatch(c,msg){
 }
 
 // ─────────────────────────────────────────────
-// FIX #BOOT REAL: Chat bidireccional
-// Tanto recruiter como candidato pueden iniciar contacto
 // ─────────────────────────────────────────────
+// CHAT — real-time via Firestore para matches reales (matches/{matchId}/messages).
+// Para perfiles demo (sin matchId / sin login) se conserva el chat local con bot.
+// ─────────────────────────────────────────────
+function isRealMatch(person){
+  return !!(person && person.matchId && currentUser && !currentUser.isAnonymous);
+}
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function fmtTs(ts){
+  if(!ts||!ts.toDate)return'';
+  var dt=ts.toDate();
+  return(dt.getHours()<10?'0':'')+dt.getHours()+':'+(dt.getMinutes()<10?'0':'')+dt.getMinutes();
+}
+function unsubscribeFromChatMessages(){
+  if(currentChatUnsub){try{currentChatUnsub();}catch(e){}currentChatUnsub=null;}
+}
+function subscribeToChatMessages(person){
+  unsubscribeFromChatMessages();
+  if(!isRealMatch(person))return;
+  currentChatUnsub=db.collection('matches').doc(person.matchId)
+    .collection('messages').orderBy('createdAt','asc')
+    .onSnapshot(function(snap){
+      chats[person.name]=snap.docs.map(function(doc){
+        var d=doc.data();
+        return{
+          from:(d.from===currentUser.uid)?'me':'them',
+          text:d.text||'',
+          time:fmtTs(d.createdAt)
+        };
+      });
+      var arr=chats[person.name];
+      var last=arr.length?arr[arr.length-1]:null;
+      var mx=matches.find(function(x){return x.name===person.name;});
+      if(mx&&last){mx.lastMsg=last.text;mx.time=last.time||'ahora';}
+      if(curChat&&curChat.name===person.name)renderChat();
+    },function(err){console.log('Chat listener error:',err);});
+}
+
 function openChat(person){
   curChat=person;
+  var real=isRealMatch(person);
 
-  // Si no hay historial, crear primer mensaje contextual según quién inicia
-  if(!chats[person.name]){
+  if(real){
+    // Limpiar caché local y dejar que el snapshot popule. Sin welcome/bot.
+    chats[person.name]=chats[person.name]||[];
+    subscribeToChatMessages(person);
+  } else if(!chats[person.name]){
+    // Camino demo: welcome message + bot reply (sólo cuando no hay match real).
     var welcomeMsg;
     if(USER_ROLE==='company'){
       welcomeMsg='Hola '+person.name+'! Vi tu perfil y me parece muy interesante. ¿Tenés disponibilidad para charlar sobre una oportunidad?';
     } else {
-      // Candidato iniciando con empresa
       var coName=person.name||'la empresa';
       welcomeMsg='¡Hola '+coName+'! Vi su oferta y me interesa mucho. ¿Puedo hacerles algunas preguntas sobre el rol?';
     }
     chats[person.name]=[{from:'me',text:welcomeMsg,time:nowTime(),auto:true}];
-
-    // Actualizar lastMsg en el match
-    var mx=matches.find(function(x){return x.name===person.name;});
-    if(mx){mx.lastMsg=welcomeMsg;mx.time='ahora';}
-
-    // Auto-reply contextual después de 1.5s
+    var mxw=matches.find(function(x){return x.name===person.name;});
+    if(mxw){mxw.lastMsg=welcomeMsg;mxw.time='ahora';}
     setTimeout(function(){
       if(chats[person.name]&&chats[person.name].length===1){
         var replies=USER_ROLE==='company'
@@ -1464,8 +1504,6 @@ function openChat(person){
   if(person.photo){chimg.src=person.photo;chimg.style.display='block';chinit.style.display='none';}
   else{chimg.style.display='none';chinit.style.display='block';chinit.textContent=person.av;}
 
-  // Label del header según rol
-  var roleLabel=person.type==='company'?'🏢 Empresa · Mutual Interest':'🧑‍💼 Candidato · Mutual Interest';
   G('chname').textContent=person.name;
   G('chrole').textContent=person.role+' · '+(person.type==='company'?'Empresa':'Candidato');
 
@@ -1475,7 +1513,7 @@ function renderChat(){
   if(!curChat)return;
   var h=chats[curChat.name]||[];
   G('chatbody').innerHTML=h.map(function(m){
-    return'<div class="bw '+m.from+'"><div class="bub '+m.from+'">'+m.text+'</div><div class="bt">'+(m.time||'')+'</div></div>';
+    return'<div class="bw '+m.from+'"><div class="bub '+m.from+'">'+escapeHtml(m.text)+'</div><div class="bt">'+escapeHtml(m.time||'')+'</div></div>';
   }).join('');
   G('chatbody').scrollTop=G('chatbody').scrollHeight;
 }
@@ -1483,11 +1521,27 @@ function renderChat(){
 function sendMsg(){
   var inp=G('chatin');if(!inp.value.trim()||!curChat)return;
   var text=inp.value.trim();
+  inp.value='';
+
+  if(isRealMatch(curChat)){
+    // Match real: escribir en Firestore. El snapshot pinta la burbuja.
+    db.collection('matches').doc(curChat.matchId).collection('messages').add({
+      from:currentUser.uid,
+      text:text,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(function(e){
+      console.log('Error enviando mensaje:',e);
+      alert('No se pudo enviar el mensaje. Probá de nuevo.');
+    });
+    return;
+  }
+
+  // Camino demo: push local + bot reply.
+  chats[curChat.name]=chats[curChat.name]||[];
   chats[curChat.name].push({from:'me',text:text,time:nowTime()});
-  // Actualizar lastMsg en matches
   var mx=matches.find(function(x){return x.name===curChat.name;});
   if(mx){mx.lastMsg=text;mx.time='ahora';}
-  inp.value='';renderChat();
+  renderChat();
   var body=G('chatbody');
   var t=document.createElement('div');t.className='bw them';
   t.innerHTML='<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
@@ -1840,7 +1894,7 @@ function onLoginSuccess(user, isGuest) {
           if (data.copData) Object.assign(copData, data.copData);
           if (data.USER_ROLE) USER_ROLE = data.USER_ROLE;
           if (data.matches) matches = data.matches;
-          if (data.chats) chats = data.chats;
+          // chats reales viven en matches/{id}/messages — no leer del subcampo viejo
           if (user.photoURL && !cpData.photo) cpData.photo = user.photoURL;
           if (user.displayName && !cpData.name) cpData.name = user.displayName;
           save();
@@ -1879,7 +1933,8 @@ function saveToFirestore() {
   if (currentUser && !currentUser.isAnonymous) {
     db.collection('users').doc(currentUser.uid).set({
       cpData:cpData, copData:copData, USER_ROLE:USER_ROLE,
-      matches:matches, chats:chats,
+      matches:matches,
+      // chats removidos — viven en matches/{id}/messages (real-time)
       updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     }, {merge:true}).catch(function(e){console.log('Firestore error:',e);});
   }
@@ -2171,7 +2226,17 @@ function saveScheduledInterview(){
   if(match){iv.color=match.color;iv.av=match.av;iv.photo=match.photo||null;iv.role=match.role;}
   if(editInterviewIdx!==null){agendaInterviews[editInterviewIdx]=iv;}else{agendaInterviews.push(iv);}
   if(pipeline[candName]===undefined||pipeline[candName]===0)pipeline[candName]=1;
-  if(chats[candName]){var msg='📅 Entrevista agendada: '+date+' a las '+time+'.'+(link?' Link: '+link:'')+(notes?' Nota: '+notes:'');chats[candName].push({from:'me',text:msg,time:nowTime()});}
+  var schedMsg='📅 Entrevista agendada: '+date+' a las '+time+'.'+(link?' Link: '+link:'')+(notes?' Nota: '+notes:'');
+  if(isRealMatch(match)){
+    // Match real: escribir en Firestore. Snapshot pinta la burbuja si el chat está abierto.
+    db.collection('matches').doc(match.matchId).collection('messages').add({
+      from:currentUser.uid,
+      text:schedMsg,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(function(e){console.log('Error escribiendo mensaje de entrevista:',e);});
+  } else if(chats[candName]){
+    chats[candName].push({from:'me',text:schedMsg,time:nowTime()});
+  }
   addNotif('📅','Entrevista agendada con <strong>'+candName+'</strong> — '+date+' '+time,'ahora');
   persistAll();closeScheduleModal();buildAgenda();
 }
@@ -2195,6 +2260,8 @@ function acceptSlot(ivIdx,slotIdx){var iv=agendaInterviews[ivIdx];if(!iv)return;
 
 // ── UTILS ──
 function goBackFromChat(){
+  // Cerrar el listener real-time del chat actual
+  unsubscribeFromChatMessages();
   // Si venía de matches, refrescar la lista antes de volver
   if(chatPrev==='matches-scr')buildList();
   go(chatPrev);

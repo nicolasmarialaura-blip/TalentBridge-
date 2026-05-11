@@ -1622,6 +1622,11 @@ function setChatFilter(f){
 }
 
 function buildList(){
+  // Safety net: si entramos a la lista y el listener no está activo, arrancarlo.
+  // Cubre estados donde onLoginSuccess no llegó a llamar listenForMatches.
+  if (currentUser && !currentUser.isAnonymous && !matchesUnsub) {
+    try { listenForMatches(); } catch(e) { console.log('buildList: listenForMatches falló', e); }
+  }
   var title=G('matches-title');
   if(title)title.textContent=USER_ROLE==='candidate'?'Mis Conversaciones':'Chats con candidatos';
   G('msub2').textContent=matches.length+' conexión'+(matches.length===1?'':'es')+' activa'+(matches.length===1?'':'s');
@@ -2104,23 +2109,31 @@ function handleMatchDoc(matchDoc, isNew) {
     return;
   }
 
-  // No existe local: cargar el perfil del otro usuario para poblar la UI
-  var collection = USER_ROLE === 'candidate' ? 'companies' : 'candidates';
-  db.collection(collection).doc(otherUid).get().then(function(doc) {
-    if (!doc.exists) return;
-    var profile = doc.data();
-    profile.matchId = matchDoc.id;
-    addMatch(profile, false);
-    // addMatch hace Object.assign({}, c) — el matchId se copia, pero buscamos
-    // la copia ya en `matches` para mantener una referencia estable.
-    var added = matches.find(function(m) { return m.uid === otherUid; }) || profile;
-    persistAll();
-    if (isNew) {
-      curMatch = added;
-      showMI();
-      addNotif('🎉', 'Mutual Interest con <strong>'+(added.name||'usuario')+'</strong>', 'ahora');
-    }
-  }).catch(function(e) { console.log('Error cargando perfil de match:', e); });
+  // No existe local: cargar el perfil del otro usuario. Buscar primero en la
+  // colección esperada según USER_ROLE; si no aparece (puede pasar por estados
+  // de rol cruzados entre testers), probar la otra colección como fallback.
+  var primary = USER_ROLE === 'candidate' ? 'companies' : 'candidates';
+  var secondary = primary === 'companies' ? 'candidates' : 'companies';
+  function loadFrom(coll, onMiss) {
+    db.collection(coll).doc(otherUid).get().then(function(doc) {
+      if (!doc.exists) { onMiss(); return; }
+      var profile = doc.data();
+      profile.matchId = matchDoc.id;
+      addMatch(profile, false);
+      var added = matches.find(function(m) { return m.uid === otherUid; }) || profile;
+      persistAll();
+      if (isNew) {
+        curMatch = added;
+        showMI();
+        addNotif('🎉', 'Mutual Interest con <strong>'+(added.name||'usuario')+'</strong>', 'ahora');
+      }
+    }).catch(function(e) { console.log('Error cargando perfil de match:', e); });
+  }
+  loadFrom(primary, function() {
+    loadFrom(secondary, function() {
+      console.log('Match doc apunta a uid sin perfil publicado:', otherUid);
+    });
+  });
 }
 
 function confirmRole(){
@@ -2182,6 +2195,10 @@ function saveSilent(){
 }
 
 function applyRoleUI(){
+  // Safety net: cualquier transición de rol arranca el listener de matches.
+  if (currentUser && !currentUser.isAnonymous && !matchesUnsub) {
+    try { listenForMatches(); } catch(e) { console.log('applyRoleUI: listenForMatches falló', e); }
+  }
   var isC=USER_ROLE==='candidate';
   dataSet=isC?COMPANIES:CANDIDATES;idx=0;mode=isC?'companies':'candidates';
   var mt=document.querySelector('.modetabs');if(mt)mt.style.display='none';

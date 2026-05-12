@@ -2160,11 +2160,21 @@ function onLoginSuccess(user, isGuest) {
           if (data.USER_ROLE) USER_ROLE = data.USER_ROLE;
           if (data.matches) matches = data.matches;
           // chats reales viven en matches/{id}/messages — no leer del subcampo viejo
+
+          // Backfill de email en el perfil (necesario para que las Cloud Functions
+          // de match/interview puedan mandar notifs por SendGrid).
+          if (user.email) {
+            if (USER_ROLE === 'candidate' && !cpData.email) cpData.email = user.email;
+            if (USER_ROLE === 'company'   && !copData.contactEmail) copData.contactEmail = user.email;
+          }
           if (user.photoURL && !cpData.photo) cpData.photo = user.photoURL;
           if (user.displayName && !cpData.name) cpData.name = user.displayName;
           save();
           if (USER_ROLE) {
             applyRoleUI(); listenForMatches(); go('swipe-scr'); sortDataSetByMatch(); render();
+            // Backfill silencioso: re-publica el perfil con email para que las
+            // Cloud Functions de match/interview puedan leerlo.
+            try { publishProfileToFirestore(); } catch(e) { console.log('backfill publish:', e); }
             setTimeout(function(){initCardEvents();updateNdot();buildAgenda();}, 100);
           } else {
             var tc=false;try{tc=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
@@ -2231,6 +2241,8 @@ function selectRole(role){USER_ROLE=role;['candidate','company'].forEach(functio
 function publishProfileToFirestore() {
   if (!currentUser || currentUser.isAnonymous) return;
   var uid = currentUser.uid;
+  // Email del usuario para que las Cloud Functions puedan mandarle notifs (welcome usa el de Auth directo, pero match/interview leen el del perfil aquí).
+  var authEmail = (currentUser && currentUser.email) || '';
   if (USER_ROLE === 'candidate') {
     var profile = {
       uid: uid,
@@ -2244,6 +2256,7 @@ function publishProfileToFirestore() {
       avail: cpData.avail || '',
       exp: cpData.exp || '',
       langs: cpData.langs || '',
+      email: cpData.email || authEmail || '',
       color: cpData.color || '#2B5CE6',
       av: cpData.name ? cpData.name.split(' ').map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase() : 'UN',
       photo: cpData.photo || null,
@@ -2267,6 +2280,7 @@ function publishProfileToFirestore() {
       sal: copData.jobs.length ? copData.jobs[0].salary || '' : '',
       size: copData.size || '',
       industry: copData.industry || '',
+      email: copData.contactEmail || authEmail || '',
       color: '#2B5CE6',
       av: copData.name ? copData.name.substring(0,2).toUpperCase() : 'CO',
       photo: copData.logo || null,

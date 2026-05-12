@@ -65,39 +65,27 @@ async function sendEmail(to, subject, html) {
 }
 
 /**
- * Devuelve un objeto con { email, displayName } para un uid dado, mezclando
- * datos de Firebase Auth y de los perfiles publicados en /candidates o /companies.
+ * Devuelve un objeto con { email, displayName } para un uid dado.
+ * Lee de Firestore (/candidates o /companies). NO usa admin.auth().getUser()
+ * porque la service account de gen 1 funciones no tiene permiso para Auth
+ * y daba "insufficient permission". El cliente publica el email en el perfil.
  */
 async function getUserInfo(uid) {
-  let email = null;
-  let displayName = null;
-  try {
-    const u = await admin.auth().getUser(uid);
-    email = u.email || null;
-    displayName = u.displayName || null;
-  } catch (e) {
-    console.warn(`getUser falló para ${uid}:`, e.message);
-  }
-  // intentar enriquecer con el perfil publicado (nombre más amigable)
   try {
     const cand = await db.collection("candidates").doc(uid).get();
     if (cand.exists) {
       const d = cand.data();
-      if (!displayName && d.name) displayName = d.name;
-      if (!email && d.email) email = d.email;
-      return { email, displayName, kind: "candidate" };
+      return { email: d.email || null, displayName: d.name || null, kind: "candidate" };
     }
     const comp = await db.collection("companies").doc(uid).get();
     if (comp.exists) {
       const d = comp.data();
-      if (!displayName && d.name) displayName = d.name;
-      if (!email && d.email) email = d.email;
-      return { email, displayName, kind: "company" };
+      return { email: d.email || null, displayName: d.name || null, kind: "company" };
     }
   } catch (e) {
     console.warn(`Lookup de perfil falló para ${uid}:`, e.message);
   }
-  return { email, displayName, kind: null };
+  return { email: null, displayName: null, kind: null };
 }
 
 // ── HTML helpers ────────────────────────────────────────────────────────

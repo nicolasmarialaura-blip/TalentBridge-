@@ -11,6 +11,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 <script>
 // Firebase config
 const firebaseConfig = {
@@ -23,8 +24,9 @@ const firebaseConfig = {
   appId: "1:572865213602:web:af9ab8deebdc20767c53fb"
 };
 firebase.initializeApp(firebaseConfig);
-var auth = firebase.auth();
-var db   = firebase.firestore();
+var auth    = firebase.auth();
+var db      = firebase.firestore();
+var storage = firebase.storage();
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -1011,6 +1013,20 @@ input[type=range]{width:100%;accent-color:var(--b)}
       <div class="cp-section-title">Galería<span style="font-size:10px;color:var(--gray);font-weight:400"> Portfolio, proyectos, workspace</span></div>
       <div class="gallery-grid" id="gallery-grid"><label class="gallery-add"><div class="gallery-add-icon">+</div><div class="gallery-add-lbl">Agregar foto</div><input type="file" accept="image/*" multiple style="display:none" onchange="addGalleryPhotos(event)"></label></div>
     </div>
+    <div class="cp-section">
+      <div class="cp-section-title">Mi CV<span style="font-size:10px;color:var(--gray);font-weight:400"> Las empresas con match podrán verlo</span></div>
+      <div id="cp-cv-empty"><label class="cv-upload-btn" for="cp-cv-in"><span>📎 Subir CV (PDF, máx. 10 MB)</span><input type="file" accept="application/pdf" class="cv-in" id="cp-cv-in" onchange="uploadOwnCV(event)"></label></div>
+      <div id="cp-cv-loaded" style="display:none">
+        <div class="cv-file-info">
+          <span style="font-size:18px">📄</span>
+          <div class="cv-file-name" id="cp-cv-filename"></div>
+          <button class="cv-view-btn" onclick="viewOwnCV()">Ver</button>
+          <label class="cv-view-btn" style="background:var(--bxlight);color:var(--b);cursor:pointer">Reemplazar<input type="file" accept="application/pdf" style="display:none" onchange="uploadOwnCV(event)"></label>
+          <button class="cv-remove-btn" onclick="removeOwnCV()">✕</button>
+        </div>
+      </div>
+      <div id="cp-cv-progress" style="display:none;margin-top:8px;font-size:11px;color:var(--gray)">Subiendo… <span id="cp-cv-pct">0%</span></div>
+    </div>
     <button class="cp-save-btn" onclick="saveCandidateProfile()">✓ Guardar perfil</button>
   </div>
   <div id="gallery-lightbox"><button class="lightbox-close" onclick="closeLightbox()">×</button><img id="lightbox-img" src="" alt=""><div class="lightbox-nav"><button class="lightbox-btn" onclick="lightboxNav(-1)">‹</button><div class="lightbox-counter" id="lightbox-counter"></div><button class="lightbox-btn" onclick="lightboxNav(1)">›</button></div></div>
@@ -1255,7 +1271,7 @@ var EMAIL_WEBHOOK_URL='https://tnic-mailer.nicolasmarialaura.workers.dev';
 function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(e||'').trim());}
 
 // ── PERSIST ──
-var cpData={name:'',role:'',about:'',loc:'',sal:'',avail:'',exp:'',langs:'',email:'',avatar:null,banner:null,skills:[],gallery:[],galleryIdx:0};
+var cpData={name:'',role:'',about:'',loc:'',sal:'',avail:'',exp:'',langs:'',email:'',avatar:null,banner:null,skills:[],gallery:[],galleryIdx:0,cvUrl:null,cvName:null,cvPath:null};
 var copData={name:'',tagline:'',industry:'',size:'',location:'',web:'',founded:'',desc:'',logo:null,banner:null,contactEmail:'',culture:[],linkedin:'',twitter:'',instagram:'',github:'',jobs:[]};
 
 function persistAll(){
@@ -1897,7 +1913,20 @@ function buildDetailScreen(c){
     body+='<div class="detail-section"><div class="detail-section-title">💼 Puestos activos ('+c.activeJobs.length+')</div>'+c.activeJobs.map(function(j){return'<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--brd)"><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--dark)">'+j.title+'</div><div style="font-size:11px;color:var(--gray)">'+j.sal+' · '+j.type+'</div></div>'+(j.urgent?'<div style="background:#FEF3C7;color:#92400E;font-size:10px;font-weight:700;border-radius:6px;padding:3px 8px">Urgente</div>':'')+'</div>';}).join('')+'</div>';
   }
   if(isComp&&c.jd){body+='<div class="detail-section"><div class="detail-section-title">📋 Job Description</div><div style="font-size:12px;color:var(--mid);line-height:1.7;max-height:160px;overflow-y:auto">'+c.jd+'</div><button onclick="loadJDtoRanking()" style="margin-top:10px;background:var(--blight);border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--b);cursor:pointer;width:100%">🎯 Usar JD para Ranking</button></div>';}
-  if(!isComp){var cvHtml=c.cvData?'<div style="display:flex;align-items:center;gap:10px;background:var(--bxlight);border-radius:12px;padding:12px;border-left:3px solid var(--b)"><span style="font-size:22px">📄</span><div style="flex:1;font-size:13px;font-weight:700;color:var(--dark)">'+(c.cvName||'CV.pdf')+'</div><button class="cv-view-btn" onclick="openCVViewer()">Ver PDF</button></div>':'<label style="display:flex;align-items:center;gap:8px;background:var(--bxlight);border:1.5px dashed var(--b3);border-radius:12px;padding:12px;cursor:pointer"><span>📎</span><span style="font-size:12px;font-weight:600;color:var(--b)">Subir CV (PDF)</span><input type="file" accept="application/pdf" style="display:none" onchange="handleCVFromDetail(event)"></label>';body+='<div class="detail-section"><div class="detail-section-title">📄 Currículum</div>'+cvHtml+'</div>';}
+  if(!isComp){
+    var cvHtml;
+    if(c.cvUrl || c.cvData){
+      // Hay CV (subido a Storage o base64 demo)
+      cvHtml='<div style="display:flex;align-items:center;gap:10px;background:var(--bxlight);border-radius:12px;padding:12px;border-left:3px solid var(--b)"><span style="font-size:22px">📄</span><div style="flex:1;font-size:13px;font-weight:700;color:var(--dark)">'+(c.cvName||'CV.pdf')+'</div><button class="cv-view-btn" onclick="openCVViewer()">Ver PDF</button></div>';
+    } else if(c.uid){
+      // Candidato real sin CV — la empresa no puede subir, sólo el candidato puede
+      cvHtml='<div style="font-size:12px;color:var(--gray);background:var(--bxlight);border-radius:12px;padding:12px;text-align:center">Este candidato todavía no subió su CV.</div>';
+    } else {
+      // Perfil demo (sin uid) — permite "subir" CV localmente para testing
+      cvHtml='<label style="display:flex;align-items:center;gap:8px;background:var(--bxlight);border:1.5px dashed var(--b3);border-radius:12px;padding:12px;cursor:pointer"><span>📎</span><span style="font-size:12px;font-weight:600;color:var(--b)">Subir CV (PDF) — modo demo</span><input type="file" accept="application/pdf" style="display:none" onchange="handleCVFromDetail(event)"></label>';
+    }
+    body+='<div class="detail-section"><div class="detail-section-title">📄 Currículum</div>'+cvHtml+'</div>';
+  }
   if(pipeline[c.name]!==undefined){var stages=['Nuevo','Entrevista','Oferta','Contratado'];var p=pipeline[c.name];body+='<div class="detail-section"><div class="detail-section-title">Pipeline</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+stages.map(function(s,i){return'<div style="padding:5px 12px;border-radius:14px;font-size:11px;font-weight:600;'+(i===p?'background:var(--b);color:#fff':'background:var(--bxlight);color:var(--gray)')+'">'+s+'</div>';}).join('')+'</div><div style="display:flex;gap:6px;margin-top:10px">'+(p>0?'<button class="kmove-btn" style="padding:6px 0;font-size:11px" onclick="movePipelineFromDetail(-1)">◀ Atrás</button>':'')+(p<3?'<button class="kmove-btn" style="padding:6px 0;font-size:11px;background:var(--b);color:#fff" onclick="movePipelineFromDetail(1)">Adelante ▶</button>':'')+'</div></div>';}
   G('detail-body').innerHTML=body;
 }
@@ -1907,14 +1936,142 @@ function movePipelineFromDetail(dir){if(!currentDetail)return;movePipeline(curre
 function loadJDtoRanking(){if(!currentDetail||!currentDetail.jd)return;go('profile-scr');buildProfile();setTimeout(function(){var ta=G('jd-text');if(ta){ta.value=currentDetail.jd;calcRanking();}},100);}
 
 // ── CV ──
-function openCVViewer(){if(!currentDetail||!currentDetail.cvData)return;cvViewerPrev='detail-scr';G('cv-viewer-title').textContent=currentDetail.cvName||'CV.pdf';switchCvTab('pdf');go('cv-viewer-scr');}
+// ─────────────────────────────────────────────
+// CV propio del candidato — sube a Cloud Storage en cvs/{uid}/cv.pdf y
+// guarda cvUrl + cvName en cpData. publishProfileToFirestore los expone en
+// /candidates/{uid} para que las empresas con match puedan abrir el PDF.
+// ─────────────────────────────────────────────
+function refreshOwnCVUI(){
+  var has = !!(cpData.cvUrl);
+  var empty=G('cp-cv-empty'), loaded=G('cp-cv-loaded'), name=G('cp-cv-filename');
+  if(empty) empty.style.display = has ? 'none' : 'block';
+  if(loaded) loaded.style.display = has ? 'block' : 'none';
+  if(name) name.textContent = cpData.cvName || 'CV.pdf';
+}
+
+function uploadOwnCV(e){
+  var f = e.target.files && e.target.files[0];
+  if(!f) return;
+  if(!currentUser || currentUser.isAnonymous){ alert('Necesitás iniciar sesión para subir un CV.'); return; }
+  if(f.type !== 'application/pdf'){ alert('Solo se aceptan archivos PDF.'); return; }
+  if(f.size > 10 * 1024 * 1024){ alert('El archivo supera los 10 MB.'); return; }
+
+  var progress = G('cp-cv-progress'), pct = G('cp-cv-pct');
+  if(progress) progress.style.display = 'block';
+
+  var path = 'cvs/' + currentUser.uid + '/cv.pdf';
+  var ref = storage.ref().child(path);
+  var task = ref.put(f, { contentType: 'application/pdf' });
+
+  task.on('state_changed', function(snap){
+    var p = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
+    if(pct) pct.textContent = p + '%';
+  }, function(err){
+    console.log('CV upload error:', err);
+    if(progress) progress.style.display = 'none';
+    alert('No se pudo subir el CV: ' + (err.message || err.code || 'error'));
+  }, function(){
+    task.snapshot.ref.getDownloadURL().then(function(url){
+      cpData.cvUrl  = url;
+      cpData.cvName = f.name;
+      cpData.cvPath = path;
+      if(progress) progress.style.display = 'none';
+      refreshOwnCVUI();
+      persistAll();
+      // Publicar el cambio en /candidates/{uid} para que las empresas con match lo vean
+      if(USER_ROLE === 'candidate') publishProfileToFirestore();
+      addNotif('📄','CV subido correctamente','ahora');
+    }).catch(function(err){
+      console.log('getDownloadURL error:', err);
+      if(progress) progress.style.display = 'none';
+      alert('CV subido, pero no se pudo obtener el link. Intentá guardar el perfil de nuevo.');
+    });
+  });
+
+  // limpiar el input para que el mismo archivo pueda re-seleccionarse
+  e.target.value = '';
+}
+
+function viewOwnCV(){
+  if(!cpData.cvUrl){ alert('Todavía no subiste un CV.'); return; }
+  window.open(cpData.cvUrl, '_blank');
+}
+
+function removeOwnCV(){
+  if(!cpData.cvUrl){ return; }
+  if(!confirm('¿Eliminar tu CV? Las empresas con match dejarán de verlo.')) return;
+  var path = cpData.cvPath || ('cvs/' + (currentUser && currentUser.uid) + '/cv.pdf');
+  var done = function(){
+    cpData.cvUrl = null; cpData.cvName = null; cpData.cvPath = null;
+    refreshOwnCVUI();
+    persistAll();
+    if(USER_ROLE === 'candidate') publishProfileToFirestore();
+    addNotif('🗑','CV eliminado','ahora');
+  };
+  if(currentUser && !currentUser.isAnonymous){
+    storage.ref().child(path).delete()
+      .then(done)
+      .catch(function(err){
+        console.log('CV delete error:', err);
+        // Si el archivo no existe en Storage, igual limpiamos los datos
+        if(err && (err.code === 'storage/object-not-found')) { done(); }
+        else { alert('No se pudo eliminar el archivo: ' + (err.message || err.code)); }
+      });
+  } else { done(); }
+}
+
+function openCVViewer(){if(!currentDetail||(!currentDetail.cvUrl && !currentDetail.cvData))return;cvViewerPrev='detail-scr';G('cv-viewer-title').textContent=currentDetail.cvName||'CV.pdf';switchCvTab('pdf');go('cv-viewer-scr');}
 function switchCvTab(tab){
   cvTabMode=tab;G('cv-tab-pdf').classList.toggle('on',tab==='pdf');G('cv-tab-text').classList.toggle('on',tab==='text');
   var body=G('cv-viewer-body');
-  if(tab==='pdf'){try{var b64=currentDetail.cvData.split(',')[1];var bin=atob(b64);var bytes=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);var blob=new Blob([bytes],{type:'application/pdf'});var url=URL.createObjectURL(blob);body.innerHTML='<object class="cv-pdf-frame" data="'+url+'" type="application/pdf"><div class="cv-text-placeholder"><div>📄</div><a href="'+url+'" target="_blank" style="color:#3B82F6;font-size:13px;font-weight:600">Abrir PDF</a></div></object>';}catch(e){body.innerHTML='<div class="cv-text-placeholder"><div>⚠️</div><div>Error al cargar PDF</div></div>';}}
-  else{if(currentDetail.cvText){body.innerHTML='<div class="cv-text-body">'+currentDetail.cvText+'</div>';}else{body.innerHTML='<div class="cv-text-placeholder"><div style="font-size:36px">⏳</div><div>Extrayendo texto...</div></div>';extractCVText();}}
+  if(tab==='pdf'){
+    if(currentDetail && currentDetail.cvUrl){
+      // CV real desde Cloud Storage
+      var url = currentDetail.cvUrl;
+      body.innerHTML='<object class="cv-pdf-frame" data="'+url+'" type="application/pdf"><div class="cv-text-placeholder"><div>📄</div><a href="'+url+'" target="_blank" style="color:#3B82F6;font-size:13px;font-weight:600">Abrir PDF</a></div></object>';
+      return;
+    }
+    if(currentDetail && currentDetail.cvData){
+      // CV demo (base64 legacy)
+      try{var b64=currentDetail.cvData.split(',')[1];var bin=atob(b64);var bytes=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);var blob=new Blob([bytes],{type:'application/pdf'});var u2=URL.createObjectURL(blob);body.innerHTML='<object class="cv-pdf-frame" data="'+u2+'" type="application/pdf"><div class="cv-text-placeholder"><div>📄</div><a href="'+u2+'" target="_blank" style="color:#3B82F6;font-size:13px;font-weight:600">Abrir PDF</a></div></object>';}catch(e){body.innerHTML='<div class="cv-text-placeholder"><div>⚠️</div><div>Error al cargar PDF</div></div>';}
+      return;
+    }
+    body.innerHTML='<div class="cv-text-placeholder"><div>📄</div><div>Sin CV cargado</div></div>';
+  } else {
+    if(currentDetail && currentDetail.cvText){body.innerHTML='<div class="cv-text-body">'+currentDetail.cvText+'</div>';}
+    else if(currentDetail && (currentDetail.cvUrl || currentDetail.cvData)){body.innerHTML='<div class="cv-text-placeholder"><div style="font-size:36px">⏳</div><div>Extrayendo texto...</div></div>';extractCVText();}
+    else {body.innerHTML='<div class="cv-text-placeholder"><div>📝</div><div>Sin CV cargado</div></div>';}
+  }
 }
-function extractCVText(){if(!currentDetail||!currentDetail.cvData||currentDetail.cvText)return;try{var b64=currentDetail.cvData.split(',')[1];var bin=atob(b64);var bytes=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);pdfjsLib.getDocument({data:bytes}).promise.then(function(pdf){var pp=[];for(var p=1;p<=pdf.numPages;p++)pp.push(p);return Promise.all(pp.map(function(p){return pdf.getPage(p).then(function(pg){return pg.getTextContent().then(function(tc){return tc.items.map(function(i){return i.str;}).join(' ');});});}));}).then(function(texts){currentDetail.cvText=texts.join('\n\n').replace(/\s+/g,' ').trim();G('cv-viewer-body').innerHTML='<div class="cv-text-body">'+currentDetail.cvText+'</div>';}).catch(function(e){G('cv-viewer-body').innerHTML='<div class="cv-text-placeholder"><div>⚠️</div><div>Error: '+e.message+'</div></div>';});}catch(e){G('cv-viewer-body').innerHTML='<div class="cv-text-placeholder"><div>⚠️</div><div>Error al procesar PDF</div></div>';}}
+function extractCVText(){
+  if(!currentDetail || currentDetail.cvText) return;
+
+  function runOnBytes(bytes){
+    pdfjsLib.getDocument({data:bytes}).promise.then(function(pdf){
+      var pp=[];for(var p=1;p<=pdf.numPages;p++)pp.push(p);
+      return Promise.all(pp.map(function(p){return pdf.getPage(p).then(function(pg){return pg.getTextContent().then(function(tc){return tc.items.map(function(i){return i.str;}).join(' ');});});}));
+    }).then(function(texts){
+      currentDetail.cvText=texts.join('\n\n').replace(/\s+/g,' ').trim();
+      if(cvTabMode==='text') G('cv-viewer-body').innerHTML='<div class="cv-text-body">'+currentDetail.cvText+'</div>';
+    }).catch(function(e){
+      G('cv-viewer-body').innerHTML='<div class="cv-text-placeholder"><div>⚠️</div><div>Error: '+(e.message||e)+'</div></div>';
+    });
+  }
+
+  if(currentDetail.cvUrl){
+    // Descargar el PDF y pasarlo a PDF.js
+    fetch(currentDetail.cvUrl).then(function(res){
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      return res.arrayBuffer();
+    }).then(function(ab){ runOnBytes(new Uint8Array(ab)); })
+      .catch(function(e){ G('cv-viewer-body').innerHTML='<div class="cv-text-placeholder"><div>⚠️</div><div>Error descargando CV: '+(e.message||e)+'</div></div>'; });
+    return;
+  }
+  if(currentDetail.cvData){
+    try{var b64=currentDetail.cvData.split(',')[1];var bin=atob(b64);var bytes=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);runOnBytes(bytes);}
+    catch(e){ G('cv-viewer-body').innerHTML='<div class="cv-text-placeholder"><div>⚠️</div><div>Error al procesar PDF</div></div>'; }
+  }
+}
 function handleCVFromDetail(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){currentDetail.cvData=ev.target.result;currentDetail.cvName=f.name;currentDetail.cvText=null;var orig=dataSet.find(function(x){return x.name===currentDetail.name;});if(orig){orig.cvData=ev.target.result;orig.cvName=f.name;orig.cvText=null;}buildDetailScreen(currentDetail);};r.readAsDataURL(f);}
 
 // ── JD RANKING ──
@@ -1930,6 +2087,7 @@ function initCPScreen(){
   G('cp-email-inp').value=cpData.email||'';G('cp-loc-inp').value=cpData.loc;G('cp-sal-inp').value=cpData.sal;
   G('cp-avail-inp').value=cpData.avail;G('cp-exp-inp').value=cpData.exp;G('cp-langs-inp').value=cpData.langs;
   updateCPInitials();renderCPAvatar();renderCPBanner();renderSkillsList();renderGallery();
+  refreshOwnCVUI();
   selectedSkillRole=null;
   document.querySelectorAll('.skill-role-chip').forEach(function(c){c.classList.remove('on');});
   var sug=G('skill-suggestions');if(sug)sug.innerHTML='<span class="skill-sug-placeholder">Elegí una especialidad arriba para ver sugerencias</span>';
@@ -2089,6 +2247,8 @@ function publishProfileToFirestore() {
       color: cpData.color || '#2B5CE6',
       av: cpData.name ? cpData.name.split(' ').map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase() : 'UN',
       photo: cpData.photo || null,
+      cvUrl: cpData.cvUrl || null,
+      cvName: cpData.cvName || null,
       active: true,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     };

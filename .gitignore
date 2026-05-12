@@ -64,6 +64,9 @@ node_modules/
 
 # dotenv environment variables file
 .env
+# Excepción: functions/.env contiene SOLO defaults no-sensibles para Functions params
+# (los secretos van a Secret Manager via firebase functions:secrets:set)
+!functions/.env
 
 # dataconnect generated files
 .dataconnect

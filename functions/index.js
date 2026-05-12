@@ -77,16 +77,25 @@ async function sendPushToUser(uid, payload) {
     const tokens = Array.isArray(userDoc.data().fcmTokens) ? userDoc.data().fcmTokens : [];
     if (!tokens.length) return;
 
+    // Filtrar data: FCM exige que TODOS los values en `data` sean strings.
+    const safeData = {};
+    if (payload.data && typeof payload.data === "object") {
+      Object.keys(payload.data).forEach((k) => {
+        const v = payload.data[k];
+        if (v != null) safeData[k] = String(v);
+      });
+    }
+
     const baseMsg = {
       notification: {
         title: payload.title || "tNic",
         body: payload.body || "",
       },
-      data: payload.data || {},
+      data: safeData,
       webpush: {
         notification: {
-          icon: "/icon-192.png",
-          badge: "/icon-192.png",
+          icon: "https://www.tnictalent.com/icon-192.png",
+          badge: "https://www.tnictalent.com/icon-192.png",
         },
         fcmOptions: { link: "https://www.tnictalent.com/app/" },
       },
@@ -100,14 +109,17 @@ async function sendPushToUser(uid, payload) {
     results.forEach((r, i) => {
       if (r.status === "rejected") {
         const code = (r.reason && r.reason.code) || "";
+        const tokenShort = tokens[i].substring(0, 12);
+        // Solo borrar tokens si el error indica que el token específicamente no es válido.
+        // `invalid-argument` suele ser problema de payload, NO del token.
         if (
           code === "messaging/invalid-registration-token" ||
-          code === "messaging/registration-token-not-registered" ||
-          code === "messaging/invalid-argument"
+          code === "messaging/registration-token-not-registered"
         ) {
+          console.warn(`Token inválido ${tokenShort}... — code=${code}`);
           toRemove.push(tokens[i]);
         } else {
-          console.warn(`FCM send error (${tokens[i].substring(0, 12)}...):`, (r.reason && r.reason.message) || r.reason);
+          console.error(`FCM send error (${tokenShort}...) code=${code}:`, (r.reason && r.reason.message) || r.reason);
         }
       }
     });
@@ -399,7 +411,7 @@ exports.onMessageCreated = functions
     await sendPushToUser(recipient, {
       title: senderName,
       body: preview,
-      data: { type: "message", matchId: context.params.matchId, from: msg.from, tag: "msg-" + context.params.matchId },
+      data: { type: "message", matchId: context.params.matchId, senderUid: msg.from },
     });
     return null;
   });

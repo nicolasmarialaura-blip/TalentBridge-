@@ -12,6 +12,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
 <script>
 // Firebase config
 const firebaseConfig = {
@@ -27,6 +28,9 @@ firebase.initializeApp(firebaseConfig);
 var auth    = firebase.auth();
 var db      = firebase.firestore();
 var storage = firebase.storage();
+var messaging = (firebase.messaging && firebase.messaging.isSupported && firebase.messaging.isSupported())
+  ? firebase.messaging() : null;
+var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWxoRH1u6ns5PBoP5609FLrQe2bL0Bw';
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -2127,6 +2131,74 @@ function saveCandidateProfile(){
 // ── FIREBASE AUTH ──
 var currentUser = null;
 
+// ─────────────────────────────────────────────
+// FCM — Push notifications
+// Estrategia:
+//   - tryRegisterPush(): silencioso, se llama al login. Si el permiso ya está
+//     'granted' renueva token y lo guarda; si está 'default' NO prompt; si
+//     está 'denied' no hace nada.
+//   - requestPushPermission(): pide permiso explícito. Lo llamamos al final
+//     del onboarding (finishSetup) y desde un botón en el perfil.
+//   - Token se guarda en users/{uid}.fcmTokens (array, multi-device).
+// ─────────────────────────────────────────────
+function fcmMessagingSWReg(){
+  if(!('serviceWorker' in navigator)) return Promise.resolve(null);
+  return navigator.serviceWorker.getRegistration('/app/firebase-messaging-sw.js')
+    .then(function(reg){
+      if(reg) return reg;
+      return navigator.serviceWorker.register('/app/firebase-messaging-sw.js');
+    })
+    .catch(function(e){ console.log('Messaging SW register:', e); return null; });
+}
+
+function saveFcmToken(token){
+  if(!token || !currentUser || currentUser.isAnonymous) return Promise.resolve();
+  return db.collection('users').doc(currentUser.uid).set({
+    fcmTokens: firebase.firestore.FieldValue.arrayUnion(token),
+    fcmUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true });
+}
+
+async function tryRegisterPush(){
+  if(!messaging) return;
+  if(!currentUser || currentUser.isAnonymous) return;
+  if(!('Notification' in window)) return;
+  if(Notification.permission !== 'granted') return; // silencioso: no prompt
+  try {
+    var swReg = await fcmMessagingSWReg();
+    if(!swReg) return;
+    var token = await messaging.getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: swReg });
+    if(token) { await saveFcmToken(token); console.log('FCM token refresh OK'); }
+  } catch(e){ console.log('tryRegisterPush error:', e); }
+}
+
+async function requestPushPermission(){
+  if(!messaging){ alert('Tu navegador no soporta notificaciones push.'); return false; }
+  if(!currentUser || currentUser.isAnonymous){ return false; }
+  if(!('Notification' in window)){ return false; }
+  try {
+    var perm = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
+    if(perm !== 'granted'){ return false; }
+    var swReg = await fcmMessagingSWReg();
+    if(!swReg) return false;
+    var token = await messaging.getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: swReg });
+    if(!token) return false;
+    await saveFcmToken(token);
+    addNotif('🔔','Notificaciones activadas','ahora');
+    return true;
+  } catch(e){ console.log('requestPushPermission error:', e); return false; }
+}
+
+// Mensajes en foreground (app abierta): mostramos toast/notif interna.
+if(messaging){
+  try {
+    messaging.onMessage(function(payload){
+      var n = payload.notification || {};
+      addNotif('🔔','<strong>'+(n.title||'tNic')+'</strong> · '+(n.body||''),'ahora');
+    });
+  } catch(e){ console.log('onMessage setup:', e); }
+}
+
 function loginConGoogle() {
   document.getElementById('login-buttons').style.display = 'none';
   document.getElementById('login-loading').style.display = 'flex';
@@ -2175,6 +2247,8 @@ function onLoginSuccess(user, isGuest) {
             // Backfill silencioso: re-publica el perfil con email para que las
             // Cloud Functions de match/interview puedan leerlo.
             try { publishProfileToFirestore(); } catch(e) { console.log('backfill publish:', e); }
+            // Refresh silencioso del token FCM si ya hay permiso concedido
+            try { tryRegisterPush(); } catch(e) { console.log('tryRegisterPush:', e); }
             setTimeout(function(){initCardEvents();updateNdot();buildAgenda();}, 100);
           } else {
             var tc=false;try{tc=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
@@ -2438,6 +2512,9 @@ function finishSetup(){
   listenForMatches();
   // Cargar perfiles reales para el swipe
   loadRealProfilesForSwipe();
+  // Pedir permiso de notificaciones — la primera y única vez que el browser muestra prompt.
+  // Si bloquea, la app sigue funcionando; solo se pierde el push.
+  setTimeout(function(){ try { requestPushPermission(); } catch(e) { console.log('push permission:', e); } }, 1500);
 }
 
 function loadRealProfilesForSwipe() {

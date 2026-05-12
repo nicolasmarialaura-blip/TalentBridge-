@@ -64,6 +64,68 @@ async function sendEmail(to, subject, html) {
   }
 }
 
+// ── Push helper ─────────────────────────────────────────────────────────
+/**
+ * Envía una push notif a todos los tokens FCM guardados en users/{uid}.fcmTokens.
+ * Limpia automáticamente los tokens inválidos (devices que desinstalaron, etc.).
+ * Nunca tira: si el user no tiene tokens, simplemente no hace nada.
+ */
+async function sendPushToUser(uid, payload) {
+  try {
+    const userDoc = await db.collection("users").doc(uid).get();
+    if (!userDoc.exists) return;
+    const tokens = Array.isArray(userDoc.data().fcmTokens) ? userDoc.data().fcmTokens : [];
+    if (!tokens.length) return;
+
+    const baseMsg = {
+      notification: {
+        title: payload.title || "tNic",
+        body: payload.body || "",
+      },
+      data: payload.data || {},
+      webpush: {
+        notification: {
+          icon: "/icon-192.png",
+          badge: "/icon-192.png",
+        },
+        fcmOptions: { link: "https://www.tnictalent.com/app/" },
+      },
+    };
+
+    const results = await Promise.allSettled(
+      tokens.map((t) => admin.messaging().send({ ...baseMsg, token: t }))
+    );
+
+    const toRemove = [];
+    results.forEach((r, i) => {
+      if (r.status === "rejected") {
+        const code = (r.reason && r.reason.code) || "";
+        if (
+          code === "messaging/invalid-registration-token" ||
+          code === "messaging/registration-token-not-registered" ||
+          code === "messaging/invalid-argument"
+        ) {
+          toRemove.push(tokens[i]);
+        } else {
+          console.warn(`FCM send error (${tokens[i].substring(0, 12)}...):`, (r.reason && r.reason.message) || r.reason);
+        }
+      }
+    });
+
+    if (toRemove.length) {
+      await db.collection("users").doc(uid).update({
+        fcmTokens: admin.firestore.FieldValue.arrayRemove(...toRemove),
+      });
+      console.log(`Limpiados ${toRemove.length} tokens FCM inválidos de ${uid}`);
+    }
+
+    const ok = results.filter((r) => r.status === "fulfilled").length;
+    if (ok > 0) console.log(`📱 Push enviada a ${uid} (${ok}/${tokens.length} devices) — "${payload.title}"`);
+  } catch (e) {
+    console.error(`sendPushToUser error para ${uid}:`, e);
+  }
+}
+
 /**
  * Devuelve un objeto con { email, displayName } para un uid dado.
  * Lee de Firestore (/candidates o /companies). NO usa admin.auth().getUser()
@@ -152,7 +214,7 @@ exports.sendWelcomeEmail = functions
     return null;
   });
 
-// ── Helper: emails de match ──────────────────────────────────────────────
+// ── Helper: emails + push de match ───────────────────────────────────────
 async function sendMatchEmails(uidA, uidB) {
   const [a, b] = await Promise.all([getUserInfo(uidA), getUserInfo(uidB)]);
   const aName = a.displayName || "alguien";
@@ -163,8 +225,16 @@ async function sendMatchEmails(uidA, uidB) {
     <p style="margin:0 0 16px 0">Ya pueden chatear directamente desde la app y coordinar los próximos pasos.</p>
     <div>${ctaButton("Abrir chat en tNic →", APP_URL)}</div>
   `);
-  if (a.email) await sendEmail(a.email, `🎉 Conectaste con ${bName} en tNic`, matchHtml(bName));
-  if (b.email) await sendEmail(b.email, `🎉 Conectaste con ${aName} en tNic`, matchHtml(aName));
+  // Emails (en paralelo)
+  const emailJobs = [];
+  if (a.email) emailJobs.push(sendEmail(a.email, `🎉 Conectaste con ${bName} en tNic`, matchHtml(bName)));
+  if (b.email) emailJobs.push(sendEmail(b.email, `🎉 Conectaste con ${aName} en tNic`, matchHtml(aName)));
+  // Push (en paralelo)
+  const pushJobs = [
+    sendPushToUser(uidA, { title: "🎉 Mutual Interest", body: `Conectaste con ${bName}`, data: { type: "match", with: uidB } }),
+    sendPushToUser(uidB, { title: "🎉 Mutual Interest", body: `Conectaste con ${aName}`, data: { type: "match", with: uidA } }),
+  ];
+  await Promise.all(emailJobs.concat(pushJobs));
 }
 
 // ── 2) matchOnSwipe — detecta reciprocidad y dispara emails ─────────────
@@ -299,5 +369,37 @@ exports.onInterviewCreated = functions
       <p style="margin:18px 0 0 0;font-size:12px;color:#71717A">Si necesitás reprogramar, contactá a la empresa por el chat de tNic.</p>
     `);
     await sendEmail(candEmail, `📅 Entrevista con ${companyName} — ${dateLabel} ${time}`.trim(), html);
+    await sendPushToUser(candidateUid, {
+      title: `📅 Entrevista con ${companyName}`,
+      body: `${dateLabel} a las ${time}${platform ? " · " + platform : ""}`,
+      data: { type: "interview", interviewId: context.params.interviewId },
+    });
+    return null;
+  });
+
+// ── 4) onMessageCreated — push al otro participante del chat ────────────
+exports.onMessageCreated = functions
+  .runWith({ secrets: [SENDGRID_KEY] })
+  .region("us-central1")
+  .firestore.document("matches/{matchId}/messages/{messageId}")
+  .onCreate(async (snap, context) => {
+    const msg = snap.data();
+    if (!msg || !msg.from || !msg.text) return null;
+
+    const matchDoc = await db.collection("matches").doc(context.params.matchId).get();
+    if (!matchDoc.exists) return null;
+    const users = (matchDoc.data() || {}).users || [];
+    const recipient = users.find((u) => u !== msg.from);
+    if (!recipient) return null;
+
+    const sender = await getUserInfo(msg.from);
+    const senderName = sender.displayName || "Alguien";
+    const preview = msg.text.length > 100 ? msg.text.substring(0, 100) + "…" : msg.text;
+
+    await sendPushToUser(recipient, {
+      title: senderName,
+      body: preview,
+      data: { type: "message", matchId: context.params.matchId, from: msg.from, tag: "msg-" + context.params.matchId },
+    });
     return null;
   });

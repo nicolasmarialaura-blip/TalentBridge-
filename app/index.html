@@ -630,7 +630,19 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
   <button onclick="dismissInstall()" style="background:none;border:none;color:rgba(255,255,255,.55);font-size:20px;cursor:pointer;padding:0">×</button>
 </div>
 </div>
-<script src="app.js" defer></script>
+<!-- Módulos JS (cargan en orden con defer, las funciones quedan en scope global) -->
+<script src="js/01-mocks.js" defer></script>
+<script src="js/02-state.js" defer></script>
+<script src="js/03-swipe.js" defer></script>
+<script src="js/04-chat.js" defer></script>
+<script src="js/05-pipeline.js" defer></script>
+<script src="js/06-matches.js" defer></script>
+<script src="js/07-detail.js" defer></script>
+<script src="js/08-cv.js" defer></script>
+<script src="js/09-profile.js" defer></script>
+<script src="js/10-sync.js" defer></script>
+<script src="js/11-company-agenda.js" defer></script>
+<script src="js/12-main.js" defer></script>
 <!-- ══ APP T&C MODAL ══ -->
 <div id="app-tc-modal">
   <div class="app-tc-sheet">

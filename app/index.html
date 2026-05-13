@@ -625,8 +625,11 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
 </div>
 
 <div id="install-banner" style="display:none;position:absolute;bottom:0;left:0;right:0;background:linear-gradient(135deg,#0F172A,#2B5CE6);padding:14px 18px;z-index:300;align-items:center;gap:12px;border-radius:0 0 36px 36px">
-  <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff">📲 Instalá tNic</div><div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px">Agregá la app a tu pantalla de inicio</div></div>
-  <button onclick="installApp()" style="background:#fff;color:#2B5CE6;border:none;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap">Instalar</button>
+  <div style="flex:1">
+    <div id="install-title" style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff">📲 Instalá tNic</div>
+    <div id="install-help" style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px">Acceso rápido y notificaciones push, sin pasar por el navegador.</div>
+  </div>
+  <button id="install-cta" onclick="installApp()" style="background:#fff;color:#2B5CE6;border:none;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap">Instalar</button>
   <button onclick="dismissInstall()" style="background:none;border:none;color:rgba(255,255,255,.55);font-size:20px;cursor:pointer;padding:0">×</button>
 </div>
 </div>

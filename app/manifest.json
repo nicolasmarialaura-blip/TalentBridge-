@@ -1,0 +1,53 @@
+{
+  "id": "/app/",
+  "name": "tNic — Talento IT que matchea",
+  "short_name": "tNic",
+  "description": "Conectá talento IT con empresas en LATAM mediante matching mutuo. Swipes, chat directo, sin intermediarios.",
+  "start_url": "/app/",
+  "scope": "/app/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#0F172A",
+  "theme_color": "#2B5CE6",
+  "lang": "es-AR",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "social"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Mis matches",
+      "short_name": "Matches",
+      "description": "Ver mis Mutual Interests",
+      "url": "/app/",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Agenda",
+      "short_name": "Agenda",
+      "description": "Próximas entrevistas",
+      "url": "/app/",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

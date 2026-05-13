@@ -541,6 +541,9 @@ section { padding: 120px 0; position: relative; }
   flex-wrap: wrap; gap: 16px;
 }
 .footer-tm { display: inline-flex; align-items: center; gap: 8px; }
+.footer-legal { display: inline-flex; align-items: center; gap: 8px; }
+.footer-legal a { color: rgba(251,249,244,0.7); text-decoration: none; transition: color .15s; }
+.footer-legal a:hover { color: #d4b774; text-decoration: underline; }
 .footer-tm-badge {
   display: inline-block; padding: 4px 10px;
   background: rgba(201,169,97,0.15); color: #d4b774;
@@ -1155,6 +1158,11 @@ section { padding: 120px 0; position: relative; }
     </div>
     <div class="footer-bottom">
       <span>© 2026 tNic · Maria Laura Nicolas</span>
+      <span class="footer-legal">
+        <a href="/privacidad.html" data-i18n="footer.privacy">Política de Privacidad</a>
+        <span style="opacity:.4">·</span>
+        <a href="/terminos.html" data-i18n="footer.terms">Términos y Condiciones</a>
+      </span>
       <span class="footer-tm">
         <span class="footer-tm-badge">tNic ™</span>
         <span data-i18n="footer.tm">Marca en trámite — INPI Argentina · Expediente N° 3823071</span>
@@ -1320,6 +1328,8 @@ const translations = {
     "footer.connectTitle": "Conectá",
     "footer.book": "Agendar llamada",
     "footer.appLink": "App (beta)",
+    "footer.privacy": "Política de Privacidad",
+    "footer.terms": "Términos y Condiciones",
     "footer.tm": "Marca en trámite — INPI Argentina · Expediente N° 3823071",
     "wl.title": "Anotate en la <em>beta de tNic</em>.",
     "wl.desc": "Cuando lancemos la versión completa, te avisamos por email para que seas de los primeros en probarla.",
@@ -1436,6 +1446,8 @@ const translations = {
     "footer.connectTitle": "Connect",
     "footer.book": "Book a call",
     "footer.appLink": "App (beta)",
+    "footer.privacy": "Privacy Policy",
+    "footer.terms": "Terms of Service",
     "footer.tm": "Trademark pending — INPI Argentina · File N° 3823071",
     "wl.title": "Join the <em>tNic beta</em>.",
     "wl.desc": "When we launch the full version, we'll email you so you're among the first to try it.",

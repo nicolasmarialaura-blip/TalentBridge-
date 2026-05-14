@@ -35,6 +35,56 @@ var notifs=[
 var tx=0,dragging=false,dx=0,mdown=false,mx2=0;
 var LANG='es',USER_ROLE=null;
 
+// ── SUSCRIPCIÓN ──
+// Se carga desde users/{uid}.subscription en onLoginSuccess. La función
+// programada syncSubscriptions (Cloud Function) la mantiene actualizada
+// cada 5 min según el estado real en LemonSqueezy.
+var subscription = null; // { plan, status, variantId, renewsAt, endsAt, trialEndsAt, ... }
+var subscriptionUnsub = null;
+// Variant IDs de LemonSqueezy (store tnic.lemonsqueezy.com)
+var LS_VARIANTS = {
+  proMonthly:        '1655156',
+  proAnnual:         '1655168',
+  enterpriseMonthly: '1655172',
+  enterpriseAnnual:  '1655186'
+};
+var LS_STORE = 'tnic';
+
+// Estados de suscripción que SÍ dan acceso a features Pro.
+// 'cancelled' mantiene acceso hasta endsAt; 'past_due' es periodo de gracia.
+function hasProAccess(){
+  // Candidatos nunca pagan — acceso completo siempre.
+  if(USER_ROLE === 'candidate') return true;
+  if(!subscription) return false;
+  var ok = ['on_trial','active','cancelled','past_due'];
+  return (subscription.plan === 'pro' || subscription.plan === 'enterprise')
+    && ok.indexOf(subscription.status) !== -1;
+}
+function hasEnterpriseAccess(){
+  if(USER_ROLE === 'candidate') return true;
+  if(!subscription) return false;
+  var ok = ['on_trial','active','cancelled','past_due'];
+  return subscription.plan === 'enterprise' && ok.indexOf(subscription.status) !== -1;
+}
+// Gate de features pagas: si tiene acceso devuelve true; si no, muestra el
+// modal de upgrade y devuelve false. Uso: if(!requirePro('chatear')) return;
+function requirePro(featureLabel){
+  if(hasProAccess()) return true;
+  showUpgradeModal(featureLabel);
+  return false;
+}
+// Abre el checkout de LemonSqueezy para una variante, con el email de la
+// empresa pre-cargado (el sync matchea por email).
+function goToLSCheckout(variantId){
+  if(!currentUser || currentUser.isAnonymous){ alert('Necesitás iniciar sesión.'); return; }
+  var email = (copData && copData.contactEmail) || (currentUser && currentUser.email) || '';
+  var url = 'https://' + LS_STORE + '.lemonsqueezy.com/buy/' + variantId
+    + '?checkout[email]=' + encodeURIComponent(email)
+    + '&checkout[custom][uid]=' + encodeURIComponent(currentUser.uid)
+    + '&embed=0';
+  window.open(url, '_blank');
+}
+
 // ── EMAIL WEBHOOK ──
 var EMAIL_WEBHOOK_URL='https://tnic-mailer.nicolasmarialaura.workers.dev';
 function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(e||'').trim());}

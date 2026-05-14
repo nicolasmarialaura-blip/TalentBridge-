@@ -264,7 +264,9 @@ function applyRoleUI(){
     if (!matchesUnsub) { try { listenForMatches(); } catch(e) { console.log('applyRoleUI: listenForMatches falló', e); } }
     if (!interviewsUnsub) { try { subscribeToInterviews(); } catch(e) { console.log('applyRoleUI: subscribeToInterviews falló', e); } }
     if (USER_ROLE==='company' && !pipelineUnsub) { try { subscribeToPipeline(); } catch(e) { console.log('applyRoleUI: subscribeToPipeline falló', e); } }
+    if (!subscriptionUnsub) { try { listenForSubscription(); } catch(e) { console.log('applyRoleUI: listenForSubscription falló', e); } }
   }
+  try { refreshSubscriptionUI(); } catch(e) { console.log('applyRoleUI: refreshSubscriptionUI falló', e); }
   var isC=USER_ROLE==='candidate';
   dataSet=isC?COMPANIES:CANDIDATES;idx=0;mode=isC?'companies':'candidates';
   var mt=document.querySelector('.modetabs');if(mt)mt.style.display='none';

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Precios · tNic</title>
+<meta name="description" content="Planes y precios de tNic. Conectá con talento IT en LATAM. Free, Pro $39 USD/mes, Enterprise $149 USD/mes con multi-usuario.">
+<link rel="icon" href="/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --b:#2B5CE6;--b2:#3B6EF8;--b3:#6091FF;
+  --blight:#EEF3FF;--bxlight:#F4F7FF;
+  --dark:#0F172A;--mid:#3F3F46;--gray:#71717A;
+  --light:#FAFAFA;--w:#fff;
+  --green:#16A34A;--red:#E53E3E;--purple:#7C3AED;
+  --brd:#E4E4E7;
+  --r:14px;--rl:18px;--rxl:28px;--rp:999px;
+}
+html{height:100%}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  color:var(--dark);background:#FAFAFA;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  line-height:1.55;font-size:15px;
+}
+a{color:var(--b);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── HEADER ── */
+header.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(15,23,42,.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  padding:14px 24px;display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.nav-brand .accent{color:var(--b3)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{color:rgba(255,255,255,.7);font-size:14px;font-weight:500}
+.nav-links a:hover{color:#fff;text-decoration:none}
+.nav-cta{background:var(--b);color:#fff!important;padding:8px 18px;border-radius:var(--rp);font-weight:700}
+.nav-cta:hover{background:var(--b2)}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(145deg,#0F172A 0%,#1B3A8E 60%,#2B5CE6 100%);
+  color:#fff;padding:80px 24px 60px;text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:30px 30px;pointer-events:none;
+}
+.hero h1{
+  font-family:'Syne',sans-serif;font-size:42px;font-weight:800;line-height:1.1;
+  max-width:760px;margin:0 auto 18px;letter-spacing:-1px;position:relative;
+}
+.hero h1 em{color:var(--b3);font-style:normal}
+.hero p{font-size:17px;color:rgba(255,255,255,.75);max-width:580px;margin:0 auto 38px;position:relative}
+
+/* Toggle mensual / anual */
+.toggle{
+  display:inline-flex;align-items:center;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:4px;position:relative;z-index:1;
+}
+.toggle button{
+  background:none;border:none;color:rgba(255,255,255,.6);
+  padding:9px 20px;font-size:13px;font-weight:700;border-radius:999px;
+  cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;
+}
+.toggle button.on{background:#fff;color:var(--dark)}
+.toggle .save-badge{font-size:10px;background:var(--green);color:#fff;padding:2px 7px;border-radius:8px;margin-left:6px;font-weight:800}
+
+/* ── PRICING CARDS ── */
+.plans{
+  max-width:1100px;margin:-30px auto 80px;
+  padding:0 24px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
+  position:relative;z-index:2;
+}
+.plan{
+  background:#fff;border-radius:24px;padding:32px 28px;
+  border:1px solid var(--brd);
+  box-shadow:0 4px 24px rgba(15,23,42,.08);
+  display:flex;flex-direction:column;
+  transition:transform .2s,box-shadow .2s;
+}
+.plan:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(43,92,230,.18)}
+.plan.featured{
+  border-color:var(--b);border-width:2px;
+  position:relative;background:linear-gradient(180deg,#fff 0%,#F8FAFF 100%);
+  box-shadow:0 8px 32px rgba(43,92,230,.18);
+}
+.plan.featured::before{
+  content:'⭐ MÁS ELEGIDO';
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--b);color:#fff;font-size:10px;font-weight:800;
+  padding:5px 14px;border-radius:999px;letter-spacing:.6px;
+}
+.plan-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px}
+.plan-tagline{font-size:13px;color:var(--gray);margin-bottom:24px;min-height:36px}
+.plan-price{display:flex;align-items:baseline;gap:6px;margin-bottom:6px}
+.plan-price .amount{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;letter-spacing:-1.5px}
+.plan-price .currency{font-size:14px;color:var(--gray);font-weight:600}
+.plan-price .period{font-size:13px;color:var(--gray);font-weight:500}
+.plan-billing{font-size:11px;color:var(--gray);margin-bottom:24px;min-height:16px}
+.plan-billing strong{color:var(--green);font-weight:700}
+.plan-cta{
+  background:var(--bxlight);color:var(--b);border:1.5px solid transparent;
+  padding:13px 0;font-size:14px;font-weight:700;border-radius:14px;
+  cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;width:100%;
+  margin-bottom:28px;transition:all .15s;text-align:center;display:block;
+}
+.plan-cta:hover{background:var(--blight);text-decoration:none}
+.plan.featured .plan-cta{background:var(--b);color:#fff;box-shadow:0 4px 14px rgba(43,92,230,.3)}
+.plan.featured .plan-cta:hover{background:var(--b2);box-shadow:0 6px 20px rgba(43,92,230,.42)}
+.plan-features{list-style:none;padding:0}
+.plan-features li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:13px;margin-bottom:11px;line-height:1.5;
+}
+.plan-features li svg{flex-shrink:0;color:var(--b);margin-top:1px}
+.plan.featured .plan-features li svg{color:var(--b)}
+.plan-features li.muted{color:var(--gray)}
+.plan-features li.muted svg{color:var(--gray);opacity:.5}
+.plan-features-header{font-size:11px;font-weight:800;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin:8px 0 12px}
+
+/* ── FAQ ── */
+.faq-section{max-width:760px;margin:0 auto 80px;padding:0 24px}
+.faq-section h2{
+  font-family:'Syne',sans-serif;font-size:28px;font-weight:800;
+  text-align:center;margin-bottom:36px;letter-spacing:-.5px;
+}
+.faq-item{
+  background:#fff;border:1px solid var(--brd);border-radius:14px;
+  padding:18px 22px;margin-bottom:10px;cursor:pointer;
+  transition:border-color .15s;
+}
+.faq-item:hover{border-color:var(--b3)}
+.faq-q{font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center;color:var(--dark)}
+.faq-q::after{content:'+';font-size:22px;color:var(--b);font-weight:300;transition:transform .2s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{font-size:14px;color:var(--mid);line-height:1.6;max-height:0;overflow:hidden;transition:max-height .25s,margin-top .25s}
+.faq-item.open .faq-a{max-height:400px;margin-top:12px}
+
+/* ── BOTTOM CTA ── */
+.bottom-cta{
+  background:linear-gradient(135deg,#0F172A,#2B5CE6);color:#fff;
+  text-align:center;padding:60px 24px;margin-bottom:0;
+}
+.bottom-cta h2{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;margin-bottom:12px;letter-spacing:-.5px}
+.bottom-cta p{font-size:15px;color:rgba(255,255,255,.7);max-width:520px;margin:0 auto 26px}
+.bottom-cta .cta-btn{
+  display:inline-block;background:#fff;color:var(--b);padding:14px 32px;
+  border-radius:999px;font-weight:800;font-size:14px;
+}
+.bottom-cta .cta-btn:hover{background:#f0f4ff;text-decoration:none}
+
+/* ── FOOTER ── */
+footer{padding:32px 24px;background:#0F172A;color:rgba(255,255,255,.5);font-size:13px;text-align:center}
+footer a{color:rgba(255,255,255,.7)}
+footer .links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+
+/* ── MOBILE RESPONSIVE ── */
+@media (max-width:920px){
+  .plans{grid-template-columns:1fr;max-width:480px;margin-top:-20px;gap:18px}
+  .plan.featured{order:-1} /* Pro arriba en mobile */
+  .hero h1{font-size:32px}
+  .hero p{font-size:15px}
+  .hero{padding:60px 20px 50px}
+  .nav-links a:not(.nav-cta){display:none} /* simplificar mobile */
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a href="/" class="nav-brand">t<span class="accent">Nic</span></a>
+  <nav class="nav-links">
+    <a href="/#servicios">Servicios</a>
+    <a href="/#candidatos">Candidatos</a>
+    <a href="/precios.html">Precios</a>
+    <a href="/app/" class="nav-cta">Entrar a la app</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Encontrá talento IT, sin <em>intermediarios</em>.</h1>
+  <p>Planes simples para empresas que buscan candidatos validados en LATAM. Candidatos siempre gratis.</p>
+  <div class="toggle" id="billing-toggle">
+    <button class="on" data-period="monthly" onclick="setPeriod('monthly')">Mensual</button>
+    <button data-period="annual" onclick="setPeriod('annual')">Anual <span class="save-badge">−17%</span></button>
+  </div>
+</section>
+
+<section class="plans">
+  <!-- FREE -->
+  <div class="plan">
+    <div class="plan-name">Free</div>
+    <div class="plan-tagline">Para probar tNic y conocer candidatos.</div>
+    <div class="plan-price">
+      <span class="amount">$0</span>
+      <span class="period">para siempre</span>
+    </div>
+    <div class="plan-billing">Sin tarjeta. Sin compromiso.</div>
+    <a href="/app/" class="plan-cta">Empezá gratis</a>
+    <div class="plan-features-header">Incluye</div>
+    <ul class="plan-features">
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Perfil de empresa completo</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Buscar candidatos con swipe + filtros</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>10 likes acumulados</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Hasta 3 Mutual Interests</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Preview del pipeline (read-only)</li>
+      <li class="muted"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Sin chat con matches</li>
+      <li class="muted"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Sin agendar entrevistas</li>
+    </ul>
+  </div>
+
+  <!-- PRO -->
+  <div class="plan featured">
+    <div class="plan-name">Pro</div>
+    <div class="plan-tagline">Para reclutadores individuales o equipos chicos.</div>
+    <div class="plan-price">
+      <span class="amount" data-price-monthly="39" data-price-annual="32.50">$39</span>
+      <span class="currency">USD</span>
+      <span class="period">/mes</span>
+    </div>
+    <div class="plan-billing" data-billing-monthly="Facturado mensual" data-billing-annual="Facturado anual <strong>$390 USD</strong> · ahorrás 17%">Facturado mensual</div>
+    <a href="/app/?upgrade=pro" class="plan-cta">Probar 14 días gratis</a>
+    <div class="plan-features-header">Todo de Free, más</div>
+    <ul class="plan-features">
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Likes ilimitados</strong> · matches ilimitados</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Chat directo</strong> con tus matches en tiempo real</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Pipeline completo</strong> de candidatos por etapa</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Agendar entrevistas (Meet/Zoom/Teams)</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Descargar CVs en PDF</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Notificaciones push (mobile + desktop)</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Soporte por email (48h response)</li>
+    </ul>
+  </div>
+
+  <!-- ENTERPRISE -->
+  <div class="plan">
+    <div class="plan-name">Enterprise</div>
+    <div class="plan-tagline">Para equipos de Talent con varios reclutadores.</div>
+    <div class="plan-price">
+      <span class="amount" data-price-monthly="149" data-price-annual="124">$149</span>
+      <span class="currency">USD</span>
+      <span class="period">/mes</span>
+    </div>
+    <div class="plan-billing" data-billing-monthly="Facturado mensual" data-billing-annual="Facturado anual <strong>$1.490 USD</strong> · ahorrás 17%">Facturado mensual</div>
+    <a href="mailto:hola@tnictalent.com?subject=Plan%20Enterprise%20tNic" class="plan-cta">Hablemos</a>
+    <div class="plan-features-header">Todo de Pro, más</div>
+    <ul class="plan-features">
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Hasta 5 reclutadores</strong> en la misma cuenta</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Pipeline y agenda <strong>compartidos</strong> en el equipo</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Roles: Admin / Reclutador</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Analytics</strong>: time-to-hire, conversión por etapa</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Onboarding 1-on-1 con tu equipo</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Soporte prioritario (response &lt;24h)</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Factura A/B (Argentina) o invoice global</li>
+    </ul>
+  </div>
+</section>
+
+<section class="faq-section">
+  <h2>Preguntas frecuentes</h2>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">¿Los candidatos pagan?</div>
+    <div class="faq-a">No. Los candidatos siempre usan tNic gratis: crear perfil, hacer swipe, chatear con empresas que les hicieron match, recibir y aceptar entrevistas. Pagan solo las empresas.</div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">¿Cómo funciona el trial de 14 días?</div>
+    <div class="faq-a">Al elegir el plan Pro, te pedimos tu tarjeta pero <strong>no cobramos nada</strong> durante los primeros 14 días. Si en ese plazo no querés seguir, cancelás desde la app y no se hace ningún cargo. Si seguís, automáticamente arranca el cobro mensual.</div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">¿Puedo cancelar cuando quiera?</div>
+    <div class="faq-a">Sí, en cualquier momento desde la sección de Mi cuenta en la app, sin trámites ni preguntas. Si cancelás, mantenés Pro hasta el final del periodo ya pagado.</div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">¿Qué medios de pago aceptan?</div>
+    <div class="faq-a">Tarjetas de crédito Visa, Mastercard y American Express. Procesamos pagos vía Mercado Pago (Argentina y LATAM) y Stripe (resto del mundo). Para empresas con factura A/B en Argentina, generamos la factura automáticamente.</div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">¿Qué pasa si supero los 5 reclutadores del plan Enterprise?</div>
+    <div class="faq-a">Tenemos planes custom para equipos más grandes (10, 25 o 100+ reclutadores). Escribinos a <a href="mailto:hola@tnictalent.com">hola@tnictalent.com</a> y armamos un plan a medida.</div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">¿Puedo pasar de Pro a Enterprise (o al revés)?</div>
+    <div class="faq-a">Sí, podés cambiar de plan cuando quieras desde Mi cuenta. Si subís a Enterprise, prorrateamos lo que pagaste de Pro. Si bajás a Pro o Free, el cambio se aplica al final del periodo facturado.</div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">¿Hay reembolsos?</div>
+    <div class="faq-a">Sí. Si dentro de los primeros 30 días de tu suscripción Pro o Enterprise pagada no estás conforme, te reembolsamos el 100% sin preguntas. Después de los 30 días no hay reembolsos por periodos no usados, pero podés cancelar y mantenés el servicio hasta el final del periodo pagado.</div>
+  </div>
+</section>
+
+<section class="bottom-cta">
+  <h2>Empezá gratis hoy</h2>
+  <p>Creá tu cuenta en 2 minutos y conocé los primeros candidatos. Si querés ir más allá, activá Pro con 14 días gratis.</p>
+  <a href="/app/" class="cta-btn">Entrar a tNic →</a>
+</section>
+
+<footer>
+  <div class="links">
+    <a href="/">Inicio</a>
+    <a href="/app/">App</a>
+    <a href="/precios.html">Precios</a>
+    <a href="/privacidad.html">Privacidad</a>
+    <a href="/terminos.html">Términos</a>
+    <a href="mailto:hola@tnictalent.com">Contacto</a>
+  </div>
+  <div>© 2026 tNic · Maria Laura Nicolás · Marca en trámite INPI Argentina</div>
+</footer>
+
+<script>
+function setPeriod(period){
+  document.querySelectorAll('#billing-toggle button').forEach(function(b){
+    b.classList.toggle('on', b.dataset.period === period);
+  });
+  document.querySelectorAll('.amount[data-price-monthly]').forEach(function(el){
+    el.textContent = '$' + el.dataset['price' + (period === 'annual' ? 'Annual' : 'Monthly')];
+  });
+  document.querySelectorAll('.plan-billing[data-billing-monthly]').forEach(function(el){
+    el.innerHTML = el.dataset['billing' + (period === 'annual' ? 'Annual' : 'Monthly')];
+  });
+}
+</script>
+
+</body>
+</html>

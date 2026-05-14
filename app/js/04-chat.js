@@ -134,6 +134,8 @@ function subscribeToChatMessages(person){
 }
 
 function openChat(person){
+  // Gate: empresas Free no pueden chatear con sus matches
+  if(!requirePro('chatear con tus matches')) return;
   curChat=person;
   var real=isRealMatch(person);
 

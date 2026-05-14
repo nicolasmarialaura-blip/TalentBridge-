@@ -17,6 +17,8 @@ function buildKanban(){
   G('pipeline-sub').textContent=matches.length+' candidatos en pipeline';
 }
 function movePipeline(name,dir){
+  // Gate: empresas Free ven el pipeline en modo preview (read-only)
+  if(!requirePro('mover candidatos en el pipeline')) return;
   if(pipeline[name]===undefined)pipeline[name]=0;
   pipeline[name]=Math.max(0,Math.min(3,pipeline[name]+dir));
   buildKanban();

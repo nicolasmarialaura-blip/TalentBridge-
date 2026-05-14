@@ -169,6 +169,10 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
     <div class="ibtn" onclick="openSearch()">🔍</div>
     <div class="ibtn" onclick="openNotifs()">🔔<div class="ndot" id="ndot"></div></div>
   </div>
+  <div id="upgrade-banner">
+    <div class="ub-text">Estás en el plan Free<small>Activá Pro para chatear, agendar y usar el pipeline</small></div>
+    <button class="ub-btn" onclick="showUpgradeModal('')">Ver Pro</button>
+  </div>
   <div class="card-area">
     <div class="card-bg" id="card-bg"></div>
     <div class="card" id="card">
@@ -519,6 +523,15 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
     <input class="cop-name-inp" id="cop-name" placeholder="Nombre de la empresa" autocomplete="off" name="cop-name-tnic" oninput="updateCopInitials()">
     <input class="cop-tagline-inp" id="cop-tagline" placeholder="Tagline · Ej: Líder en e-commerce LATAM" autocomplete="off" name="cop-tagline-tnic">
   </div>
+  <div class="cop-body" style="padding-bottom:0">
+    <div class="cop-section" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <div>
+        <div class="cop-stitle" style="margin-bottom:4px">Tu plan</div>
+        <span class="plan-badge plan-free" id="plan-badge">🆓 Free</span>
+      </div>
+      <button onclick="showUpgradeModal('')" style="background:linear-gradient(135deg,var(--b),var(--b3));color:#fff;border:none;border-radius:999px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Gestionar plan</button>
+    </div>
+  </div>
   <div class="cop-body">
     <div class="cop-section">
       <div class="cop-stitle">Información general</div>
@@ -631,6 +644,25 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
   </div>
   <button id="install-cta" onclick="installApp()" style="background:#fff;color:#2B5CE6;border:none;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap">Instalar</button>
   <button onclick="dismissInstall()" style="background:none;border:none;color:rgba(255,255,255,.55);font-size:20px;cursor:pointer;padding:0">×</button>
+</div>
+
+<!-- ══ MODAL DE UPGRADE A PRO ══ -->
+<div id="upgrade-modal">
+  <div class="upgrade-card">
+    <button class="upgrade-close" onclick="closeUpgradeModal()">×</button>
+    <div class="upgrade-emoji">💎</div>
+    <div class="upgrade-title">Activá tNic Pro</div>
+    <div class="upgrade-sub" id="upgrade-modal-sub">Desbloqueá todas las features de tNic. Probalo 14 días gratis.</div>
+    <ul class="upgrade-feats">
+      <li>💬 Chat directo con tus matches</li>
+      <li>📋 Pipeline completo de candidatos</li>
+      <li>📅 Agendar entrevistas con Meet/Zoom/Teams</li>
+      <li>📄 Descargar CVs · 🔔 Notificaciones push</li>
+    </ul>
+    <button class="upgrade-btn-primary" onclick="upgradeToProMonthly()">Probar Pro 14 días gratis · $39/mes</button>
+    <button class="upgrade-btn-secondary" onclick="upgradeToProAnnual()">Plan anual · $390/año <span style="opacity:.7">(ahorrás 17%)</span></button>
+    <a class="upgrade-link" href="/precios.html" target="_blank" rel="noopener">Ver todos los planes y comparación →</a>
+  </div>
 </div>
 </div>
 <!-- Módulos JS (cargan en orden con defer, las funciones quedan en scope global) -->

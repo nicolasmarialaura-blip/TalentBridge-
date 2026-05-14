@@ -144,6 +144,7 @@ function onLoginSuccess(user, isGuest) {
           if (data.copData) Object.assign(copData, data.copData);
           if (data.USER_ROLE) USER_ROLE = data.USER_ROLE;
           if (data.matches) matches = data.matches;
+          if (data.subscription) subscription = data.subscription;
           // chats reales viven en matches/{id}/messages — no leer del subcampo viejo
 
           // Backfill de email en el perfil (necesario para que las Cloud Functions
@@ -162,6 +163,12 @@ function onLoginSuccess(user, isGuest) {
             try { publishProfileToFirestore(); } catch(e) { console.log('backfill publish:', e); }
             // Refresh silencioso del token FCM si ya hay permiso concedido
             try { tryRegisterPush(); } catch(e) { console.log('tryRegisterPush:', e); }
+            // Listener real-time de la suscripción (syncSubscriptions la actualiza c/5min)
+            try { listenForSubscription(); } catch(e) { console.log('listenForSubscription:', e); }
+            // Deep-link desde /precios.html?upgrade=pro → abrir modal de upgrade
+            if (location.search.indexOf('upgrade=pro') !== -1 && USER_ROLE === 'company' && !hasProAccess()) {
+              setTimeout(function(){ showUpgradeModal(''); }, 900);
+            }
             setTimeout(function(){initCardEvents();updateNdot();buildAgenda();}, 100);
           } else {
             var tc=false;try{tc=localStorage.getItem('tnic_tc_accepted')==='1';}catch(e){}
@@ -202,3 +209,63 @@ function saveToFirestore() {
   }
 }
 
+
+// ── SUSCRIPCIÓN: listener + UI ──────────────────────────────────────────
+function listenForSubscription(){
+  if(subscriptionUnsub){try{subscriptionUnsub();}catch(e){}subscriptionUnsub=null;}
+  if(!currentUser || currentUser.isAnonymous) return;
+  subscriptionUnsub = db.collection('users').doc(currentUser.uid)
+    .onSnapshot(function(doc){
+      if(doc.exists && doc.data().subscription){
+        subscription = doc.data().subscription;
+        refreshSubscriptionUI();
+      }
+    }, function(err){ console.log('Subscription listener error:', err); });
+}
+
+// Actualiza elementos de UI que dependen del plan (badge, banner, etc.)
+function refreshSubscriptionUI(){
+  // Badge de plan en el perfil de empresa
+  var badge = G('plan-badge');
+  if(badge){
+    if(USER_ROLE !== 'company'){
+      badge.style.display = 'none';
+    } else {
+      var plan = (subscription && subscription.plan) || 'free';
+      var status = (subscription && subscription.status) || '';
+      var label = plan === 'enterprise' ? '🏢 Enterprise'
+                : plan === 'pro' ? '💎 Pro'
+                : '🆓 Free';
+      if(status === 'on_trial') label += ' · Trial';
+      if(status === 'cancelled') label += ' · Cancela pronto';
+      if(status === 'past_due') label += ' · Pago pendiente';
+      badge.textContent = label;
+      badge.className = 'plan-badge plan-' + plan;
+      badge.style.display = 'inline-block';
+    }
+  }
+  // Banner de upgrade en swipe-scr (solo empresa Free)
+  var banner = G('upgrade-banner');
+  if(banner){
+    banner.style.display = (USER_ROLE === 'company' && !hasProAccess()) ? 'flex' : 'none';
+  }
+}
+
+// Modal de upgrade — se dispara cuando una empresa Free toca una feature paga.
+function showUpgradeModal(featureLabel){
+  var modal = G('upgrade-modal');
+  if(!modal) return;
+  var sub = G('upgrade-modal-sub');
+  if(sub){
+    sub.textContent = featureLabel
+      ? 'Para ' + featureLabel + ' necesitás tNic Pro. Probalo 14 días gratis.'
+      : 'Desbloqueá todas las features de tNic. Probalo 14 días gratis.';
+  }
+  modal.style.display = 'flex';
+}
+function closeUpgradeModal(){
+  var m = G('upgrade-modal'); if(m) m.style.display = 'none';
+}
+// Botones del modal → checkout de LemonSqueezy
+function upgradeToProMonthly(){ closeUpgradeModal(); goToLSCheckout(LS_VARIANTS.proMonthly); }
+function upgradeToProAnnual(){ closeUpgradeModal(); goToLSCheckout(LS_VARIANTS.proAnnual); }

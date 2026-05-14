@@ -32,6 +32,16 @@ const SENDGRID_FROM = defineString("SENDGRID_FROM", { default: "noreply@tnictale
 const SENDGRID_FROM_NAME = defineString("SENDGRID_FROM_NAME", { default: "tNic" });
 const APP_URL = "https://www.tnictalent.com/app/";
 
+// ── LemonSqueezy setup ──────────────────────────────────────────────────
+const LEMONSQUEEZY_API_KEY = defineSecret("LEMONSQUEEZY_API_KEY");
+// Mapeo de variant_id → plan. Los IDs salen de la API de LemonSqueezy.
+const LS_VARIANT_PLANS = {
+  "1655156": "pro",        // tNic Pro Mensual
+  "1655168": "pro",        // tNic Pro Anual
+  "1655172": "enterprise", // tNic Enterprise Mensual
+  "1655186": "enterprise", // tNic Enterprise Anual
+};
+
 // Inicialización lazy de SendGrid — se hace dentro de cada handler porque
 // el secret sólo está disponible en tiempo de ejecución (no en parse time).
 function ensureSendgrid() {
@@ -413,5 +423,83 @@ exports.onMessageCreated = functions
       body: preview,
       data: { type: "message", matchId: context.params.matchId, senderUid: msg.from },
     });
+    return null;
+  });
+
+// ── 5) syncSubscriptions — sincroniza suscripciones de LemonSqueezy ─────────
+//
+// Función PROGRAMADA (Cloud Scheduler, cada 5 min). No usa webhook ni endpoint
+// público porque la política de organización del dominio bloquea `allUsers`.
+//
+// En vez de que LemonSqueezy nos empuje eventos, nosotros consultamos su API:
+//   1. GET /v1/subscriptions (todas las suscripciones de la store)
+//   2. Por cada una, matcheamos `user_email` contra companies/{uid}.email
+//   3. Actualizamos users/{uid}.subscription en Firestore
+//
+// Tradeoff: hasta 5 min de delay entre que alguien paga y su cuenta es Pro.
+// Aceptable para B2B; sin la complejidad ni los bloqueos del webhook.
+exports.syncSubscriptions = functions
+  .runWith({ secrets: [LEMONSQUEEZY_API_KEY] })
+  .region("us-central1")
+  .pubsub.schedule("every 5 minutes")
+  .timeZone("America/Argentina/Buenos_Aires")
+  .onRun(async () => {
+    const apiKey = LEMONSQUEEZY_API_KEY.value();
+    if (!apiKey) { console.warn("syncSubscriptions: sin LEMONSQUEEZY_API_KEY"); return null; }
+
+    let url = "https://api.lemonsqueezy.com/v1/subscriptions?page[size]=100";
+    let processed = 0, skipped = 0, pages = 0;
+
+    while (url) {
+      pages++;
+      const resp = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          Accept: "application/vnd.api+json",
+        },
+      });
+      if (!resp.ok) {
+        console.error(`LS API error ${resp.status}:`, await resp.text());
+        break;
+      }
+      const data = await resp.json();
+
+      for (const sub of data.data || []) {
+        const a = sub.attributes || {};
+        const email = (a.user_email || "").toLowerCase().trim();
+        if (!email) { skipped++; continue; }
+
+        // Matchear contra una empresa registrada con ese email
+        const snap = await db.collection("companies").where("email", "==", email).limit(1).get();
+        if (snap.empty) { skipped++; continue; }
+        const uid = snap.docs[0].id;
+
+        const variantId = String(a.variant_id || "");
+        const planFromVariant = LS_VARIANT_PLANS[variantId] || "free";
+        const status = a.status || "active"; // on_trial | active | cancelled | expired | past_due | unpaid | paused
+        const lostAccess = status === "expired" || status === "unpaid";
+        const effectivePlan = lostAccess ? "free" : planFromVariant;
+
+        await db.collection("users").doc(uid).set({
+          subscription: {
+            plan: effectivePlan,
+            status: status,
+            lsSubscriptionId: String(sub.id),
+            lsCustomerId: String(a.customer_id || ""),
+            variantId: variantId,
+            productName: a.product_name || "",
+            trialEndsAt: a.trial_ends_at ? new Date(a.trial_ends_at) : null,
+            renewsAt: a.renews_at ? new Date(a.renews_at) : null,
+            endsAt: a.ends_at ? new Date(a.ends_at) : null,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          },
+        }, { merge: true });
+        processed++;
+      }
+
+      url = (data.links && data.links.next) || null;
+    }
+
+    console.log(`syncSubscriptions: ${processed} sincronizadas, ${skipped} sin match, ${pages} páginas`);
     return null;
   });

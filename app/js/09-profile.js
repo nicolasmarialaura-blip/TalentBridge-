@@ -267,5 +267,5 @@ function closeUpgradeModal(){
   var m = G('upgrade-modal'); if(m) m.style.display = 'none';
 }
 // Botones del modal → checkout de LemonSqueezy
-function upgradeToProMonthly(){ closeUpgradeModal(); goToLSCheckout(LS_VARIANTS.proMonthly); }
-function upgradeToProAnnual(){ closeUpgradeModal(); goToLSCheckout(LS_VARIANTS.proAnnual); }
+function upgradeToProMonthly(){ closeUpgradeModal(); goToLSCheckout(LS_CHECKOUTS.proMonthly); }
+function upgradeToProAnnual(){ closeUpgradeModal(); goToLSCheckout(LS_CHECKOUTS.proAnnual); }

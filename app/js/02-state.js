@@ -41,12 +41,13 @@ var LANG='es',USER_ROLE=null;
 // cada 5 min según el estado real en LemonSqueezy.
 var subscription = null; // { plan, status, variantId, renewsAt, endsAt, trialEndsAt, ... }
 var subscriptionUnsub = null;
-// Variant IDs de LemonSqueezy (store tnic.lemonsqueezy.com)
-var LS_VARIANTS = {
-  proMonthly:        '1655156',
-  proAnnual:         '1655168',
-  enterpriseMonthly: '1655172',
-  enterpriseAnnual:  '1655186'
+// UUIDs de checkout de LemonSqueezy (store tnic.lemonsqueezy.com).
+// Formato de URL: https://tnic.lemonsqueezy.com/checkout/buy/{UUID}
+var LS_CHECKOUTS = {
+  proMonthly:        '9ef48cb5-a8e2-4a60-bba4-5d4996115025',
+  proAnnual:         '96c7cbf4-cf84-4cb6-8ca1-afa029b18fbf',
+  enterpriseMonthly: '26c930ce-2bc3-4fd0-8df7-09b93a4b5e2a',
+  enterpriseAnnual:  'e8c8f189-e3e5-4303-a847-d48e34580ef5'
 };
 var LS_STORE = 'tnic';
 
@@ -73,15 +74,14 @@ function requirePro(featureLabel){
   showUpgradeModal(featureLabel);
   return false;
 }
-// Abre el checkout de LemonSqueezy para una variante, con el email de la
-// empresa pre-cargado (el sync matchea por email).
-function goToLSCheckout(variantId){
+// Abre el checkout de LemonSqueezy, con el email de la empresa pre-cargado.
+// El sync (syncSubscriptions) matchea la suscripción por ese email.
+function goToLSCheckout(checkoutUuid){
   if(!currentUser || currentUser.isAnonymous){ alert('Necesitás iniciar sesión.'); return; }
   var email = (copData && copData.contactEmail) || (currentUser && currentUser.email) || '';
-  var url = 'https://' + LS_STORE + '.lemonsqueezy.com/buy/' + variantId
+  var url = 'https://' + LS_STORE + '.lemonsqueezy.com/checkout/buy/' + checkoutUuid
     + '?checkout[email]=' + encodeURIComponent(email)
-    + '&checkout[custom][uid]=' + encodeURIComponent(currentUser.uid)
-    + '&embed=0';
+    + '&checkout[custom][uid]=' + encodeURIComponent(currentUser.uid);
   window.open(url, '_blank');
 }
 

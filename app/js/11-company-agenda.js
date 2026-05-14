@@ -115,10 +115,24 @@ function buildAgenda(){
   G('agenda-sub').textContent=agendaInterviews.length+' entrevistas '+(isCandidate?'recibidas':'agendadas');
   var list=G('agenda-list');if(!list)return;
   if(!filtered.length){
-    var empty = isCandidate
-      ? 'Aún no tenés entrevistas. Cuando una empresa agende una contigo, va a aparecer acá.'
-      : 'Sin entrevistas '+(agendaTab==='all'?'agendadas':'en este estado');
-    list.innerHTML='<div style="text-align:center;padding:30px;color:var(--gray);font-size:13px"><div style="font-size:36px;margin-bottom:8px">📅</div><div>'+empty+'</div></div>';
+    var title, body, cta = '';
+    if(isCandidate){
+      title = 'Sin entrevistas todavía';
+      body  = 'Cuando una empresa con la que matcheaste agende una entrevista, te avisamos por mail, push y la vas a ver acá.';
+    } else if(agendaTab === 'all'){
+      title = 'Tu agenda está vacía';
+      body  = 'Agendá una primera entrevista con tus candidatos. Soportamos Google Meet, Zoom y Teams.';
+      cta   = '<button class="empty-cta" onclick="openScheduleModal(null)">Agendar entrevista</button>';
+    } else {
+      title = 'Sin entrevistas en este estado';
+      body  = 'Cambiá de filtro arriba para ver el resto de tu agenda.';
+    }
+    list.innerHTML='<div class="empty-state">'
+      +'<div class="empty-icon"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M12 14v4M10 16h4"/></svg></div>'
+      +'<div class="empty-title">'+title+'</div>'
+      +'<div class="empty-body">'+body+'</div>'
+      +cta
+      +'</div>';
     return;
   }
   list.innerHTML=filtered.map(function(iv,i){

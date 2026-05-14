@@ -8,12 +8,39 @@
   --brd:#E4E4E7;
   --shadow:0 2px 16px rgba(43,92,230,.10);
   --shadow-lg:0 8px 32px rgba(43,92,230,.14);
+  --shadow-card:0 1px 2px rgba(15,23,42,.04),0 4px 16px rgba(15,23,42,.06);
+  --shadow-card-hover:0 2px 4px rgba(15,23,42,.06),0 12px 28px rgba(43,92,230,.16);
+  --ring:0 0 0 3px rgba(43,92,230,.25);
   --r:10px;--rl:16px;--rxl:24px;--rp:100px;
 }
 html{height:100%}
-body{min-height:100%;background:linear-gradient(145deg,#EEF2FF 0%,#E0E7FF 40%,#F0F4FF 100%);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;}
+body{min-height:100%;background:linear-gradient(145deg,#EEF2FF 0%,#E0E7FF 40%,#F0F4FF 100%);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-feature-settings:'cv11','ss01','ss03';line-height:1.5;color:var(--dark)}
+/* Numeric en stats, contadores, badges, fechas: glyph width estable */
+.score-num,.detail-score-num,.k-count,.iv-status,.nbadge,.cpct,.stat-num,time,.bt{font-variant-numeric:tabular-nums}
+/* Headings con Syne respiran mejor con letter-spacing apenas negativo */
+.mtitle,.scrtitle,.schtitle,.cname,.detail-name,.brand{letter-spacing:-.3px}
+/* Labels chiquitos: ahora con un token consistente (antes era #aaa hardcoded) */
+.cp-section-title,.empty-body,.detail-lbl{color:var(--gray)}
+/* Body text con un poco más de aire entre renglones para legibilidad */
+.detail-about,.empty-body,.cp-input,.sm-inp{line-height:1.55}
 #app{width:100%;max-width:390px;height:100vh;max-height:820px;background:var(--light);border-radius:var(--rxl);box-shadow:0 32px 80px rgba(43,92,230,.18),0 0 0 1px rgba(43,92,230,.06);display:flex;flex-direction:column;overflow:hidden;position:relative;}
-.scr{display:none;flex-direction:column;flex:1;overflow:hidden}.scr.on{display:flex}
+.scr{display:none;flex-direction:column;flex:1;overflow:hidden}.scr.on{display:flex;animation:scrIn .26s cubic-bezier(.2,.7,.2,1) both}
+@keyframes scrIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* Microinteracciones: tap feedback en botones */
+.bprimary:active,.empty-cta:active,.cv-view-btn:active,.dbtn:active,.bpass:active,.blike:active,.cp-save-btn:active{transform:scale(.96)}
+.ni:active{transform:scale(.92)}
+.ni{transition:opacity .2s,color .2s,transform .1s}
+/* Burbujas de chat: fade-in suave al aparecer */
+.bw{animation:bubbleIn .22s cubic-bezier(.2,.7,.2,1) both}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+/* Notif del banner que cae de arriba */
+.toast-in{animation:toastIn .3s cubic-bezier(.2,.7,.2,1) both}
+@keyframes toastIn{from{opacity:0;transform:translateY(-10px) translateX(-50%)}to{opacity:1;transform:translateY(0) translateX(-50%)}}
+/* Respetar usuarios que prefieren menos animación */
+@media (prefers-reduced-motion:reduce){
+  .scr.on,.bw,.toast-in{animation:none}
+  *{transition-duration:.01ms!important}
+}
 
 /* TOPBAR */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;background:var(--w);flex-shrink:0;border-bottom:1px solid var(--brd)}
@@ -69,7 +96,9 @@ input.cv-in{display:none}
 
 /* BOTTOM NAV */
 .bnav{display:flex;justify-content:space-around;background:var(--w);padding:10px 0 18px;border-top:1px solid var(--brd);flex-shrink:0}
-.ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.35;position:relative;font-size:19px;transition:opacity .2s}.ni.on{opacity:1}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.55;position:relative;font-size:19px;transition:opacity .2s,color .2s;color:var(--gray)}.ni.on{opacity:1;color:var(--b)}
+.ni-icon{display:flex;align-items:center;justify-content:center;height:22px}
+.ni-icon svg{display:block}
 .ni-lbl{font-size:9px;font-weight:700;color:var(--b);display:none;letter-spacing:.3px}.ni.on .ni-lbl{display:block}
 .nbadge{position:absolute;top:-4px;right:-2px;background:var(--red);color:#fff;font-size:9px;font-weight:700;border-radius:10px;padding:1px 4px;display:none}.nbadge.on{display:block}
 
@@ -161,6 +190,14 @@ input.cv-in{display:none}
 .mitime{font-size:10px;color:#bbb}
 .miunread{background:var(--b);color:#fff;font-size:10px;font-weight:700;border-radius:8px;padding:2px 6px}
 .nomatch{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gray);font-size:14px;padding:30px;text-align:center}
+/* Empty state unificado */
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:48px 30px;text-align:center}
+.empty-icon{color:var(--b3);opacity:.55}
+.empty-icon svg{display:block}
+.empty-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--dark);letter-spacing:-.3px}
+.empty-body{font-size:13px;color:var(--gray);line-height:1.55;max-width:300px}
+.empty-cta{background:var(--b);color:#fff;border:none;border-radius:24px;padding:11px 26px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;margin-top:6px;transition:transform .15s,box-shadow .15s;box-shadow:0 2px 10px rgba(43,92,230,.18)}
+.empty-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(43,92,230,.32)}
 .chat-filter-chip{padding:5px 12px;border-radius:var(--rp);font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--brd);color:var(--gray);background:var(--w);transition:all .15s}
 .chat-filter-chip.on{background:var(--b);border-color:var(--b);color:#fff}
 .mitem-actions{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--brd)}
@@ -523,3 +560,49 @@ input.cv-in{display:none}
 .chip.on{background:var(--blight);border-color:var(--b);color:var(--b)}
 input[type=range]{width:100%;accent-color:var(--b)}
 .ffoot{padding:10px 14px 18px;background:var(--w);border-top:1px solid var(--brd);flex-shrink:0}
+
+/* ─────────────────────────────────────────────────────────────
+   POLISH #4 — Botones y cards más premium
+   ───────────────────────────────────────────────────────────── */
+
+/* Sombras layered en cards principales (Polish + accesibilidad de focus) */
+.mitem{box-shadow:var(--shadow-card);transition:all .2s cubic-bezier(.2,.7,.2,1)}
+.mitem:hover{box-shadow:var(--shadow-card-hover);transform:translateY(-1px);border-color:var(--bxlight)}
+.kcard{box-shadow:var(--shadow-card);transition:all .2s cubic-bezier(.2,.7,.2,1)}
+.kcard:hover{box-shadow:var(--shadow-card-hover);transform:translateY(-1px)}
+.interview-card{box-shadow:var(--shadow-card);transition:all .2s cubic-bezier(.2,.7,.2,1)}
+.interview-card:hover{box-shadow:var(--shadow-card-hover);transform:translateY(-1px)}
+.job-card{transition:all .2s cubic-bezier(.2,.7,.2,1)}
+.job-card:hover{background:var(--blight);transform:translateX(2px)}
+
+/* Primary button con halo + hover sutil */
+.bprimary{box-shadow:0 2px 10px rgba(43,92,230,.22)}
+.bprimary:hover{box-shadow:0 6px 22px rgba(43,92,230,.38);transform:translateY(-1px)}
+.bprimary:focus-visible,.empty-cta:focus-visible{outline:none;box-shadow:var(--ring),0 4px 14px rgba(43,92,230,.28)}
+
+/* Secondary button (.dbtn) más legible al hover */
+.dbtn:hover{background:var(--bxlight);color:var(--b);border-color:var(--b3)}
+
+/* Swipe action buttons con feedback más rico */
+.bpass:hover{border-color:var(--gray);transform:scale(1.05)}
+.blike:hover{box-shadow:0 8px 28px rgba(43,92,230,.5);transform:scale(1.05)}
+
+/* Match item buttons más definidos */
+.mitem-btn{transition:all .15s}
+.mitem-btn-chat:hover{background:var(--b2)}
+.mitem-btn-sched:hover{background:var(--blight)}
+
+/* Inputs con focus ring uniforme */
+.cp-input:focus,.sm-inp:focus,.cop-input:focus,.chatin:focus{box-shadow:var(--ring);border-color:var(--b)}
+
+/* Chips con feedback más obvio */
+.chip:hover{border-color:var(--b3);color:var(--b)}
+.skill-role-chip{transition:all .15s}
+.skill-role-chip:hover{border-color:var(--b);color:var(--b)}
+
+/* Platform options del modal de schedule */
+.platform-opt:hover{border-color:var(--b3);background:var(--bxlight)}
+
+/* Bottom nav: tap state un poco más fuerte */
+.bnav .ni:hover{opacity:.85}
+.bnav .ni.on:hover{opacity:1}

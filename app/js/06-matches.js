@@ -45,11 +45,11 @@ function buildList(){
 
   var list=G('mlist');
   if(!matches.length){
-    list.innerHTML='<div class="nomatch">'
-      +'<div style="font-size:40px">💙</div>'
-      +'<div style="font-weight:700;color:var(--dark)">Aún no tenés conexiones</div>'
-      +'<div style="font-size:11px;margin-top:4px">Explorá perfiles y hacé swipe para conectar</div>'
-      +'<button class="bprimary" style="max-width:220px;margin-top:12px" onclick="go(\'swipe-scr\')">Explorar →</button>'
+    list.innerHTML='<div class="empty-state">'
+      +'<div class="empty-icon"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>'
+      +'<div class="empty-title">Aún no tenés conexiones</div>'
+      +'<div class="empty-body">Explorá perfiles y hacé swipe a la derecha. Cuando alguien también te elige, se abre el chat.</div>'
+      +'<button class="empty-cta" onclick="go(\'swipe-scr\')">Explorar perfiles</button>'
       +'</div>';
     return;
   }

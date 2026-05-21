@@ -10,8 +10,46 @@ function goBackFromChat(){
 function nowTime(){var d=new Date();return(d.getHours()<10?'0':'')+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();}
 function restart(){idx=0;matches=[];chats={};curMatch=null;pipeline={};interviews=[];stats={seen:0,likes:0,mc:0,interviews:0};updateBadge();go('swipe-scr');render();}
 
+// ── TEMA (dark / light / auto) ──
+// El tema inicial ya se aplicó con el script inline del <head> (anti-flash).
+// Acá manejamos el cambio en runtime + persistencia + sync de la UI.
+function _systemPrefersDark(){
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function _getThemePref(){
+  try{ return localStorage.getItem('tnic_theme') || 'auto'; }catch(e){ return 'auto'; }
+}
+function applyTheme(pref){
+  var dark = pref === 'dark' || (pref === 'auto' && _systemPrefersDark());
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+}
+// Cambia el tema desde el control segmentado del perfil
+function setTheme(pref){
+  try{ localStorage.setItem('tnic_theme', pref); }catch(e){}
+  applyTheme(pref);
+  syncThemeUI();
+}
+// Resalta la opción activa en todos los controles segmentados (perfil candidato + empresa)
+function syncThemeUI(){
+  var pref = _getThemePref();
+  document.querySelectorAll('[data-theme-seg]').forEach(function(seg){
+    seg.querySelectorAll('button[data-theme-opt]').forEach(function(btn){
+      btn.classList.toggle('on', btn.getAttribute('data-theme-opt') === pref);
+    });
+  });
+}
+// Si el usuario está en 'auto', seguir los cambios del sistema en vivo
+if(window.matchMedia){
+  try{
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
+      if(_getThemePref() === 'auto') applyTheme('auto');
+    });
+  }catch(e){}
+}
+
 // ── INIT ──
 updateNdot();
+syncThemeUI();
 
 // ── PWA / INSTALL ──
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }

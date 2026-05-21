@@ -488,6 +488,10 @@ exports.syncSubscriptions = functions
             lsCustomerId: String(a.customer_id || ""),
             variantId: variantId,
             productName: a.product_name || "",
+            // Link firmado al portal de cliente de LemonSqueezy (cambiar tarjeta,
+            // cancelar, ver facturas). Expira ~24h, pero este sync corre cada 5 min
+            // así que siempre queda uno fresco guardado.
+            customerPortalUrl: (a.urls && a.urls.customer_portal) || null,
             trialEndsAt: a.trial_ends_at ? new Date(a.trial_ends_at) : null,
             renewsAt: a.renews_at ? new Date(a.renews_at) : null,
             endsAt: a.ends_at ? new Date(a.ends_at) : null,

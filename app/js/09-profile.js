@@ -244,6 +244,23 @@ function refreshSubscriptionUI(){
       badge.style.display = 'inline-block';
     }
   }
+  // Botón "Tu plan": adaptativo según si la empresa paga o no.
+  //  - Cliente con plan pago → "Gestionar suscripción" abre el portal de
+  //    LemonSqueezy (cambiar tarjeta, cancelar, facturas, cambiar plan).
+  //  - Empresa Free → "Mejorar plan" abre el modal de upgrade/checkout.
+  var manageBtn = G('plan-manage-btn');
+  if(manageBtn){
+    if(USER_ROLE === 'company' && hasProAccess()){
+      var portalUrl = subscription && subscription.customerPortalUrl;
+      manageBtn.textContent = 'Gestionar suscripción';
+      manageBtn.onclick = portalUrl
+        ? function(){ window.open(portalUrl, '_blank', 'noopener'); }
+        : function(){ alert('Tu portal de suscripción se está preparando. Si te suscribiste recién, reintentá en unos minutos.'); };
+    } else {
+      manageBtn.textContent = 'Mejorar plan';
+      manageBtn.onclick = function(){ showUpgradeModal(''); };
+    }
+  }
   // Banner de upgrade en swipe-scr (solo empresa Free)
   var banner = G('upgrade-banner');
   if(banner){

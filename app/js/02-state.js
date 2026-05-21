@@ -39,7 +39,7 @@ var LANG='es',USER_ROLE=null;
 // Se carga desde users/{uid}.subscription en onLoginSuccess. La función
 // programada syncSubscriptions (Cloud Function) la mantiene actualizada
 // cada 5 min según el estado real en LemonSqueezy.
-var subscription = null; // { plan, status, variantId, renewsAt, endsAt, trialEndsAt, ... }
+var subscription = null; // { plan, status, variantId, renewsAt, endsAt, trialEndsAt, customerPortalUrl, ... }
 var subscriptionUnsub = null;
 // UUIDs de checkout de LemonSqueezy (store tnic.lemonsqueezy.com).
 // Formato de URL: https://tnic.lemonsqueezy.com/checkout/buy/{UUID}

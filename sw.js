@@ -1,10 +1,10 @@
-// tNic Service Worker - v26
+// tNic Service Worker - v27
 // Estrategia: network-first con fallback a cache (ideal para una app que se actualiza seguido)
 // Bump de versión: al cambiar CACHE_NAME el navegador descarta el cache viejo y
 // trae el código nuevo en el siguiente reload, sin que el usuario tenga que
 // limpiar storage manualmente.
 
-const CACHE_NAME = 'tnic-v26';
+const CACHE_NAME = 'tnic-v27';
 const CORE_ASSETS = [
   './',
   './index.html',

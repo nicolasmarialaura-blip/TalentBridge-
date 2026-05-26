@@ -79,11 +79,13 @@ function buildList(){
 
   list.innerHTML=filtered.map(function(m){
     var av=m.photo?'<img src="'+m.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">':m.av;
-    var hasChat=chats[m.name]&&chats[m.name].length>0;
-    var lastMsg=m.lastMsg||(hasChat?chats[m.name][chats[m.name].length-1].text:'Mutual Interest · Tocá para chatear');
+    var mkey=keyOf(m);
+    var hasChat=chats[mkey]&&chats[mkey].length>0;
+    var lastMsg=m.lastMsg||(hasChat?chats[mkey][chats[mkey].length-1].text:'Mutual Interest · Tocá para chatear');
     var subLabel=m.type==='company'?'🏢 Empresa':'🧑‍💼 Candidato';
-    // Escapar nombre para uso en atributo HTML
-    var safeName=m.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    // Escapar nombre y key para uso en atributos HTML
+    var safeName=String(m.name).replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    var safeKey=String(mkey).replace(/"/g,'&quot;').replace(/'/g,'&#39;');
     return'<div class="mitem" style="flex-direction:column;align-items:stretch;gap:0">'
       +'<div style="display:flex;align-items:center;gap:10px">'
       +'<div class="miav" style="background:'+m.color+'">'+av+'</div>'
@@ -95,9 +97,9 @@ function buildList(){
       +'<div class="miright"><div class="mitime">'+(m.time||'')+'</div></div>'
       +'</div>'
       +'<div class="mitem-actions">'
-      +'<button class="mitem-btn mitem-btn-chat" data-mname="'+safeName+'" onclick="event.stopPropagation();chatPrev=\'matches-scr\';openChatByName(this.dataset.mname)">💬 '+(hasChat?'Continuar chat':'Iniciar chat')+'</button>'
+      +'<button class="mitem-btn mitem-btn-chat" data-mkey="'+safeKey+'" onclick="event.stopPropagation();chatPrev=\'matches-scr\';openChatByKey(this.dataset.mkey)">💬 '+(hasChat?'Continuar chat':'Iniciar chat')+'</button>'
       +'<button class="mitem-btn mitem-btn-sched" data-mname="'+safeName+'" onclick="event.stopPropagation();openScheduleModal(this.dataset.mname)">📅 Agendar</button>'
-      +'<button class="mitem-btn mitem-btn-info" data-mname="'+safeName+'" onclick="event.stopPropagation();viewMatchByName(this.dataset.mname)">👤 Ver perfil</button>'
+      +'<button class="mitem-btn mitem-btn-info" data-mkey="'+safeKey+'" onclick="event.stopPropagation();viewMatchByKey(this.dataset.mkey)">👤 Ver perfil</button>'
       +'</div>'
       +'</div>';
   }).join('');
@@ -105,13 +107,23 @@ function buildList(){
 
 function viewMatchDetail(m){currentDetail=m;detailPrev='matches-scr';buildDetailScreen(m);go('detail-scr');}
 
-// Busca por nombre — evita bugs de índice con listas filtradas/reordenadas
+// Busca por nombre — legacy (tolera colisiones de nombre tomando el primero).
 function openChatByName(name){
   var m=matches.find(function(x){return x.name===name;});
   if(m)openChat(m);
 }
 function viewMatchByName(name){
   var m=matches.find(function(x){return x.name===name;});
+  if(m){currentDetail=m;detailPrev='matches-scr';buildDetailScreen(m);go('detail-scr');}
+}
+// Busca por key (uid si es match real, sino name) — sin colisión cuando dos
+// personas se llaman igual. Lo usan los botones de buildList/showNewChatOptions.
+function openChatByKey(key){
+  var m=matches.find(function(x){return keyOf(x)===key;});
+  if(m)openChat(m);
+}
+function viewMatchByKey(key){
+  var m=matches.find(function(x){return keyOf(x)===key;});
   if(m){currentDetail=m;detailPrev='matches-scr';buildDetailScreen(m);go('detail-scr');}
 }
 
@@ -122,9 +134,10 @@ function showNewChatOptions(){
   if(!matches.length){list.innerHTML='<div style="text-align:center;color:var(--gray);padding:20px">Sin matches aún</div>';return;}
   list.innerHTML=matches.map(function(m){
     var av=m.photo?'<img src="'+m.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">':m.av;
-    var hasChat=chats[m.name]&&chats[m.name].length>0;
-    var safeName=m.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    return'<div class="mitem-btn" data-mname="'+safeName+'" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--light);border-radius:var(--rl);cursor:pointer;border:1.5px solid '+(hasChat?'var(--b)':'var(--brd)')+'" onclick="closeNewChatModal();chatPrev=\'matches-scr\';openChatByName(this.dataset.mname)">'
+    var mkey=keyOf(m);
+    var hasChat=chats[mkey]&&chats[mkey].length>0;
+    var safeKey=String(mkey).replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    return'<div class="mitem-btn" data-mkey="'+safeKey+'" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--light);border-radius:var(--rl);cursor:pointer;border:1.5px solid '+(hasChat?'var(--b)':'var(--brd)')+'" onclick="closeNewChatModal();chatPrev=\'matches-scr\';openChatByKey(this.dataset.mkey)">'
       +'<div class="miav" style="background:'+m.color+';width:40px;height:40px;flex-shrink:0">'+av+'</div>'
       +'<div style="flex:1;min-width:0">'
       +'<div style="font-size:13px;font-weight:700;color:var(--dark)">'+m.name+'</div>'

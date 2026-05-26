@@ -123,10 +123,11 @@ function unsubscribeFromPipelineAndInterviews(){
 function subscribeToChatMessages(person){
   unsubscribeFromChatMessages();
   if(!isRealMatch(person))return;
+  var pkey=keyOf(person);
   currentChatUnsub=db.collection('matches').doc(person.matchId)
     .collection('messages').orderBy('createdAt','asc')
     .onSnapshot(function(snap){
-      chats[person.name]=snap.docs.map(function(doc){
+      chats[pkey]=snap.docs.map(function(doc){
         var d=doc.data();
         return{
           from:(d.from===currentUser.uid)?'me':'them',
@@ -134,11 +135,11 @@ function subscribeToChatMessages(person){
           time:fmtTs(d.createdAt)
         };
       });
-      var arr=chats[person.name];
+      var arr=chats[pkey];
       var last=arr.length?arr[arr.length-1]:null;
-      var mx=matches.find(function(x){return x.name===person.name;});
+      var mx=matches.find(function(x){return keyOf(x)===pkey;});
       if(mx&&last){mx.lastMsg=last.text;mx.time=last.time||'ahora';}
-      if(curChat&&curChat.name===person.name)renderChat();
+      if(curChat&&keyOf(curChat)===pkey)renderChat();
     },function(err){console.log('Chat listener error:',err);});
 }
 
@@ -147,20 +148,21 @@ function openChat(person){
   if(!requirePro('chatear con tus matches')) return;
   curChat=person;
   var real=isRealMatch(person);
+  var pkey=keyOf(person);
 
   if(real){
     // Suscribir al snapshot real-time. Sin welcome ni bot.
-    chats[person.name]=chats[person.name]||[];
+    chats[pkey]=chats[pkey]||[];
     subscribeToChatMessages(person);
   } else {
     // Match no-real (caso defensivo: el matchId todavía no llegó por el listener,
     // o es un perfil sin uid). Sin respuestas falsas — el usuario podrá escribir;
     // cuando el matchId llegue, el próximo openChat se suscribe al snapshot real.
-    chats[person.name]=chats[person.name]||[];
+    chats[pkey]=chats[pkey]||[];
   }
 
   // Marcar como leído
-  var m=matches.find(function(x){return x.name===person.name;});
+  var m=matches.find(function(x){return keyOf(x)===pkey;});
   if(m){m.unread=false;updateBadge();}
 
   // Render header del chat
@@ -176,7 +178,7 @@ function openChat(person){
 }
 function renderChat(){
   if(!curChat)return;
-  var h=chats[curChat.name]||[];
+  var h=chats[keyOf(curChat)]||[];
   G('chatbody').innerHTML=h.map(function(m){
     return'<div class="bw '+m.from+'"><div class="bub '+m.from+'">'+escapeHtml(m.text)+'</div><div class="bt">'+escapeHtml(m.time||'')+'</div></div>';
   }).join('');
@@ -202,9 +204,10 @@ function sendMsg(){
   }
 
   // Match no-real (caso defensivo): guardamos el mensaje local sin respuestas falsas.
-  chats[curChat.name]=chats[curChat.name]||[];
-  chats[curChat.name].push({from:'me',text:text,time:nowTime()});
-  var mx=matches.find(function(x){return x.name===curChat.name;});
+  var ckey=keyOf(curChat);
+  chats[ckey]=chats[ckey]||[];
+  chats[ckey].push({from:'me',text:text,time:nowTime()});
+  var mx=matches.find(function(x){return keyOf(x)===ckey;});
   if(mx){mx.lastMsg=text;mx.time='ahora';}
   renderChat();
 }

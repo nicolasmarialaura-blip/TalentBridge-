@@ -140,33 +140,14 @@ function openChat(person){
   var real=isRealMatch(person);
 
   if(real){
-    // Limpiar caché local y dejar que el snapshot popule. Sin welcome/bot.
+    // Suscribir al snapshot real-time. Sin welcome ni bot.
     chats[person.name]=chats[person.name]||[];
     subscribeToChatMessages(person);
-  } else if(!chats[person.name]){
-    // Camino demo: welcome message + bot reply (sólo cuando no hay match real).
-    var welcomeMsg;
-    if(USER_ROLE==='company'){
-      welcomeMsg='Hola '+person.name+'! Vi tu perfil y me parece muy interesante. ¿Tenés disponibilidad para charlar sobre una oportunidad?';
-    } else {
-      var coName=person.name||'la empresa';
-      welcomeMsg='¡Hola '+coName+'! Vi su oferta y me interesa mucho. ¿Puedo hacerles algunas preguntas sobre el rol?';
-    }
-    chats[person.name]=[{from:'me',text:welcomeMsg,time:nowTime(),auto:true}];
-    var mxw=matches.find(function(x){return x.name===person.name;});
-    if(mxw){mxw.lastMsg=welcomeMsg;mxw.time='ahora';}
-    setTimeout(function(){
-      if(chats[person.name]&&chats[person.name].length===1){
-        var replies=USER_ROLE==='company'
-          ?['¡Hola! Claro, con mucho gusto. ¿Me podés contar más sobre tu experiencia?','¡Hola! Gracias por escribir. ¿Qué tecnologías manejás principalmente?','¡Hola! Perfecto. ¿Cuándo tenés disponibilidad para una llamada?']
-          :['¡Hola! Gracias por escribirnos. Claro que sí, ¿qué querés saber?','¡Hola! Con gusto. ¿Cuál es tu experiencia con nuestro stack?','¡Hola! Bienvenido. Contanos un poco de tu perfil.'];
-        var reply=replies[Math.floor(Math.random()*replies.length)];
-        chats[person.name].push({from:'them',text:reply,time:nowTime()});
-        var mx2=matches.find(function(x){return x.name===person.name;});
-        if(mx2){mx2.lastMsg=reply;mx2.time='ahora';}
-        if(curChat&&curChat.name===person.name)renderChat();
-      }
-    },1500);
+  } else {
+    // Match no-real (caso defensivo: el matchId todavía no llegó por el listener,
+    // o es un perfil sin uid). Sin respuestas falsas — el usuario podrá escribir;
+    // cuando el matchId llegue, el próximo openChat se suscribe al snapshot real.
+    chats[person.name]=chats[person.name]||[];
   }
 
   // Marcar como leído
@@ -211,37 +192,10 @@ function sendMsg(){
     return;
   }
 
-  // Camino demo: push local + bot reply.
+  // Match no-real (caso defensivo): guardamos el mensaje local sin respuestas falsas.
   chats[curChat.name]=chats[curChat.name]||[];
   chats[curChat.name].push({from:'me',text:text,time:nowTime()});
   var mx=matches.find(function(x){return x.name===curChat.name;});
   if(mx){mx.lastMsg=text;mx.time='ahora';}
   renderChat();
-  var body=G('chatbody');
-  var t=document.createElement('div');t.className='bw them';
-  t.innerHTML='<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
-  body.appendChild(t);body.scrollTop=body.scrollHeight;
-  var msgLow=text.toLowerCase();
-  setTimeout(function(){
-    t.remove();
-    var rs;
-    if(msgLow.includes('entrevista')||msgLow.includes('llamada')||msgLow.includes('reunión')||msgLow.includes('meet')){
-      rs=['¡Perfecto! ¿El jueves a las 15hs te viene bien?','Claro, ¿qué días y horarios tenés disponibles?','¡Genial! Te mando el link por acá.','Excelente. ¿Preferís Meet, Zoom o Teams?'];
-    } else if(msgLow.includes('salario')||msgLow.includes('sueldo')||msgLow.includes('compensación')||msgLow.includes('plata')){
-      rs=['El rango es el que figura en el perfil, negociable según experiencia.','Podemos hablar de eso en la entrevista técnica.','Estamos abiertos a conversar sobre la compensación.'];
-    } else if(msgLow.includes('remoto')||msgLow.includes('presencial')||msgLow.includes('híbrido')||msgLow.includes('modalidad')){
-      rs=['Es 100% remoto, con reuniones ocasionales en CABA.','Híbrido: 3 días en oficina, 2 desde casa.','Totalmente flexible, nos manejamos por objetivos.'];
-    } else if(msgLow.includes('tecnología')||msgLow.includes('stack')||msgLow.includes('lenguaje')||msgLow.includes('framework')){
-      rs=['Usamos React + Node.js en el frontend/backend, PostgreSQL como DB principal.','El stack principal es Python + FastAPI, con infraestructura en AWS.','Trabajamos con Flutter para mobile y Node.js para el backend.'];
-    } else if(msgLow.includes('gracias')||msgLow.includes('ok')||msgLow.includes('perfecto')||msgLow.includes('excelente')){
-      rs=['¡Genial! Quedamos en contacto 🙌','¡Buenísimo! Cualquier duda, escribinos.','Perfecto, te confirmamos los detalles pronto.'];
-    } else {
-      rs=['¡Perfecto! Te mando más info 🙌','Genial, coordinamos por acá 👍','¿Algo más que quieras saber?','Claro, con gusto. ¿Cuándo podemos hablar?'];
-    }
-    var r=rs[Math.floor(Math.random()*rs.length)];
-    chats[curChat.name].push({from:'them',text:r,time:nowTime()});
-    var mx2=matches.find(function(x){return x.name===curChat.name;});
-    if(mx2){mx2.lastMsg=r;mx2.time='ahora';mx2.unread=false;}
-    renderChat();
-  },900);
 }

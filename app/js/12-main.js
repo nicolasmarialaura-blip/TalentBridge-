@@ -1,4 +1,43 @@
 // ── UTILS ──
+// Comprime una imagen subida a un dataURL JPEG controlado (max ~maxDim px del
+// lado mayor, calidad ~0.85). Evita superar el límite de 1 MB por documento
+// de Firestore cuando el perfil incluye la imagen como base64 dentro del doc.
+function compressImage(file, maxDim, quality, cb){
+  if(!file){ cb(null); return; }
+  if(!/^image\/(jpeg|png|webp|gif)$/.test(file.type)){
+    alert('Formato no soportado. Usá JPG, PNG, WEBP o GIF.');
+    cb(null); return;
+  }
+  if(file.size > 15 * 1024 * 1024){
+    alert('La imagen supera los 15 MB. Usá una más chica.');
+    cb(null); return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    var img = new Image();
+    img.onload = function(){
+      var w = img.naturalWidth, h = img.naturalHeight;
+      var scale = Math.min(1, (maxDim||600) / Math.max(w, h));
+      var cw = Math.max(1, Math.round(w * scale));
+      var ch = Math.max(1, Math.round(h * scale));
+      var canvas = document.createElement('canvas');
+      canvas.width = cw; canvas.height = ch;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, cw, ch);
+      try {
+        cb(canvas.toDataURL('image/jpeg', quality||0.85));
+      } catch(e){
+        console.log('compressImage error:', e);
+        cb(ev.target.result); // fallback al original si toDataURL falla
+      }
+    };
+    img.onerror = function(){ alert('No se pudo procesar la imagen.'); cb(null); };
+    img.src = ev.target.result;
+  };
+  reader.onerror = function(){ alert('No se pudo leer el archivo.'); cb(null); };
+  reader.readAsDataURL(file);
+}
+
 function goBackFromChat(){
   // Cerrar el listener real-time del chat actual
   unsubscribeFromChatMessages();

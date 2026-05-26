@@ -70,7 +70,7 @@ function initCardEvents(){
 }
 
 function setMode(m){mode=m;document.querySelectorAll('.mtab').forEach(function(t,i){t.classList.toggle('on',i===(m==='candidates'?0:1));});dataSet=m==='candidates'?CANDIDATES:COMPANIES;idx=0;render();go('swipe-scr');}
-function handlePhoto(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){var c=dataSet[idx];c.photo=ev.target.result;G('cav-img').src=ev.target.result;G('cav-img').style.display='block';G('cav-initials').style.display='none';};r.readAsDataURL(f);}
+function handlePhoto(e){var f=e.target.files[0];if(!f)return;compressImage(f,500,0.85,function(dataUrl){if(!dataUrl)return;var c=dataSet[idx];c.photo=dataUrl;G('cav-img').src=dataUrl;G('cav-img').style.display='block';G('cav-initials').style.display='none';});}
 function handleCV(e){var f=e.target.files[0];if(!f)return;var c=dataSet[idx];var r=new FileReader();r.onload=function(ev){c.cvData=ev.target.result;c.cvName=f.name;G('cv-filename').textContent=f.name;G('cv-empty').style.display='none';G('cv-loaded').style.display='block';};r.readAsDataURL(f);}
 function viewCV(e){e.stopPropagation();var c=dataSet[idx];if(!c.cvData)return;var w=window.open();w.document.write('<iframe src="'+c.cvData+'" style="width:100%;height:100%;border:none"></iframe>');}
 function removeCV(e){e.stopPropagation();var c=dataSet[idx];c.cvData=null;c.cvName=null;G('cv-empty').style.display='block';G('cv-loaded').style.display='none';G('cv-in').value='';}

@@ -74,7 +74,7 @@ function handlePhoto(e){var f=e.target.files[0];if(!f)return;compressImage(f,500
 function handleCV(e){var f=e.target.files[0];if(!f)return;var c=dataSet[idx];var r=new FileReader();r.onload=function(ev){c.cvData=ev.target.result;c.cvName=f.name;G('cv-filename').textContent=f.name;G('cv-empty').style.display='none';G('cv-loaded').style.display='block';};r.readAsDataURL(f);}
 function viewCV(e){e.stopPropagation();var c=dataSet[idx];if(!c.cvData)return;var w=window.open();w.document.write('<iframe src="'+c.cvData+'" style="width:100%;height:100%;border:none"></iframe>');}
 function removeCV(e){e.stopPropagation();var c=dataSet[idx];c.cvData=null;c.cvName=null;G('cv-empty').style.display='block';G('cv-loaded').style.display='none';G('cv-in').value='';}
-function updateCVUI(){var c=dataSet[idx];if(c.cvData){G('cv-filename').textContent=c.cvName||'CV.pdf';G('cv-empty').style.display='none';G('cv-loaded').style.display='block';}else{G('cv-empty').style.display='block';G('cv-loaded').style.display='none';G('cv-in').value='';}}
+function updateCVUI(){var c=dataSet[idx];var loaded=G('cv-loaded');var hasCV=!!(c && (c.cvData||c.cvUrl));if(loaded){loaded.style.display=hasCV?'block':'none';if(hasCV){var fn=G('cv-filename');if(fn)fn.textContent=c.cvName||'CV.pdf';}}}
 function toggleExtra(e){e.stopPropagation();G('extra').classList.toggle('on');G('dbtn').textContent=G('extra').classList.contains('on')?'Ocultar ▴':'Más info ▾';}
 
 function swipe(dir){
@@ -120,7 +120,14 @@ function showMI(){
 }
 function doContinue(){addMatch(curMatch,false);idx++;chatPrev='swipe-scr';go('swipe-scr');render();addNotif('🎉','Mutual Interest con <strong>'+curMatch.name+'</strong>','ahora');}
 function doOpenChat(){addMatch(curMatch,true);idx++;chatPrev='swipe-scr';openChat(curMatch);addNotif('💬','<strong>'+curMatch.name+'</strong> te envió un mensaje','ahora');}
-function doScheduleFromMatch(){addMatch(curMatch,false);idx++;schedulePrev='match-scr';selectedInterview=curMatch.name;go('schedule-scr');buildSchedule();}
+function doScheduleFromMatch(){
+  // Antes iba al screen viejo `schedule-scr` (saveInterview → array local `interviews[]`).
+  // Ahora abre el modal nuevo (openScheduleModal → `agendaInterviews[]` + sync a Firestore,
+  // con plataforma, alt slots, etc.). Unifica los dos flujos de entrevista.
+  addMatch(curMatch,false);
+  idx++;
+  openScheduleModal(curMatch.name);
+}
 function addMatch(c,msg){
   if(!matches.find(function(m){return m.name===c.name;})){
     var o=Object.assign({},c);

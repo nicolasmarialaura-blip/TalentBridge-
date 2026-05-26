@@ -193,7 +193,9 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
       <div class="cav" id="cav">
         <img id="cav-img" src="" style="display:none" alt="">
         <span id="cav-initials"></span>
-        <label class="cav-upload" title="Subir foto">📷<input type="file" accept="image/*" class="photo-in" id="photo-in" onchange="handlePhoto(event)"></label>
+        <!-- Botón "Subir foto" oculto en la swipe card: la edición de foto propia
+             se hace en candidate-profile-scr (setCPAvatar). Acá modificaba el perfil del OTRO. -->
+        <label class="cav-upload" title="Subir foto" style="display:none">📷<input type="file" accept="image/*" class="photo-in" id="photo-in" onchange="handlePhoto(event)"></label>
       </div>
       <div style="text-align:center;width:100%">
         <div class="cname" id="cname"></div>
@@ -219,7 +221,9 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
         <div class="erow" id="company-extra-row2" style="display:none"><span class="elbl">Industria</span><span class="eval" id="cindustry"></span></div>
         <div class="cv-section" id="cv-section">
           <div class="cv-label">CV / Currículum</div>
-          <div id="cv-empty"><label class="cv-upload-btn" for="cv-in"><span>📎 Subir CV (PDF)</span><input type="file" accept="application/pdf" class="cv-in" id="cv-in" onchange="handleCV(event)"></label></div>
+          <!-- "Subir CV" oculto en swipe card: la empresa no debería subir CV por el candidato.
+               El candidato sube su propio CV en candidate-profile-scr (uploadOwnCV). -->
+          <div id="cv-empty" style="display:none"><label class="cv-upload-btn" for="cv-in"><span>📎 Subir CV (PDF)</span><input type="file" accept="application/pdf" class="cv-in" id="cv-in" onchange="handleCV(event)"></label></div>
           <div id="cv-loaded" style="display:none"><div class="cv-file-info"><span style="font-size:18px">📄</span><div class="cv-file-name" id="cv-filename"></div><button class="cv-view-btn" onclick="viewCV(event)">Ver</button><button class="cv-remove-btn" onclick="removeCV(event)">✕</button></div></div>
         </div>
       </div>

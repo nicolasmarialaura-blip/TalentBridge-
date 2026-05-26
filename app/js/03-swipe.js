@@ -129,12 +129,13 @@ function doScheduleFromMatch(){
   openScheduleModal(curMatch.name);
 }
 function addMatch(c,msg){
-  if(!matches.find(function(m){return m.name===c.name;})){
+  var k=keyOf(c);
+  if(!matches.find(function(m){return keyOf(m)===k;})){
     var o=Object.assign({},c);
     o.lastMsg=msg?'¡Hola! Me interesa tu perfil. ¿Cuándo podemos hablar?':'';
     o.unread=msg;o.time='ahora';o.initiatedBy='them';
     matches.push(o);stats.mc++;
-    if(pipeline[c.name]===undefined)pipeline[c.name]=0;
+    if(pipeline[k]===undefined)pipeline[k]=0;
     updateBadge();
   }
 }

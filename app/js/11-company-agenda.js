@@ -86,9 +86,12 @@ function saveScheduledInterview(){
     if(editInterviewIdx!==null){agendaInterviews[editInterviewIdx]=iv;}else{agendaInterviews.push(iv);}
   }
 
-  if(pipeline[candName]===undefined||pipeline[candName]===0){
-    pipeline[candName]=1;
-    writePipelineStage(candName, 1);
+  // Avanzar pipeline a "Entrevista" si está en "Nuevo" (o sin entrada).
+  // Indexar por keyOf(match) para no colisionar si hay candidatos con mismo nombre.
+  var matchKey = match ? keyOf(match) : candName;
+  if(pipeline[matchKey]===undefined||pipeline[matchKey]===0){
+    pipeline[matchKey]=1;
+    writePipelineStage(match || candName, 1);
   }
 
   var schedMsg='📅 Entrevista agendada: '+date+' a las '+time+'.'+(link?' Link: '+link:'')+(notes?' Nota: '+notes:'');

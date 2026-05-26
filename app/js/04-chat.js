@@ -32,7 +32,7 @@ function findNameByUid(uid){ var m=matches.find(function(x){return x.uid===uid;}
 function reconcilePipelineFromUids(){
   matches.forEach(function(m){
     if(m.uid && pipelineByUid[m.uid]!==undefined){
-      pipeline[m.name]=pipelineByUid[m.uid];
+      pipeline[keyOf(m)]=pipelineByUid[m.uid];
     }
   });
 }
@@ -67,10 +67,19 @@ function subscribeToPipeline(){
     },function(err){console.log('Pipeline listener error:',err);});
 }
 
-function writePipelineStage(name, stage){
+// Acepta un match-object (preferido, robusto contra colisiones por nombre) o
+// un string (legacy: nombre). Si se le pasa string, busca el match por nombre
+// — puede dar el match equivocado si hay nombres repetidos, por eso preferir
+// pasar el match completo cuando se tenga.
+function writePipelineStage(matchOrName, stage){
   if(!canSyncToFirestore() || USER_ROLE!=='company') return;
-  var uid=findUidByName(name);
-  if(!uid) return; // demo: no sync
+  var uid;
+  if(typeof matchOrName === 'string'){
+    uid = findUidByName(matchOrName);
+  } else if(matchOrName){
+    uid = matchOrName.uid;
+  }
+  if(!uid) return; // demo / sin uid: no sync
   pipelineByUid[uid]=stage;
   db.collection('pipelines').doc(currentUser.uid).collection('items').doc(uid).set({
     stage:stage,

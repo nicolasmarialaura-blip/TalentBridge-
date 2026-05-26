@@ -77,11 +77,12 @@ function buildDetailScreen(c){
     }
     body+='<div class="detail-section"><div class="detail-section-title">📄 Currículum</div>'+cvHtml+'</div>';
   }
-  if(pipeline[c.name]!==undefined){var stages=['Nuevo','Entrevista','Oferta','Contratado'];var p=pipeline[c.name];body+='<div class="detail-section"><div class="detail-section-title">Pipeline</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+stages.map(function(s,i){return'<div style="padding:5px 12px;border-radius:14px;font-size:11px;font-weight:600;'+(i===p?'background:var(--b);color:#fff':'background:var(--bxlight);color:var(--gray)')+'">'+s+'</div>';}).join('')+'</div><div style="display:flex;gap:6px;margin-top:10px">'+(p>0?'<button class="kmove-btn" style="padding:6px 0;font-size:11px" onclick="movePipelineFromDetail(-1)">◀ Atrás</button>':'')+(p<3?'<button class="kmove-btn" style="padding:6px 0;font-size:11px;background:var(--b);color:#fff" onclick="movePipelineFromDetail(1)">Adelante ▶</button>':'')+'</div></div>';}
+  var detailKey=keyOf(c);
+  if(pipeline[detailKey]!==undefined){var stages=['Nuevo','Entrevista','Oferta','Contratado'];var p=pipeline[detailKey];body+='<div class="detail-section"><div class="detail-section-title">Pipeline</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+stages.map(function(s,i){return'<div style="padding:5px 12px;border-radius:14px;font-size:11px;font-weight:600;'+(i===p?'background:var(--b);color:#fff':'background:var(--bxlight);color:var(--gray)')+'">'+s+'</div>';}).join('')+'</div><div style="display:flex;gap:6px;margin-top:10px">'+(p>0?'<button class="kmove-btn" style="padding:6px 0;font-size:11px" onclick="movePipelineFromDetail(-1)">◀ Atrás</button>':'')+(p<3?'<button class="kmove-btn" style="padding:6px 0;font-size:11px;background:var(--b);color:#fff" onclick="movePipelineFromDetail(1)">Adelante ▶</button>':'')+'</div></div>';}
   G('detail-body').innerHTML=body;
 }
 function detailSwipeRight(){if(!currentDetail)return;addMatch(currentDetail,false);G('detail-like-btn').style.display='none';G('detail-chat-btn').style.display='block';addNotif('💙','Liked a <strong>'+currentDetail.name+'</strong>','ahora');buildDetailScreen(currentDetail);}
 function detailOpenChat(){if(!currentDetail)return;chatPrev='detail-scr';openChat(currentDetail);}
-function movePipelineFromDetail(dir){if(!currentDetail)return;movePipeline(currentDetail.name,dir);buildDetailScreen(currentDetail);}
+function movePipelineFromDetail(dir){if(!currentDetail)return;movePipelineByKey(keyOf(currentDetail),dir);buildDetailScreen(currentDetail);}
 function loadJDtoRanking(){if(!currentDetail||!currentDetail.jd)return;go('profile-scr');buildProfile();setTimeout(function(){var ta=G('jd-text');if(ta){ta.value=currentDetail.jd;calcRanking();}},100);}
 

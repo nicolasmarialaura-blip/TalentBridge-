@@ -38,6 +38,12 @@ function compressImage(file, maxDim, quality, cb){
   reader.readAsDataURL(file);
 }
 
+// keyOf(match) — devuelve un identificador único y estable para indexar maps
+// locales (pipeline, chats). Usa `uid` cuando el match es real (Firestore) y
+// cae a `name` para demos sin uid. Resuelve la colisión cuando dos personas
+// se llaman igual: tienen uids distintos → keys distintas → no se pisan.
+function keyOf(m){ return (m && (m.uid || m.name)) || null; }
+
 function goBackFromChat(){
   // Cerrar el listener real-time del chat actual
   unsubscribeFromChatMessages();

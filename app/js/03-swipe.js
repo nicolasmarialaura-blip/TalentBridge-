@@ -56,6 +56,8 @@ function render(){
   G('extra').classList.remove('on');G('dbtn').textContent='Más info ▾';
   updateCVUI();G('sl').style.opacity='0';G('sp').style.opacity='0';
   G('card-bg').style.display=idx+1<dataSet.length?'block':'none';
+  // Asesoría tNic: refrescar el banner de tip en cada render del swipe
+  if(typeof renderTipBanner==='function') renderTipBanner();
 }
 
 // ── CARD EVENTS ──
@@ -88,6 +90,7 @@ function swipe(dir){
     if(dir==='right'){stats.likes++;writeSwipeToFirestore(target,'like');}
     else{writeSwipeToFirestore(target,'pass');}
     // El match se muestra cuando el listener de /matches dispara handleMatchDoc
+    if(typeof coachOnSwipe==='function') coachOnSwipe();
     idx++;render();
   },400);
 }

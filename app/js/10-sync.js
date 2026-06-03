@@ -162,6 +162,7 @@ function handleMatchDoc(matchDoc, isNew) {
     }
     if (isNew) {
       curMatch = existing;
+      if (typeof coachOnMatch === 'function') coachOnMatch();
       showMI();
       addNotif('🎉', 'Mutual Interest con <strong>'+(existing.name||'usuario')+'</strong>', 'ahora');
     }
@@ -185,6 +186,7 @@ function handleMatchDoc(matchDoc, isNew) {
       persistAll();
       if (isNew) {
         curMatch = added;
+        if (typeof coachOnMatch === 'function') coachOnMatch();
         showMI();
         addNotif('🎉', 'Mutual Interest con <strong>'+(added.name||'usuario')+'</strong>', 'ahora');
       }

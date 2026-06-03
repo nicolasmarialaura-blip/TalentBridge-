@@ -729,3 +729,82 @@ html[data-theme="dark"] .job-tag{color:var(--mid)}
 /* Plan Enterprise badge: el negro fijo se mantiene legible, pero le damos un borde sutil */
 html[data-theme="dark"] .plan-badge.plan-enterprise{background:#000;color:#fff;box-shadow:0 0 0 1px var(--brd)}
 /* Banner de notificaciones y barra superior ya usan var(--w) → adaptan solos */
+
+/* ═══════════════════════════════════════════════
+   ASESORÍA tNic — coach del candidato
+   3 superficies: banner en swipe, sección en perfil, notif contextual.
+═══════════════════════════════════════════════ */
+
+/* — Superficie A: banner en la pantalla de swipe — */
+.tip-banner{
+  display:flex;align-items:flex-start;gap:11px;
+  margin:9px 14px 0;padding:11px 12px 11px 14px;
+  background:linear-gradient(135deg,var(--bxlight),var(--blight));
+  border:1px solid rgba(43,92,230,.18);
+  border-left:3px solid var(--b);
+  border-radius:var(--rl);
+  cursor:pointer;
+  animation:tip-in .26s ease-out both;
+  transition:transform .15s,box-shadow .15s;
+}
+.tip-banner:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(43,92,230,.12)}
+.tip-banner:active{transform:translateY(0)}
+@keyframes tip-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.tip-banner-icon{font-size:22px;line-height:1.1;flex-shrink:0;margin-top:1px}
+.tip-banner-text{flex:1;min-width:0}
+.tip-banner-title{font-size:11px;font-weight:700;color:var(--b);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;font-family:'Plus Jakarta Sans',sans-serif}
+.tip-banner-body{font-size:12.5px;line-height:1.45;color:var(--dark);font-family:'Plus Jakarta Sans',sans-serif}
+.tip-banner-close{
+  background:none;border:none;color:var(--gray);
+  font-size:20px;line-height:1;cursor:pointer;
+  padding:0 2px;margin:-2px -2px 0 4px;flex-shrink:0;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  transition:color .15s;
+}
+.tip-banner-close:hover{color:var(--dark)}
+
+/* — Superficie B: sección "Mejorá tu perfil" en el perfil del candidato — */
+.coach-section{
+  border-left:3px solid var(--b);
+}
+.coach-pct{
+  float:right;font-size:11px;color:var(--gray);font-weight:600;letter-spacing:0;text-transform:none
+}
+.coach-pct strong{font-family:'Syne','Plus Jakarta Sans',sans-serif;font-size:18px;color:var(--b);font-weight:800;margin-right:2px}
+.coach-pct-bar{
+  height:6px;background:var(--bxlight);border-radius:99px;overflow:hidden;margin:6px 0 12px
+}
+.coach-pct-fill{
+  height:100%;background:linear-gradient(90deg,var(--b),var(--b3));
+  border-radius:99px;transition:width .35s cubic-bezier(.2,.7,.2,1)
+}
+.coach-tips-list{
+  list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;
+}
+.coach-tip{
+  display:flex;gap:10px;align-items:flex-start;
+  background:var(--light);border-radius:var(--r);padding:9px 11px;
+}
+.coach-tip-icon{font-size:18px;line-height:1.2;flex-shrink:0;margin-top:1px}
+.coach-tip-body{flex:1;min-width:0}
+.coach-tip-title{font-size:12.5px;font-weight:700;color:var(--dark);line-height:1.3;margin-bottom:2px;font-family:'Plus Jakarta Sans',sans-serif}
+.coach-tip-text{font-size:11.5px;color:var(--gray);line-height:1.45;font-family:'Plus Jakarta Sans',sans-serif}
+.coach-tip-done{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 13px;border-radius:var(--r);
+  background:linear-gradient(135deg,rgba(22,163,74,.10),rgba(22,163,74,.04));
+  border:1px solid rgba(22,163,74,.25);
+  color:var(--dark);font-size:13px;font-weight:600;line-height:1.4;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+/* Dark mode tweaks para el coach: bordes más sutiles sobre el fondo oscuro. */
+html[data-theme="dark"] .tip-banner{
+  border-color:rgba(91,141,239,.30);
+  background:linear-gradient(135deg,rgba(91,141,239,.10),rgba(91,141,239,.05));
+}
+html[data-theme="dark"] .coach-tip{background:var(--bxlight)}
+html[data-theme="dark"] .coach-tip-done{
+  background:linear-gradient(135deg,rgba(110,231,183,.10),rgba(110,231,183,.04));
+  border-color:rgba(110,231,183,.25);
+}

@@ -184,6 +184,15 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
     <div class="ub-text">Estás en el plan Free<small>Activá Pro para chatear, agendar y usar el pipeline</small></div>
     <button class="ub-btn" onclick="showUpgradeModal('')">Ver Pro</button>
   </div>
+  <!-- Asesoría tNic: banner persistente con tip del día (sólo candidatos, dismissable por sesión) -->
+  <div id="tip-banner" class="tip-banner" style="display:none" onclick="openTipAction()">
+    <div class="tip-banner-icon" id="tip-banner-icon">💡</div>
+    <div class="tip-banner-text">
+      <div class="tip-banner-title" id="tip-banner-title">Tip de tNic</div>
+      <div class="tip-banner-body" id="tip-banner-body"></div>
+    </div>
+    <button class="tip-banner-close" onclick="dismissTip(event)" aria-label="Cerrar">×</button>
+  </div>
   <div class="card-area">
     <div class="card-bg" id="card-bg"></div>
     <div class="card" id="card">
@@ -459,6 +468,12 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
   </div>
 
   <div class="cp-body">
+    <!-- Asesoría tNic: sección "Mejorá tu perfil" — barra de % + top tips del candidato. -->
+    <div class="cp-section coach-section">
+      <div class="cp-section-title">Mejorá tu perfil <span class="coach-pct"><strong id="coach-pct-num">0</strong>%</span></div>
+      <div class="coach-pct-bar"><div class="coach-pct-fill" id="coach-pct-fill" style="width:0%"></div></div>
+      <ul class="coach-tips-list" id="coach-tips-list"></ul>
+    </div>
     <div class="cp-section">
       <div class="cp-section-title">Sobre mí</div>
       <textarea class="cp-textarea" id="cp-about-inp" placeholder="Contá quién sos, tu experiencia y qué buscás..." autocomplete="off"></textarea>
@@ -715,6 +730,7 @@ var FCM_VAPID_KEY = 'BIe_wTTDdMOoQgY-5NyeBkMW3LImdNrUcvE751ao9VMSL6Xip3hDw3CCqWx
 <script src="js/10-sync.js" defer></script>
 <script src="js/11-company-agenda.js" defer></script>
 <script src="js/12-main.js" defer></script>
+<script src="js/13-coach.js" defer></script>
 <!-- ══ APP T&C MODAL ══ -->
 <div id="app-tc-modal">
   <div class="app-tc-sheet">

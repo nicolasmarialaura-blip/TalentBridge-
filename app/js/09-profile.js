@@ -8,6 +8,8 @@ function initCPScreen(){
   selectedSkillRole=null;
   document.querySelectorAll('.skill-role-chip').forEach(function(c){c.classList.remove('on');});
   var sug=G('skill-suggestions');if(sug)sug.innerHTML='<span class="skill-sug-placeholder">Elegí una especialidad arriba para ver sugerencias</span>';
+  // Asesoría tNic: % de completitud + top tips dentro del perfil
+  if(typeof renderProfileCoach==='function') renderProfileCoach();
 }
 function updateCPInitials(){var name=G('cp-name-inp').value;var p=name.trim().split(' ');var init=p.length>=2?(p[0][0]||'').toUpperCase()+(p[1][0]||'').toUpperCase():(p[0][0]||'?').toUpperCase();var el=G('cp-avatar-initials');if(el&&!cpData.avatar)el.textContent=init;}
 function renderCPAvatar(){var av=G('cp-avatar-display');if(!av)return;if(cpData.avatar){av.innerHTML='<img src="'+cpData.avatar+'" style="width:100%;height:100%;object-fit:cover">';}else{var name=(G('cp-name-inp')||{}).value||'';var p=name.trim().split(' ');var init=p.length>=2?(p[0][0]||'')+(p[1][0]||''):(p[0][0]||'?');av.innerHTML='<span id="cp-avatar-initials" style="font-size:20px;font-weight:700;color:#fff;font-family:Syne,sans-serif">'+init.toUpperCase()+'</span>';}}
@@ -37,6 +39,8 @@ function saveCandidateProfile(){
   persistAll();publishProfileToFirestore();addNotif('✅','Perfil guardado correctamente','ahora');
   if(USER_ROLE==='candidate')sortDataSetByMatch();
   go('swipe-scr');
+  // Asesoría tNic: el perfil cambió → re-evaluar tips y % de completitud
+  if(typeof coachRefresh==='function') coachRefresh();
   var b=document.createElement('div');b.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#16A34A;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:999;font-family:"Plus Jakarta Sans",sans-serif';b.textContent='✓ Perfil guardado';document.body.appendChild(b);setTimeout(function(){b.remove();},2500);
 }
 

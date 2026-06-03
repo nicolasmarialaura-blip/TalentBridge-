@@ -75,23 +75,33 @@ body{min-height:100%;background:var(--page-bg);display:flex;align-items:center;j
 .card-bg{position:absolute;width:calc(100% - 32px);background:var(--w);border-radius:var(--rxl);height:90%;transform:scale(.95) translateY(10px);box-shadow:0 2px 16px rgba(43,92,230,.07);opacity:.55}
 .card{width:100%;background:var(--w);border-radius:var(--rxl);box-shadow:var(--shadow-lg);display:flex;flex-direction:column;align-items:center;padding:18px 18px 14px;position:relative;touch-action:none;user-select:none;cursor:grab;overflow-y:auto;max-height:98%}
 .card:active{cursor:grabbing}
-.cav{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;margin-bottom:10px;box-shadow:0 4px 16px rgba(0,0,0,.12);font-family:'Syne',sans-serif;flex-shrink:0;overflow:hidden;position:relative}
+/* MODERN CARD — refinamiento visual sin perder la esencia tNic */
+/* Avatar: anillo blanco + halo azul translúcido, sensación premium */
+.cav{width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;margin-bottom:14px;box-shadow:0 0 0 3px var(--w),0 0 0 5px rgba(43,92,230,.20),0 8px 22px rgba(43,92,230,.22);font-family:'Syne',sans-serif;flex-shrink:0;overflow:hidden;position:relative}
 .cav img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .cav-upload{position:absolute;bottom:0;right:0;width:22px;height:22px;background:var(--b);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:#fff;border:2px solid var(--w)}
 input.photo-in{display:none}
 .company-badge{background:var(--blight);color:var(--b);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
-.cname{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--dark)}
-.cloc{font-size:12px;color:var(--gray);margin-top:2px}
-.crole{font-size:13px;font-weight:600;color:var(--b);margin-top:5px}
-.skills{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:10px}
-.sk{background:var(--bxlight);color:var(--b);border-radius:var(--r);padding:3px 10px;font-size:11px;font-weight:600;border:1px solid rgba(43,92,230,.12)}
-.csal{font-size:12px;color:var(--mid);margin-top:8px;font-weight:500}
-.cabout{font-size:12px;color:var(--gray);margin-top:8px;line-height:1.6;text-align:center}
-.score-pill{display:flex;align-items:center;gap:6px;background:var(--bxlight);border-radius:var(--rp);padding:4px 12px;margin-top:10px;border:1px solid rgba(43,92,230,.1)}
-.score-bar-bg{width:80px;height:5px;background:var(--brd);border-radius:10px;overflow:hidden}
+/* Nombre — más presencia, tracking apretado, line-height más editorial */
+.cname{font-family:'Syne',sans-serif;font-size:23px;font-weight:800;color:var(--dark);letter-spacing:-.5px;line-height:1.1;margin-top:2px;text-align:center}
+.cloc{font-size:12px;color:var(--faint);margin-top:4px;font-weight:500}
+/* Rol — peso mayor para definir mejor el segundo nivel de jerarquía */
+.crole{font-size:13px;font-weight:700;color:var(--b);margin-top:6px;letter-spacing:.1px;text-align:center}
+.skills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+/* Chips — fondo neutro con borde sutil (feel más editorial, menos "tag-soup") */
+.sk{background:var(--w);color:var(--b);border-radius:8px;padding:4px 11px;font-size:11px;font-weight:600;border:1.5px solid rgba(43,92,230,.16);transition:all .15s}
+.sk:hover{background:var(--blight);border-color:var(--b)}
+.csal{font-size:13px;color:var(--mid);margin-top:10px;font-weight:600;letter-spacing:-.1px}
+.cabout{font-size:12.5px;color:var(--gray);margin-top:10px;line-height:1.55;text-align:center}
+/* Match score — gradiente azul sutil para añadir profundidad */
+.score-pill{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(43,92,230,.10),rgba(43,92,230,.04));border-radius:var(--rp);padding:5px 14px;margin-top:12px;border:1px solid rgba(43,92,230,.18)}
+.score-bar-bg{width:70px;height:5px;background:rgba(43,92,230,.12);border-radius:10px;overflow:hidden}
 .score-bar-fill{height:100%;background:linear-gradient(90deg,var(--b),var(--b3));border-radius:10px}
-.score-num{font-size:12px;font-weight:700;color:var(--b)}
-.dbtn{margin-top:10px;background:none;border:1.5px solid var(--brd);border-radius:var(--rp);padding:5px 14px;font-size:11px;color:var(--gray);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s}
+.score-num{font-size:13px;font-weight:800;color:var(--b);font-family:'Syne',sans-serif;letter-spacing:-.3px}
+/* "Más info" — pill con fondo, más invitante (menos hostile-outline) */
+.dbtn{margin-top:14px;background:var(--bxlight);border:none;border-radius:var(--rp);padding:7px 18px;font-size:11px;font-weight:700;color:var(--b);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s;letter-spacing:.3px}
+.dbtn:hover{background:var(--blight);transform:translateY(-1px)}
+.dbtn:active{transform:translateY(0)}
 .cv-section{margin-top:12px;border-top:1px solid var(--brd);padding-top:12px}
 .cv-label{font-size:10px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .cv-upload-btn{display:flex;align-items:center;gap:8px;background:var(--bxlight);border:1.5px dashed var(--b3);border-radius:var(--rl);padding:10px 14px;cursor:pointer;width:100%}
